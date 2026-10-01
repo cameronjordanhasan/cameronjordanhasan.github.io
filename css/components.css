@@ -376,3 +376,7 @@ section > .wrap > :last-child > :last-child { margin-bottom: 0; }
 .pm-label { font-size: 0.8125rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: var(--card-on); }
 /* Chips on brand-coloured cards: a darker wash so their white text reaches AAA (7:1) */
 .project:not(.brand-tattdup) .chip { background: color-mix(in srgb, #000000 22%, var(--card-bg)); color: #FFFFFF; }
+
+/* A wide card for the last project, so a sixth card never sits alone in the grid */
+.project.wide { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: var(--s4); }
+@media (max-width: 860px) { .project.wide { display: flex; } }

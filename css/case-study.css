@@ -930,3 +930,19 @@ main > section.cs-section[id]:nth-of-type(even) { background: var(--band); }
 main > section.cs-section[id]:nth-of-type(even) :is(.insight, .lesson, .persona, .ba-card, .comp-card, .flow-stage, .j-stage, .bj-stage, .plan:not(.hero-plan), .ia-branch, .gc-outcomes li, .goal-list li, .section-chips li, .ds-panel, .sticky) {
   outline: 1px solid color-mix(in srgb, currentColor 16%, transparent); outline-offset: -1px;
 }
+
+/* ---------- ChilliPharm App: phone sized images ---------- */
+.hero-phone img { max-height: 560px; width: auto; }
+.fig-grid.phones { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); align-items: start; }
+.hero-phone img { border-radius: var(--shape-xl); }
+/* ChilliPharm App issue notes, in the colours from the original research board */
+.sticky-notes.notes-coral li .sticky  { background: #FFAFA3; color: #1F1B16; }
+.sticky-notes.notes-yellow li .sticky { background: #FFD966; color: #1F1B16; }
+.sticky-notes.notes-coral li, .sticky-notes.notes-yellow li { display: flex; }
+.sticky-notes.notes-coral .sticky, .sticky-notes.notes-yellow .sticky { flex: 1; min-height: 176px; }
+/* Phone screenshots stay phone sized, rather than stretching to fill the column */
+.fig-grid.phones { grid-template-columns: repeat(auto-fit, minmax(150px, 220px)); justify-content: center; gap: var(--s3); }
+/* Testing notes keep the colour of the research issue they answer */
+.board .sticky-notes li .sticky.c-coral  { background: #FFAFA3; color: #1F1B16; }
+.board .sticky-notes li .sticky.c-yellow { background: #FFD966; color: #1F1B16; }
+.board .sticky-notes li .sticky.c-blue   { background: #9FCBFF; color: #1F1B16; }

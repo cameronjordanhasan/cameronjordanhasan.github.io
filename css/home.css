@@ -73,3 +73,6 @@ button.portrait:hover .portrait-zoom, button.portrait:focus-visible .portrait-zo
 .lightbox-body { max-height: 84vh; overflow: auto; }
 .lightbox-body:focus-visible { outline: 3px solid var(--focus); outline-offset: -3px; }
 .lightbox-body img.full-photo { display: block; max-width: 100%; max-height: 82vh; width: auto; height: auto; margin-inline: auto; }
+/* Case study links under each experience entry */
+.timeline .tl-links { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s3); margin-top: var(--s1); font-weight: 650; }
+.timeline .tl-links a { min-height: 44px; display: inline-flex; align-items: center; }
