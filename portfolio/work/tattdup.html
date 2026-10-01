@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TattdUp, a case study by Cameron Hasan</title>
+<meta name="description" content="How Cameron Hasan designed and built TattdUp, an AI tattoo generator that lets you try a design on a photo of your own skin before you ever contact a tattoo artist.">
+<meta property="og:title" content="TattdUp, a case study by Cameron Hasan">
+<meta property="og:description" content="An AI tattoo design app built around trusting a permanent decision, designed and built solo and live on the App Store.">
+<meta property="og:type" content="article">
+<meta name="theme-color" content="#16151A">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Inter:wght@400;600;700&family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap" rel="stylesheet">
+<script>
+  document.documentElement.classList.add('js');
+  try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/case-study.css">
+</head>
+<body class="cs-tattdup">
+
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <clipPath id="cookie" clipPathUnits="objectBoundingBox"><path d="M0.9900 0.5000 L0.9881 0.5128 L0.9826 0.5253 L0.9739 0.5373 L0.9625 0.5486 L0.9491 0.5591 L0.9346 0.5688 L0.9199 0.5778 L0.9059 0.5863 L0.8935 0.5945 L0.8832 0.6027 L0.8756 0.6112 L0.8709 0.6205 L0.8692 0.6308 L0.8704 0.6422 L0.8738 0.6549 L0.8791 0.6688 L0.8855 0.6839 L0.8920 0.6998 L0.8981 0.7161 L0.9027 0.7325 L0.9053 0.7484 L0.9053 0.7632 L0.9024 0.7766 L0.8964 0.7880 L0.8874 0.7973 L0.8756 0.8042 L0.8615 0.8087 L0.8456 0.8111 L0.8286 0.8118 L0.8111 0.8111 L0.7940 0.8098 L0.7777 0.8084 L0.7628 0.8077 L0.7497 0.8083 L0.7385 0.8108 L0.7292 0.8155 L0.7219 0.8228 L0.7161 0.8327 L0.7114 0.8450 L0.7075 0.8594 L0.7038 0.8753 L0.6998 0.8920 L0.6950 0.9088 L0.6891 0.9248 L0.6819 0.9392 L0.6732 0.9512 L0.6630 0.9603 L0.6514 0.9660 L0.6387 0.9682 L0.6251 0.9668 L0.6110 0.9622 L0.5967 0.9548 L0.5825 0.9454 L0.5688 0.9346 L0.5557 0.9234 L0.5434 0.9127 L0.5317 0.9034 L0.5208 0.8962 L0.5103 0.8916 L0.5000 0.8900 L0.4897 0.8916 L0.4792 0.8962 L0.4683 0.9034 L0.4566 0.9127 L0.4443 0.9234 L0.4312 0.9346 L0.4175 0.9454 L0.4033 0.9548 L0.3890 0.9622 L0.3749 0.9668 L0.3613 0.9682 L0.3486 0.9660 L0.3370 0.9603 L0.3268 0.9512 L0.3181 0.9392 L0.3109 0.9248 L0.3050 0.9088 L0.3002 0.8920 L0.2962 0.8753 L0.2925 0.8594 L0.2886 0.8450 L0.2839 0.8327 L0.2781 0.8228 L0.2708 0.8155 L0.2615 0.8108 L0.2503 0.8083 L0.2372 0.8077 L0.2223 0.8084 L0.2060 0.8098 L0.1889 0.8111 L0.1714 0.8118 L0.1544 0.8111 L0.1385 0.8087 L0.1244 0.8042 L0.1126 0.7973 L0.1036 0.7880 L0.0976 0.7766 L0.0947 0.7632 L0.0947 0.7484 L0.0973 0.7325 L0.1019 0.7161 L0.1080 0.6998 L0.1145 0.6839 L0.1209 0.6688 L0.1262 0.6549 L0.1296 0.6422 L0.1308 0.6308 L0.1291 0.6205 L0.1244 0.6112 L0.1168 0.6027 L0.1065 0.5945 L0.0941 0.5863 L0.0801 0.5778 L0.0654 0.5688 L0.0509 0.5591 L0.0375 0.5486 L0.0261 0.5373 L0.0174 0.5253 L0.0119 0.5128 L0.0100 0.5000 L0.0119 0.4872 L0.0174 0.4747 L0.0261 0.4627 L0.0375 0.4514 L0.0509 0.4409 L0.0654 0.4312 L0.0801 0.4222 L0.0941 0.4137 L0.1065 0.4055 L0.1168 0.3973 L0.1244 0.3888 L0.1291 0.3795 L0.1308 0.3692 L0.1296 0.3578 L0.1262 0.3451 L0.1209 0.3312 L0.1145 0.3161 L0.1080 0.3002 L0.1019 0.2839 L0.0973 0.2675 L0.0947 0.2516 L0.0947 0.2368 L0.0976 0.2234 L0.1036 0.2120 L0.1126 0.2027 L0.1244 0.1958 L0.1385 0.1913 L0.1544 0.1889 L0.1714 0.1882 L0.1889 0.1889 L0.2060 0.1902 L0.2223 0.1916 L0.2372 0.1923 L0.2503 0.1917 L0.2615 0.1892 L0.2708 0.1845 L0.2781 0.1772 L0.2839 0.1673 L0.2886 0.1550 L0.2925 0.1406 L0.2962 0.1247 L0.3002 0.1080 L0.3050 0.0912 L0.3109 0.0752 L0.3181 0.0608 L0.3268 0.0488 L0.3370 0.0397 L0.3486 0.0340 L0.3613 0.0318 L0.3749 0.0332 L0.3890 0.0378 L0.4033 0.0452 L0.4175 0.0546 L0.4312 0.0654 L0.4443 0.0766 L0.4566 0.0873 L0.4683 0.0966 L0.4792 0.1038 L0.4897 0.1084 L0.5000 0.1100 L0.5103 0.1084 L0.5208 0.1038 L0.5317 0.0966 L0.5434 0.0873 L0.5557 0.0766 L0.5688 0.0654 L0.5825 0.0546 L0.5967 0.0452 L0.6110 0.0378 L0.6251 0.0332 L0.6387 0.0318 L0.6514 0.0340 L0.6630 0.0397 L0.6732 0.0488 L0.6819 0.0608 L0.6891 0.0752 L0.6950 0.0912 L0.6998 0.1080 L0.7038 0.1247 L0.7075 0.1406 L0.7114 0.1550 L0.7161 0.1673 L0.7219 0.1772 L0.7292 0.1845 L0.7385 0.1892 L0.7497 0.1917 L0.7628 0.1923 L0.7777 0.1916 L0.7940 0.1902 L0.8111 0.1889 L0.8286 0.1882 L0.8456 0.1889 L0.8615 0.1913 L0.8756 0.1958 L0.8874 0.2027 L0.8964 0.2120 L0.9024 0.2234 L0.9053 0.2368 L0.9053 0.2516 L0.9027 0.2675 L0.8981 0.2839 L0.8920 0.3002 L0.8855 0.3161 L0.8791 0.3312 L0.8738 0.3451 L0.8704 0.3578 L0.8692 0.3692 L0.8709 0.3795 L0.8756 0.3888 L0.8832 0.3973 L0.8935 0.4055 L0.9059 0.4137 L0.9199 0.4222 L0.9346 0.4312 L0.9491 0.4409 L0.9625 0.4514 L0.9739 0.4627 L0.9826 0.4747 L0.9881 0.4872 Z"/></clipPath>
+</svg>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="../index.html" aria-label="Cameron Hasan, home">
+      <span class="brand-mark" aria-hidden="true">C</span>
+      <span class="brand-name">Cameron Hasan</span>
+    </a>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <ul class="nav-list">
+        <li><a href="../index.html#work">Work</a></li>
+        <li><a href="../index.html#story">Experience</a></li>
+        <li><a href="../index.html#kind-words">Kind words</a></li>
+        <li><a href="../index.html#films">Films</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch to dark theme">
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12.3 22q-2.1 0-3.9-.8t-3.2-2.1-2.1-3.2T2.3 12q0-3.6 2.3-6.3T10.4 2.2q-.4 2.1.2 4.1t2.1 3.5 3.5 2.1 4.1.2q-.6 3.5-3.3 5.8T12.3 22Z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></g></svg>
+    </button>
+    <button class="icon-btn menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+      <svg class="icon-menu" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 18v-2h18v2H3Zm0-5v-2h18v2H3Zm0-5V6h18v2H3Z"/></svg>
+      <svg class="icon-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.4 19 5 17.6 10.6 12 5 6.4 6.4 5 12 10.6 17.6 5 19 6.4 13.4 12 19 17.6 17.6 19 12 13.4 6.4 19Z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+<div class="cs-hero">
+  <div class="wrap">
+    <a class="back-link" href="../index.html#work"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="m10 18-6-6 6-6 1.4 1.45L7.85 11H20v2H7.85l3.55 3.55L10 18Z"/></svg>All work</a>
+    <div class="hero-split">
+      <div class="hero-media">
+        <div class="hero-shot"><img src="../images/tattdup/try-on.png" width="1284" height="2778" alt="The TattdUp Try on screen: a fine line dragon holding a red rose placed on a photo of an upper arm, with an opacity slider, a gold Download button and a Change photo button" decoding="async"></div>
+      </div>
+      <div class="hero-text">
+        <h1 class="cs-title">TattdUp</h1>
+    <p class="cs-subtitle">An AI tattoo generator that lets you take a photo of your body and move the design around it, so you can see how it will look before you ever contact a tattoo artist.</p>
+    <div class="cs-actions"><a class="btn btn-action" href="https://apps.apple.com/us/app/tattdup-tattoo-ai-generator/id6796383720">Download on the App Store <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M5 21q-.8 0-1.4-.6T3 19V5q0-.8.6-1.4T5 3h7v2H5v14h14v-7h2v7q0 .8-.6 1.4T19 21H5Zm4.7-5.3-1.4-1.4L17.6 5H14V3h7v7h-2V6.4l-9.3 9.3Z"/></svg></a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="cs-section" aria-labelledby="overview-title">
+  <div class="wrap">
+    <h2 id="overview-title" class="visually-hidden">Project overview</h2>
+    <dl class="cs-details">
+      <div><dt>Project type</dt><dd>Independent product, iOS app</dd></div>
+      <div><dt>Role</dt><dd>Designer and builder, solo from start to finish</dd></div>
+      <div><dt>Industry</dt><dd>Tattoo and body art</dd></div>
+      <div><dt>Tools</dt><dd>Claude Design, Claude Code, Nano Banana 2 Lite</dd></div>
+      <div><dt>Duration</dt><dd>Aug to Sep 2026</dd></div>
+    </dl>
+    <h3 class="title-lg" style="margin-bottom: var(--s2)">Key summary</h3>
+    <p class="cs-summary">TattdUp is an AI tattoo design app built around a single hard problem: helping someone trust a permanent decision made by an unpredictable machine. You describe an idea or upload a reference photo, refine the design the AI creates, then try it on a photo of your own skin, dragging, pinching and rotating it into place. I did everything myself, from the research and product strategy to the flows, the design system, the accessibility work, the monetisation model, the copy and the build. Almost every decision in the app follows from that one idea of trust.</p>
+  </div>
+</section>
+
+<nav class="section-nav" aria-label="Case study sections">
+  <div class="wrap">
+    <ul>
+      <li><a href="#the-idea">The Idea</a></li>
+      <li><a href="#designing-it">Designing It</a></li>
+      <li><a href="#look-and-feel">Look and Feel</a></li>
+      <li><a href="#testing">Testing</a></li>
+      <li><a href="#key-takeaways">Key Takeaways</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="cs-section" id="the-idea" aria-labelledby="the-idea-title">
+  <div class="wrap">
+    <h2 id="the-idea-title" class="headline">The Idea</h2>
+
+<div class="cs-block">
+      <h3>The Challenge</h3>
+      <p>A tattoo is permanent, so the gap between &ldquo;I have an idea&rdquo; and &ldquo;I trust this enough to put it on my body&rdquo; is the whole product problem. Two things had to be true at once.</p>
+      <div class="card-grid"><div class="insight tinted"><h4>It has to be tattooable</h4><p>The artwork needs closed linework, high contrast and a design that stays readable once ink spreads and softens with age. A pretty AI image is not enough.</p></div><div class="insight tinted"><h4>You have to see it on you</h4><p>People need to see the design on their own skin before they commit, without having to book an artist first.</p></div></div>
+    </div>
+
+<div class="cs-block">
+      <h3>The Gap in the Market</h3>
+      <p>Before I drew a single screen, I looked at the existing AI tattoo tools. Most of them stop at generating a picture and treat a tattoo like any other AI image. That misses what makes tattoos different: the picture is not the end product, a permanent mark on a body is. Generators that make attractive images but do nothing to help you judge whether you would actually wear it left a clear gap, and that gap is what TattdUp aims at.</p>
+      <h4 class="cs-sub">What competitors do badly</h4>
+      <div class="card-grid"><div class="insight"><h4><span class="emoji" aria-hidden="true">😶</span> They stop at the image</h4><p>The hardest part of getting a tattoo is not the picture, it is deciding whether it belongs on your body. Very few apps carry you through to seeing it on your own skin.</p></div><div class="insight"><h4><span class="emoji" aria-hidden="true">🔁</span> They regenerate rather than refine</h4><p>Most offer a whole new design rather than improving the one you already like. Changing one part while keeping the rest is rare.</p></div><div class="insight"><h4><span class="emoji" aria-hidden="true">😠</span> Their subscriptions make people angry</h4><p>Reviews are full of people placed into a subscription after a trial they felt they could not avoid, then charged after cancelling.</p></div></div>
+    </div>
+
+<div class="cs-block">
+      <h3>Choosing the AI Model</h3>
+      <p>Picking the image model was a real part of the work, and it came down to cost and quality rather than taste. I compared several models on their price per image and on whether they could edit an existing image, not just create a new one.</p>
+      <p>My first plan used two engines, a cheaper one for free users and a stronger one for paying users, which conveniently made editing a paid feature by necessity. Two findings overturned it. The cheap engine was being retired, and testing showed a single mid tier model was good enough and cheap enough for everyone. So I moved to one engine for all users, which then forced an honest rethink of why editing should be paid at all.</p>
+      <div class="table-wrap"><table class="decisions-table model-table"><caption class="visually-hidden">Image models compared</caption><thead><tr><th scope="col">Model</th><th scope="col">Relative cost</th><th scope="col">Can edit</th><th scope="col">What I found</th></tr></thead><tbody><tr><th scope="row">Imagen 4 Fast</th><td>Lowest</td><td>No</td><td>Text to image only, and being retired by Google</td></tr><tr class=chosen><th scope="row">Nano Banana 2 Lite</th><td>Low</td><td>Yes, with limits</td><td><strong>Chosen.</strong> Good enough and cheap enough for every user, but not built for long chains of edits</td></tr><tr><th scope="row">Nano Banana 2</th><td>Medium</td><td>Yes</td><td>Stronger multi turn editing, at a higher cost</td></tr><tr><th scope="row">Nano Banana Pro</th><td>Highest</td><td>Yes</td><td>Top quality at roughly double the cost</td></tr><tr><th scope="row">GPT Image 1</th><td>Varies with size and quality</td><td>Yes</td><td>Supports mask based edits natively</td></tr></tbody></table></div>
+      <div class="callout"><p>One risk is named rather than hidden. The chosen model is not built for long chains of edits, so a paying user making many changes might see it slowly lose hold of the parts they did not touch. I wrote this down as a known risk to test early, with a backup engine already picked out.</p></div>
+    </div>
+
+    <div class="cs-block">
+      <h3>User Personas</h3>
+      <p>I anchored the design to four types of user, and each one drove a real decision.</p>
+      <div class="personas four"><article class="persona persona-first" aria-labelledby="first-name">
+  <div class="persona-head"><div class="persona-photo emoji" aria-hidden="true">😬</div><div><p class="persona-label">Persona #1 · Ellie, 24, Manchester</p><h4 id="first-name">The First Timer</h4></div></div>
+  <p>Nervous and unsure, has never been tattooed and is testing whether they even dare. The try on exists largely for them, and so does guest entry, so they can explore without making an account.</p>
+  <div class="persona-more" id="first-more" data-more="first-more"><h5>Who</h5><p>Ellie has wanted a tattoo for about two years and has never booked one. She has a folder of screenshots and a vague sense she wants something botanical and fine line on her forearm. What stops her is not the money, it is the permanence.</p><h5>What they need</h5><p>Confidence. The moment that matters to her is seeing the design on a photo of her own arm, because that is the first time the idea becomes real.</p><h5>What they shaped</h5><p>The try on with a real photo, and a one off purchase so she is never pushed into a subscription.</p></div>
+  <button class="btn btn-text more-toggle" type="button" aria-expanded="false" aria-controls="first-more" hidden><span class="more-label">Read more</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 15.4 6 9.4 7.4 8l4.6 4.6L16.6 8 18 9.4l-6 6Z"/></svg></button>
+</article><article class="persona persona-iterator" aria-labelledby="iterator-name">
+  <div class="persona-head"><div class="persona-photo emoji" aria-hidden="true">🔁</div><div><p class="persona-label">Persona #2 · Sam, 31, Bristol</p><h4 id="iterator-name">The Iterator</h4></div></div>
+  <p>Has a clear idea and wants to refine it again and again until it is exactly right. Region editing and the credit pack are shaped around them, and they are the most likely to pay.</p>
+  <div class="persona-more" id="iterator-more" data-more="iterator-more"><h5>Who</h5><p>Sam already has three tattoos and knows exactly what he wants for the fourth. He will decide the linework on one wing is too heavy and want to change only that, keeping everything else identical.</p><h5>What they need</h5><p>Refinement, not regeneration. A brand new design throws away the parts he liked.</p><h5>What they shaped</h5><p>Region editing, where you mark one part of the design and change only that.</p></div>
+  <button class="btn btn-text more-toggle" type="button" aria-expanded="false" aria-controls="iterator-more" hidden><span class="more-label">Read more</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 15.4 6 9.4 7.4 8l4.6 4.6L16.6 8 18 9.4l-6 6Z"/></svg></button>
+</article><article class="persona persona-artist" aria-labelledby="artist-name">
+  <div class="persona-head"><div class="persona-photo emoji" aria-hidden="true">🖋️</div><div><p class="persona-label">Persona #3 · Priya, 38, London</p><h4 id="artist-name">The Artist</h4></div></div>
+  <p>Cares about whether the output is genuinely usable as a tattoo, which is why tattooability, not just image quality, became the central product risk.</p>
+  <div class="persona-more" id="artist-more" data-more="artist-more"><h5>Who</h5><p>Priya runs a small studio. She uses AI to sketch concepts quickly for clients during consultations, then draws the real thing herself, generating a lot in short bursts.</p><h5>What they need</h5><p>Output she can genuinely work from as a tattoo, not just an attractive image.</p><h5>What they shaped</h5><p>Tattooability as the central product risk, and a capped Pro plan, because an unlimited one could cost more to run than she pays.</p></div>
+  <button class="btn btn-text more-toggle" type="button" aria-expanded="false" aria-controls="artist-more" hidden><span class="more-label">Read more</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 15.4 6 9.4 7.4 8l4.6 4.6L16.6 8 18 9.4l-6 6Z"/></svg></button>
+</article><article class="persona persona-browser" aria-labelledby="browser-name">
+  <div class="persona-head"><div class="persona-photo emoji" aria-hidden="true">👀</div><div><p class="persona-label">Persona #4 · Josh, 19, Leeds</p><h4 id="browser-name">The Browser</h4></div></div>
+  <p>Curious but not committed, uses the free tier and may never pay. The watermark and free allowance are designed for them, because a shared, watermarked design is free marketing.</p>
+  <div class="persona-more" id="browser-more" data-more="browser-more"><h5>Who</h5><p>Josh is not getting a tattoo. He wants to see what a dragon on his arm would look like for a laugh, sends it to a group chat and never opens the app again.</p><h5>What they need</h5><p>A quick, fun result with no sign up wall in the way.</p><h5>What they shaped</h5><p>The free generation limit, and the visible watermark, so every screenshot he shares advertises the app.</p></div>
+  <button class="btn btn-text more-toggle" type="button" aria-expanded="false" aria-controls="browser-more" hidden><span class="more-label">Read more</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 15.4 6 9.4 7.4 8l4.6 4.6L16.6 8 18 9.4l-6 6Z"/></svg></button>
+</article></div>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="designing-it" aria-labelledby="designing-it-title">
+  <div class="wrap">
+    <h2 id="designing-it-title" class="headline">Designing It</h2>
+
+<div class="cs-block">
+      <h3>The Core Flow</h3>
+      <p>Seeing the design on your own skin shaped the whole journey into three stages, with a stepper on screen the whole time so you always know where you are and what is left.</p>
+      <ol class="stepper">
+        <li><h4>Idea</h4><p>Describe your tattoo in words, or upload a reference photo.</p></li>
+        <li><h4>Design</h4><p>The AI creates the artwork, and you refine it until it is right.</p></li>
+        <li><h4>Try On</h4><p>Place the design on a photo of your own skin, or a sample skin tone, then drag, pinch and rotate it into position.</p></li>
+      </ol>
+      <p style="margin-top: var(--s3)">That last step is the moment an abstract picture turns into a real question: would I actually get this?</p>
+      <div class="screens-row"><figure class="cs-figure app-figure"><img class="app-shot" src="../images/tattdup/idea.jpg" width="735" height="1600" alt="The Idea screen, step 1 of 3: Describe is selected, the idea reads A dragon holding a rose, with Surprise me and Enhance my idea buttons, style chips with Fine line selected, and Detail and Shading controls" loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: 1. Idea"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>1. Idea</figcaption></figure><figure class="cs-figure app-figure"><img class="app-shot" src="../images/tattdup/design.jpg" width="735" height="1600" alt="The Design screen, step 2 of 3: Dragon With Rose in fine line on cream flash paper, with a note that the watermark is removed, an Edit tattoo button and a gold Try it on button" loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: 2. Design"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>2. Design</figcaption></figure><figure class="cs-figure app-figure"><img class="app-shot" src="../images/tattdup/try-on-start.jpg" width="735" height="1600" alt="The Try on screen, step 3 of 3, before a photo: the design thumbnail, a gold Take or choose a photo button, and a row of six sample skin tones" loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: 3. Try on"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>3. Try on</figcaption></figure></div>
+    </div>
+
+    <div class="cs-block">
+      <h3>User Flow</h3>
+      <p>Behind the three stages sits one important decision point. Before a single generation is spent, the app checks the prompt is worth drawing and that there is something left to spend.</p>
+      <div class="gen-check" role="group" aria-labelledby="gen-check-title">
+        <p class="gc-tap" id="gen-check-title">You tap <strong>Generate design</strong></p>
+        <ul class="gc-outcomes">
+          <li class="gc-nudge"><h4><span aria-hidden="true">✋</span> Too thin to draw</h4><p>A keyboard mash, a single letter or a word with no subject. A friendly nudge offers three example prompts. <strong>No credit used.</strong></p></li>
+          <li class="gc-empty"><h4><span aria-hidden="true">🔒</span> Nothing left to spend</h4><p>The paywall opens instead of generating.</p></li>
+          <li class="gc-go"><h4><span aria-hidden="true">✨</span> Good to go</h4><p>The design is generated and one generation is used.</p></li>
+        </ul>
+      </div>
+      <ol class="flow-stages" aria-label="The three stages"><li class="flow-stage fs-1"><p class="fs-step">Step 1</p><h4>Idea</h4><ul><li>Describe the idea in your own words, or work from a reference photo</li><li>Surprise me for a random prompt, Enhance my idea for a fuller brief</li><li>Pick style, placement, size, detail and shading, all with sensible defaults</li></ul></li><li class="flow-stage fs-2"><p class="fs-step">Step 2</p><h4>Design</h4><ul><li>A generating screen shows your own words while it works</li><li>The design appears on cream flash paper</li><li>Rework the whole design by typing, or edit one region with Draw or Box</li><li>Edits stack and undo one at a time</li><li>Save to your Sketchbook</li></ul></li><li class="flow-stage fs-3"><p class="fs-step">Step 3</p><h4>Try on</h4><ul><li>Take or choose a photo, or use one of six sample skin tones</li><li>Drag, pinch and twist the design into place</li><li>Set the opacity to judge how heavy the ink sits</li><li>Download, watermarked on the free plan and clean on a paid one</li></ul></li></ol>
+      <div class="card-grid flow-rules">
+        <div class="insight"><h4>Paid only when it works</h4><p>A generation is only used when an image is actually produced. A blocked prompt, a failed one or an abandoned journey costs nothing.</p></div>
+        <div class="insight"><h4>Free if it costs nothing to run</h4><p>The try on, positioning, the watermarked download and the Sketchbook all run on the phone, so they are free for everyone.</p></div>
+        <div class="insight"><h4>Three ways to the paywall</h4><p>Running out of generations, tapping a locked feature, or asking to remove a watermark. Each one has its own heading.</p></div>
+      </div>
+    </div>
+
+    <div class="cs-block">
+      <h3>Designing for Trust, Control and Feedback</h3>
+      <div class="with-screen">
+        <div class="with-screen-text">
+      <p>If there is one theme that runs through the whole app, it is this. The product is built on a model whose output cannot be fully predicted, applied to a decision that is permanent, so almost every choice is really about trust and control.</p>
+      <div class="card-grid"><div class="insight tinted"><h4>Show the cost first</h4><p>You always see what an action will cost before you commit to it.</p></div><div class="insight tinted"><h4>Show the working</h4><p>The app makes it clear when it is working, rather than leaving you staring at a frozen screen.</p></div><div class="insight tinted"><h4>Correct, don&rsquo;t just regenerate</h4><p>You can fix and undo parts of a design, not only start again.</p></div><div class="insight tinted"><h4>Honest copy</h4><p>The words always say plainly what is happening and what it costs.</p></div></div>
+      <h4 class="cs-sub">Waiting is a real state</h4>
+      <p>Because the app waits on an AI model, I designed the waiting as carefully as everything else.</p>
+      <div class="card-grid"><div class="insight"><h4>A launch screen</h4><p>So the app never opens on a blank rectangle.</p></div><div class="insight"><h4>A generating screen</h4><p>It shows you your own words while you wait, so you know the right thing is being made.</p></div><div class="insight"><h4>A working overlay</h4><p>During an edit it covers the artwork and locks the controls, so a slow, paid action can never be triggered twice by an impatient second tap.</p></div></div>
+      <div class="callout"><p>The rule underneath all three: anything that costs you money must visibly show that it is running.</p></div>
+    </div>
+        <figure class="cs-figure app-figure"><img class="app-shot" src="../images/tattdup/design-edited.jpg" width="735" height="1600" alt="The Design screen after an edit: the rose is now red, an Edits made list reads Make the rose red with an Undo button, a note says each region edit uses a generation, and 1 generation remaining is shown under Try it on" loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: Edits listed, undoable, and costed"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>Edits listed, undoable, and costed</figcaption></figure>
+      </div>
+    </div>
+
+<div class="cs-block">
+      <h3>Process</h3>
+      <p>I worked through clickable prototypes before any real build, so I could feel and test the flows cheaply before committing to code. I treated the prototype as a working specification, covering every screen, every state and every piece of copy, rather than a throwaway mock up.</p>
+      <p>I also wrote ten specification documents alongside the design, covering the brief, research, personas, flows, screens and states, component library, design decisions, technical architecture, monetisation strategy, and the open risks and roadmap.</p>
+      <p>Copy was treated as design too. Several of the sharpest fixes in the project were changes to wording rather than layout, and the rule I followed was that the interface should never claim something the app no longer does.</p>
+    </div>
+
+<div class="cs-block">
+      <h3>Monetisation</h3>
+      <p>There are three plans on the paywall, cheapest to most expensive from left to right. The credit pack, not the subscription, is the hero, with a best value badge and stronger styling even though it sits in the middle.</p>
+      <div class="paywall" aria-label="Illustration of the TattdUp paywall layout">
+        <div class="plan"><h4>Single unlock</h4><p>A one time purchase.</p></div>
+        <div class="plan hero-plan"><span class="badge-jade">Best value</span><h4>Credit pack</h4><p>The visual hero of the paywall.</p></div>
+        <div class="plan"><h4>Pro</h4><p>The monthly subscription.</p></div>
+      </div>
+      <div class="card-grid"><div class="insight"><h4>Avoiding the subscription trap</h4><p>I led with a one time purchase rather than pushing people towards a recurring charge, and made sure cancelling or switching plans never feels punitive. The copy says plainly that any generations you have bought carry over, even if your plan changes or lapses.</p></div><div class="insight"><h4>Paid by choice, not necessity</h4><p>Editing was first paid because the cheap engine could not edit. Once one engine served everyone, that reason disappeared, so rather than pretend otherwise I gave free users a small number of real edits. People buy what they have experienced, not what they have merely been told about.</p></div><div class="insight"><h4>The same allowance</h4><p>An edit costs the same to run as a new design, so it spends from the same allowance, and the app says so plainly rather than hiding it.</p></div><div class="insight"><h4>A deliberate non change</h4><p>When you run out of generations after finishing a design, Try it on stays the main button and Get more generations stays secondary, even though the second one makes money. Your goal at that moment is finishing what you came to do.</p></div></div>
+    </div>
+
+<div class="cs-block">
+      <h3>Interaction Design Challenges</h3>
+      <p>Dragging a design into place, drawing a region to edit and sliding the opacity control all happen on a screen that scrolls. On a real phone the scroll kept winning, so a finger meant to move the tattoo moved the whole page instead. The textbook fix of telling the gesture to take priority looked correct but did not hold up on the device. What actually worked was more direct: the screen switches scrolling off the moment one of these gestures begins.</p>
+      <p>That change then broke something else. A resize handle inside the draggable box stopped responding, because the box was now winning every touch, including the ones meant for its own handle. The fix was not a cleverer rule. I moved the handle to sit beside the box instead of inside it, so the two never compete for the same touch.</p>
+      <aside class="commentary" aria-label="Director's commentary"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M4 22V4q0-.8.6-1.4T6 2h12q.8 0 1.4.6T20 4v12q0 .8-.6 1.4T18 18H8l-4 4Zm4-8h8v-2H8v2Zm0-3h8V9H8v2Zm0-3h8V6H8v2Z"/></svg><div><span class="label">Director&rsquo;s commentary</span><p>When two things are fighting over the same gesture, moving one out of the other&rsquo;s way works better than adding another rule to referee the fight.</p></div></aside>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="look-and-feel" aria-labelledby="look-and-feel-title">
+  <div class="wrap">
+    <h2 id="look-and-feel-title" class="headline">Look and Feel</h2>
+
+<div class="cs-block">
+      <h3>The Design System</h3>
+      <p>The palette went through five complete directions before it settled on the warm charcoal, gilt amber and jade green that shipped. The visual language runs on one rule: two colours, two jobs, never blurred.</p>
+      <div class="card-grid"><div class="insight tu-amber"><h4>Gilt amber means tap this</h4><p>It is the only action colour in the app, used on every button and tappable control. Its text is always dark, never white, so it reads as metal or ink rather than a generic app blue.</p></div><div class="insight tu-jade"><h4>Jade green means paid</h4><p>It is the only signal for a paid or premium feature, and it is used nowhere else, so you can tell at a glance what costs money.</p></div><div class="insight tu-charcoal"><h4>Charcoal and flash paper</h4><p>The ground is a warm charcoal, and the artwork sits on a cream tone, a nod to the flash sheets in a tattoo studio rather than a plain white canvas.</p></div></div>
+      <p style="margin-top: var(--s3)">Type follows a six step scale of 12, 14, 16, 20, 24 and 40 pixels, with nothing smaller than 12. Every text input is at least 16 pixels, which stops iOS Safari zooming the page when you tap into one. A display face, Pirata One, is saved for the wordmark and a handful of screen titles, and everything else, including every button, uses Inter. It feels like a tattoo brand without giving up legibility.</p>
+      <p>Spacing follows a strict 8 point grid with one deliberate exception, 44 pixels, the minimum accessible tap target. When an early pass drifted, with a guest account&rsquo;s save and delete buttons sitting at different spacing, I treated it as a real bug rather than polish and regrouped them on the same 8 point rhythm.</p>
+    
+      <div class="ds-panel tu-ds" role="group" aria-labelledby="tds-title">
+        <p class="visually-hidden" id="tds-title">TattdUp design system</p>
+        <h4>Colour</h4>
+        <ul class="ba-swatches"><li><span class="ba-swatch" style="--sw:#211E1A" aria-hidden="true"></span><span class="ba-swatch-name">Charcoal</span><code>#211E1A</code><span class="sw-use">App background</span></li><li><span class="ba-swatch" style="--sw:#2C2823" aria-hidden="true"></span><span class="ba-swatch-name">Surface</span><code>#2C2823</code><span class="sw-use">Cards and inputs</span></li><li><span class="ba-swatch" style="--sw:#EFEAE0" aria-hidden="true"></span><span class="ba-swatch-name">Text</span><code>#EFEAE0</code><span class="sw-use">Primary text</span></li><li><span class="ba-swatch" style="--sw:#B0A896" aria-hidden="true"></span><span class="ba-swatch-name">Secondary text</span><code>#B0A896</code><span class="sw-use">Labels</span></li><li><span class="ba-swatch" style="--sw:#D9A441" aria-hidden="true"></span><span class="ba-swatch-name">Gilt amber</span><code>#D9A441</code><span class="sw-use">Every action</span></li><li><span class="ba-swatch" style="--sw:#231D12" aria-hidden="true"></span><span class="ba-swatch-name">Ink on amber</span><code>#231D12</code><span class="sw-use">Text on amber</span></li><li><span class="ba-swatch" style="--sw:#5FA37E" aria-hidden="true"></span><span class="ba-swatch-name">Jade</span><code>#5FA37E</code><span class="sw-use">Paid only</span></li><li><span class="ba-swatch" style="--sw:#F1EBDD" aria-hidden="true"></span><span class="ba-swatch-name">Flash paper</span><code>#F1EBDD</code><span class="sw-use">Behind the artwork</span></li></ul>
+        <h4>Typography</h4>
+        <div class="type-specimens">
+          <div class="specimen tu-spec"><p class="specimen-meta"><strong>Pirata One</strong> for the wordmark and a few titles</p><p class="specimen-sample pirata">TattdUp</p></div>
+          <div class="specimen tu-spec"><p class="specimen-meta"><strong>Inter</strong> for everything else, including every button</p><p class="specimen-sample inter">Drag, pinch, and twist with your fingers to position it.</p></div>
+        </div>
+        <div class="type-scale" role="img" aria-label="Type scale: 12, 14, 16, 20, 24 and 40 pixels"><span style="--fs:12px">12</span><span style="--fs:14px">14</span><span style="--fs:16px">16</span><span style="--fs:20px">20</span><span style="--fs:24px">24</span><span style="--fs:40px">40</span></div>
+        <h4>Components</h4>
+        <div class="tu-stage" role="img" aria-label="TattdUp components on the charcoal background: a gold primary button, an outlined ghost button, a locked button with a dashed jade border and a Pro tag, style chips with Fine line selected, a segmented control with Moderate selected, and generation balance pills">
+          <div class="tu-col"><span class="tu-btn primary">Try it on</span><span class="tu-btn ghost">Change photo</span><span class="tu-btn locked"><span>🔒 Edit tattoo</span><em>Pro</em></span></div>
+          <div class="tu-col"><div class="tu-chips"><span class="on">Fine line</span><span>Traditional</span><span>Blackwork</span></div><div class="tu-seg"><span>Minimal</span><span class="on">Moderate</span><span>Intricate</span></div><div class="tu-pills"><span class="tu-pill">5 left</span><span class="tu-pill low">1 left</span></div></div>
+        </div>
+      </div>
+    </div>
+
+<div class="cs-block">
+      <h3>Accessibility</h3>
+      <p>Editing part of a design starts with a freehand loop you trace around the area with a finger, but that gesture is not usable by everyone, so it was never allowed to be the only way in. A Draw or Box control offers a second option: a rectangle you place with a tap and resize with simple drags. I treated this as a launch requirement, and editing did not ship until both worked.</p>
+      <p>A full WCAG 2.2 contrast check caught two real failures. A muted grey text colour looked fine but measured below the 4.5 to 1 needed for body text, so I lightened it until it passed. The borders on outlined buttons, inputs and cards were so close to the background that they failed the 3 to 1 minimum for non text contrast, so I swapped them for a properly visible colour.</p>
+      <p>Beyond the audit, every control has a visible focus ring, tap targets are at least 44 pixels across the app, purely decorative symbols are hidden from screen readers, and icon only buttons have clear labels.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="testing" aria-labelledby="testing-title">
+  <div class="wrap">
+    <h2 id="testing-title" class="headline">Testing</h2>
+
+    <div class="cs-block">
+      <h3>Refinements From Real Use</h3>
+      <div class="with-screen">
+        <div class="with-screen-text">
+      <p>Testing on real devices surfaced a run of small, specific confusions. I fixed each one as a genuine UX bug rather than leaving it as polish for later.</p>
+      <div class="before-after">
+        <div class="ba-card"><h4>Generations left</h4><dl><div><dt>Before</dt><dd>A subscriber saw two different &ldquo;generations left&rdquo; numbers in different places, which looked contradictory.</dd></div><div class="after"><dt>After</dt><dd>One number, shown the same way on every screen.</dd></div></dl></div>
+        <div class="ba-card"><h4>Guest sign out</h4><dl><div><dt>Before</dt><dd>A guest&rsquo;s sign out button added a confusing extra step with no real benefit.</dd></div><div class="after"><dt>After</dt><dd>Removed for guests, and deleting a guest account now goes straight to a real sign in.</dd></div></dl></div>
+        <div class="ba-card"><h4>Region edit copy</h4><dl><div><dt>Before</dt><dd>The copy said &ldquo;2 free edits remaining&rdquo;, a limit that no longer existed.</dd></div><div class="after"><dt>After</dt><dd>A simple note that each region edit uses a generation, whatever your plan.</dd></div></dl></div>
+        <div class="ba-card"><h4>Change photo</h4><dl><div><dt>Before</dt><dd>Changing your photo in Try On went through an extra screen before the picker even opened.</dd></div><div class="after"><dt>After</dt><dd>It opens the photo or camera picker straight away, and is hidden when you are using a sample skin tone.</dd></div></dl></div>
+        <div class="ba-card"><h4>The back button</h4><dl><div><dt>Before</dt><dd>Back in Try On skipped a whole step.</dd></div><div class="after"><dt>After</dt><dd>It now steps back exactly one screen, matching what the stepper shows.</dd></div></dl></div>
+        <div class="ba-card"><h4>Watermark removal</h4><dl><div><dt>Before</dt><dd>Paying to remove a watermark changed nothing else you could see, so there was no sign it had worked.</dd></div><div class="after"><dt>After</dt><dd>A small label confirms the watermark has been removed wherever it would otherwise show.</dd></div></dl></div>
+      </div>
+      <div class="callout"><p>The common thread: a fix only counted once it matched what the app had promised elsewhere. One number, one step per tap, and one consistent signal for a paid action.</p></div>
+    </div>
+        <figure class="cs-figure app-figure"><img class="app-shot" src="../images/tattdup/add-photo.jpg" width="735" height="1600" alt="The Try on screen with an Add a photo sheet open, offering Take Photo, Choose from Library and Cancel" loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: Change photo now opens the picker straight away"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>Change photo now opens the picker straight away</figcaption></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="key-takeaways" aria-labelledby="takeaways-title">
+  <div class="wrap">
+    <h2 id="takeaways-title" class="headline" style="margin-bottom: var(--s6)">Key Takeaways</h2>
+    <div class="cs-block">
+      <h3>Challenge</h3>
+      <p>The hardest part was designing trust around something I could not fully control. The AI&rsquo;s output is unpredictable and the decision it feeds is permanent, so every screen had to earn a little more confidence, by showing costs up front, making the waiting visible and never saying anything the app no longer does. Doing all of it solo, from research to build, meant every trade off between what was ideal and what was possible landed on my desk.</p>
+    </div>
+    <div class="cs-block">
+      <h3>Lessons Learned</h3>
+      <div class="lessons">
+        <div class="lesson"><h4>Trust is the product</h4><p>When the output is unpredictable, the design around it, like costs, feedback and undo, matters as much as the output itself.</p></div>
+        <div class="lesson"><h4>Name your risks</h4><p>Writing down a risk I had not fully solved, with a backup ready, was more useful than pretending it was not there.</p></div>
+        <div class="lesson"><h4>Structure beats rules</h4><p>Moving things out of each other&rsquo;s way fixed gesture conflicts that extra rules could not.</p></div>
+        <div class="lesson"><h4>Copy is design</h4><p>Some of the most important fixes were a few words that stopped the app promising something it no longer did.</p></div>
+      </div>
+    </div>
+    <div class="cs-block">
+      <h3>Where It Stands</h3>
+      <p>TattdUp is live on the App Store, taken from a blank page to a working product single handed. It is still too early for usage numbers, so this case study focuses on the reasoning behind the design, and I will add a results section once real users arrive.</p>
+      <div class="cs-actions"><a class="btn btn-filled" href="https://apps.apple.com/us/app/tattdup-tattoo-ai-generator/id6796383720" style="background: var(--brand); color: var(--on-brand)">Download on the App Store <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M5 21q-.8 0-1.4-.6T3 19V5q0-.8.6-1.4T5 3h7v2H5v14h14v-7h2v7q0 .8-.6 1.4T19 21H5Zm4.7-5.3-1.4-1.4L17.6 5H14V3h7v7h-2V6.4l-9.3 9.3Z"/></svg></a></div>
+    </div>
+  </div>
+</section>
+
+<section class="next-project" aria-labelledby="next-title">
+  <div class="wrap">
+    <h2 id="next-title" class="title-lg" style="margin-bottom: var(--s3)">Next project</h2>
+    <ul class="work-list" style="grid-template-columns: 1fr">
+      <li class="project brand-chillipharm">
+        <div class="project-body">
+          <p class="project-outcome">Around 20 minutes saved per task in usability testing</p>
+          <h3><a href="chillipharm-app.html">The ChilliPharm App</a></h3>
+          <p>A mobile app that lets clinical trial staff record, upload and review trial videos on the phone they already use.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section id="contact" class="contact" aria-labelledby="contact-title">
+  <div class="wrap">
+    <h2 id="contact-title" class="headline">Thanks for watching.</h2>
+    <p class="body-lg">If you would like to talk about a role, a project or even a film, I would love to hear from you.</p>
+    <div class="contact-actions">
+      <a class="btn btn-filled" href="mailto:cameron.jordan.hasan@gmail.com">Email me</a>
+      <a class="btn btn-outlined" href="https://www.linkedin.com/in/cameron-hasan-5b36291b6/">Connect on LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+</main>
+<script src="../js/main.js"></script>
+</body>
+</html>

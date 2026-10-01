@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The ChilliPharm App, a case study by Cameron Hasan</title>
+<meta name="description" content="How Cameron Hasan designed the ChilliPharm App, letting clinical trial staff record, upload and review trial videos on their own phones, saving around 20 minutes per task in testing.">
+<meta property="og:title" content="The ChilliPharm App, a case study by Cameron Hasan">
+<meta property="og:description" content="A mobile app for recording, uploading and reviewing clinical trial videos, saving around 20 minutes per task in testing.">
+<meta property="og:type" content="article">
+<meta name="theme-color" content="#005A53">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📱</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap" rel="stylesheet">
+<script>
+  document.documentElement.classList.add('js');
+  try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/case-study.css">
+</head>
+<body class="cs-chillipharm">
+
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <clipPath id="cookie" clipPathUnits="objectBoundingBox"><path d="M0.9900 0.5000 L0.9881 0.5128 L0.9826 0.5253 L0.9739 0.5373 L0.9625 0.5486 L0.9491 0.5591 L0.9346 0.5688 L0.9199 0.5778 L0.9059 0.5863 L0.8935 0.5945 L0.8832 0.6027 L0.8756 0.6112 L0.8709 0.6205 L0.8692 0.6308 L0.8704 0.6422 L0.8738 0.6549 L0.8791 0.6688 L0.8855 0.6839 L0.8920 0.6998 L0.8981 0.7161 L0.9027 0.7325 L0.9053 0.7484 L0.9053 0.7632 L0.9024 0.7766 L0.8964 0.7880 L0.8874 0.7973 L0.8756 0.8042 L0.8615 0.8087 L0.8456 0.8111 L0.8286 0.8118 L0.8111 0.8111 L0.7940 0.8098 L0.7777 0.8084 L0.7628 0.8077 L0.7497 0.8083 L0.7385 0.8108 L0.7292 0.8155 L0.7219 0.8228 L0.7161 0.8327 L0.7114 0.8450 L0.7075 0.8594 L0.7038 0.8753 L0.6998 0.8920 L0.6950 0.9088 L0.6891 0.9248 L0.6819 0.9392 L0.6732 0.9512 L0.6630 0.9603 L0.6514 0.9660 L0.6387 0.9682 L0.6251 0.9668 L0.6110 0.9622 L0.5967 0.9548 L0.5825 0.9454 L0.5688 0.9346 L0.5557 0.9234 L0.5434 0.9127 L0.5317 0.9034 L0.5208 0.8962 L0.5103 0.8916 L0.5000 0.8900 L0.4897 0.8916 L0.4792 0.8962 L0.4683 0.9034 L0.4566 0.9127 L0.4443 0.9234 L0.4312 0.9346 L0.4175 0.9454 L0.4033 0.9548 L0.3890 0.9622 L0.3749 0.9668 L0.3613 0.9682 L0.3486 0.9660 L0.3370 0.9603 L0.3268 0.9512 L0.3181 0.9392 L0.3109 0.9248 L0.3050 0.9088 L0.3002 0.8920 L0.2962 0.8753 L0.2925 0.8594 L0.2886 0.8450 L0.2839 0.8327 L0.2781 0.8228 L0.2708 0.8155 L0.2615 0.8108 L0.2503 0.8083 L0.2372 0.8077 L0.2223 0.8084 L0.2060 0.8098 L0.1889 0.8111 L0.1714 0.8118 L0.1544 0.8111 L0.1385 0.8087 L0.1244 0.8042 L0.1126 0.7973 L0.1036 0.7880 L0.0976 0.7766 L0.0947 0.7632 L0.0947 0.7484 L0.0973 0.7325 L0.1019 0.7161 L0.1080 0.6998 L0.1145 0.6839 L0.1209 0.6688 L0.1262 0.6549 L0.1296 0.6422 L0.1308 0.6308 L0.1291 0.6205 L0.1244 0.6112 L0.1168 0.6027 L0.1065 0.5945 L0.0941 0.5863 L0.0801 0.5778 L0.0654 0.5688 L0.0509 0.5591 L0.0375 0.5486 L0.0261 0.5373 L0.0174 0.5253 L0.0119 0.5128 L0.0100 0.5000 L0.0119 0.4872 L0.0174 0.4747 L0.0261 0.4627 L0.0375 0.4514 L0.0509 0.4409 L0.0654 0.4312 L0.0801 0.4222 L0.0941 0.4137 L0.1065 0.4055 L0.1168 0.3973 L0.1244 0.3888 L0.1291 0.3795 L0.1308 0.3692 L0.1296 0.3578 L0.1262 0.3451 L0.1209 0.3312 L0.1145 0.3161 L0.1080 0.3002 L0.1019 0.2839 L0.0973 0.2675 L0.0947 0.2516 L0.0947 0.2368 L0.0976 0.2234 L0.1036 0.2120 L0.1126 0.2027 L0.1244 0.1958 L0.1385 0.1913 L0.1544 0.1889 L0.1714 0.1882 L0.1889 0.1889 L0.2060 0.1902 L0.2223 0.1916 L0.2372 0.1923 L0.2503 0.1917 L0.2615 0.1892 L0.2708 0.1845 L0.2781 0.1772 L0.2839 0.1673 L0.2886 0.1550 L0.2925 0.1406 L0.2962 0.1247 L0.3002 0.1080 L0.3050 0.0912 L0.3109 0.0752 L0.3181 0.0608 L0.3268 0.0488 L0.3370 0.0397 L0.3486 0.0340 L0.3613 0.0318 L0.3749 0.0332 L0.3890 0.0378 L0.4033 0.0452 L0.4175 0.0546 L0.4312 0.0654 L0.4443 0.0766 L0.4566 0.0873 L0.4683 0.0966 L0.4792 0.1038 L0.4897 0.1084 L0.5000 0.1100 L0.5103 0.1084 L0.5208 0.1038 L0.5317 0.0966 L0.5434 0.0873 L0.5557 0.0766 L0.5688 0.0654 L0.5825 0.0546 L0.5967 0.0452 L0.6110 0.0378 L0.6251 0.0332 L0.6387 0.0318 L0.6514 0.0340 L0.6630 0.0397 L0.6732 0.0488 L0.6819 0.0608 L0.6891 0.0752 L0.6950 0.0912 L0.6998 0.1080 L0.7038 0.1247 L0.7075 0.1406 L0.7114 0.1550 L0.7161 0.1673 L0.7219 0.1772 L0.7292 0.1845 L0.7385 0.1892 L0.7497 0.1917 L0.7628 0.1923 L0.7777 0.1916 L0.7940 0.1902 L0.8111 0.1889 L0.8286 0.1882 L0.8456 0.1889 L0.8615 0.1913 L0.8756 0.1958 L0.8874 0.2027 L0.8964 0.2120 L0.9024 0.2234 L0.9053 0.2368 L0.9053 0.2516 L0.9027 0.2675 L0.8981 0.2839 L0.8920 0.3002 L0.8855 0.3161 L0.8791 0.3312 L0.8738 0.3451 L0.8704 0.3578 L0.8692 0.3692 L0.8709 0.3795 L0.8756 0.3888 L0.8832 0.3973 L0.8935 0.4055 L0.9059 0.4137 L0.9199 0.4222 L0.9346 0.4312 L0.9491 0.4409 L0.9625 0.4514 L0.9739 0.4627 L0.9826 0.4747 L0.9881 0.4872 Z"/></clipPath>
+</svg>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="../index.html" aria-label="Cameron Hasan, home">
+      <span class="brand-mark" aria-hidden="true">C</span>
+      <span class="brand-name">Cameron Hasan</span>
+    </a>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <ul class="nav-list">
+        <li><a href="../index.html#work">Work</a></li>
+        <li><a href="../index.html#story">Experience</a></li>
+        <li><a href="../index.html#kind-words">Kind words</a></li>
+        <li><a href="../index.html#films">Films</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch to dark theme">
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12.3 22q-2.1 0-3.9-.8t-3.2-2.1-2.1-3.2T2.3 12q0-3.6 2.3-6.3T10.4 2.2q-.4 2.1.2 4.1t2.1 3.5 3.5 2.1 4.1.2q-.6 3.5-3.3 5.8T12.3 22Z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></g></svg>
+    </button>
+    <button class="icon-btn menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+      <svg class="icon-menu" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 18v-2h18v2H3Zm0-5v-2h18v2H3Zm0-5V6h18v2H3Z"/></svg>
+      <svg class="icon-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.4 19 5 17.6 10.6 12 5 6.4 6.4 5 12 10.6 17.6 5 19 6.4 13.4 12 19 17.6 17.6 19 12 13.4 6.4 19Z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+<div class="cs-hero">
+  <div class="wrap">
+    <a class="back-link" href="../index.html#work"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="m10 18-6-6 6-6 1.4 1.45L7.85 11H20v2H7.85l3.55 3.55L10 18Z"/></svg>All work</a>
+    <div class="hero-split">
+      <div class="hero-media hero-phone">
+        <img src="../images/chillipharm-app/hero.webp" width="335" height="688" alt="The ChilliPharm App on an iPhone, showing a subject&rsquo;s visits: Screening in progress, then Baseline, Week 6 and Week 12 not started, with an Add Unscheduled Visit button" decoding="async">
+      </div>
+      <div class="hero-text">
+        <h1 class="cs-title">The ChilliPharm App</h1>
+        <p class="cs-subtitle">An app that saved users around 20 minutes per task, letting the world&rsquo;s biggest pharma companies record, upload and store their clinical trial videos in compliant, secure cloud storage.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="cs-section" aria-labelledby="overview-title">
+  <div class="wrap">
+    <h2 id="overview-title" class="visually-hidden">Project overview</h2>
+    <dl class="cs-details">
+      <div><dt>Project type</dt><dd>End-to-end app</dd></div>
+      <div><dt>Role</dt><dd>UX/UI designer</dd></div>
+      <div><dt>Industry</dt><dd>Pharmaceutical SaaS</dd></div>
+      <div><dt>Tools</dt><dd>Figma, Balsamiq, Creative Cloud</dd></div>
+      <div><dt>Duration</dt><dd>3 months, 2024</dd></div>
+    </dl>
+    <h3 class="title-lg" style="margin-bottom: var(--s2)">Key summary</h3>
+    <p class="cs-summary">This project presents the full UX/UI design process for a pharmaceutical SaaS mobile app that securely stores and manages clinical trial videos. It focuses on solving real workflow challenges for medical professionals by streamlining how they record, upload and review trial content on mobile devices. The solution was validated through usability testing, with users giving positive feedback and saving around 20 minutes per task on average.</p>
+    <div class="cs-actions">
+      <a class="btn btn-filled" href="#prototype" style="background: var(--brand); color: var(--on-brand)">Try the prototype</a>
+      <a class="btn btn-outlined" href="#ui-design">Skip to the designs</a>
+    </div>
+  </div>
+</section>
+
+<nav class="section-nav" aria-label="Case study sections">
+  <div class="wrap">
+    <ul>
+      <li><a href="#ux-research">UX Research</a></li>
+      <li><a href="#ux-design">UX Design</a></li>
+      <li><a href="#ui-design">UI Design</a></li>
+      <li><a href="#usability-testing">Usability Testing</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#key-takeaways">Key Takeaways</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="cs-section" id="ux-research" aria-labelledby="ux-research-title">
+  <div class="wrap">
+    <h2 id="ux-research-title" class="headline">UX Research</h2>
+
+    <div class="cs-block">
+      <h3>Overview</h3>
+      <p>This project started when a site user got in contact with our help desk team. They explained that the storage on their iPad (an iPad ChilliPharm sends to clients to record their assessment videos) was constantly full, even after uploading the videos to ChilliPharm and deleting them from the iPad. They also found it very frustrating that they couldn&rsquo;t simply use their own smartphones to record and upload assessment videos. This led to an investigation:</p>
+    </div>
+
+    <div class="cs-block brand-box">
+      <h3>Research Goals</h3>
+      <p>We wanted to understand the users&rsquo; issues and validate them with the clients and with Apple themselves, so that we understood what would make the users&rsquo; journey quicker and simpler.</p>
+    </div>
+
+    <div class="cs-block">
+      <h3>User Interviews</h3>
+      <p>Five people were interviewed: 2 client users (a site user and a video reviewer), an account manager and a help desk team member (both internal), and a member of Apple&rsquo;s customer support team. I interviewed the internal team members face to face, and conducted the other interviews over Zoom. From these interviews we discovered 4 major issues and several minor ones.</p>
+      <div class="sticky-group"><h4>Major issues</h4><ul class="sticky-notes notes-coral"><li><figure class="sticky"><p>Safari was &lsquo;holding&rsquo; the upload data after clients uploaded to ChilliPharm, because of an iOS update.</p></figure></li><li><figure class="sticky"><p>Clients were unable to record new videos, even after deleting them from the photo album, because of this Safari storage issue.</p></figure></li><li><figure class="sticky"><p>Site users were uploading to the wrong area and attributing the wrong information to an asset, creating a domino effect that slowed down work for all users.</p></figure></li><li><figure class="sticky"><p>A risk of reputational damage, which could result in a loss of business.</p></figure></li></ul></div>
+      <div class="sticky-group"><h4>Minor issues</h4><ul class="sticky-notes notes-yellow"><li><figure class="sticky"><p>The factory reset solution worked in the short term, but it was long and cumbersome because users had to set up their iPad from scratch again and again.</p></figure></li><li><figure class="sticky"><p>It took reviewers longer than it should to find the correct video, because of the poor ordering and search functions.</p></figure></li><li><figure class="sticky"><p>Reviewers wanted to record videos on their smartphones, and to download videos to review them on the go, which they could not do.</p></figure></li><li><figure class="sticky"><p>Competitors had apps with crisp, modern UI, while ChilliPharm had no app and an outdated UI.</p></figure></li></ul></div>
+    </div>
+
+    <div class="cs-block">
+      <h3>Research Findings</h3>
+      <div class="card-grid"><div class="insight tinted"><h4><span class="emoji" aria-hidden="true">🧭</span>Power of simplicity</h4><p>Users need simple navigation to the correct subject, visit and assessment.</p></div><div class="insight tinted"><h4><span class="emoji" aria-hidden="true">⏱️</span>Timing is key</h4><p>Users are busy medical staff. They need to upload and review videos quickly so they can move on to new work.</p></div><div class="insight tinted"><h4><span class="emoji" aria-hidden="true">🚆</span>Working on the go</h4><p>Reviewers have busy schedules and would like to be able to work while commuting, which an app would allow them to do.</p></div><div class="insight tinted"><h4><span class="emoji" aria-hidden="true">✨</span>Designs for everyone</h4><p>Users are used to apps with a modern, clean UI.</p></div></div>
+    </div>
+
+    <div class="cs-block">
+      <h3>User Personas</h3>
+      <p>Two very different people had to find the app easy: the nurse recording the assessment, and the doctor reviewing it.</p>
+      <div class="personas">
+      <article class="persona" aria-labelledby="nora-name">
+  <div class="persona-head">
+    <div class="persona-photo"><img src="../images/chillipharm-app/persona-nora.webp" width="297" height="297" alt="" loading="lazy" decoding="async"></div>
+    <div><p class="persona-label">Persona #1</p><h4 id="nora-name">Nora Evans</h4></div>
+  </div>
+  <ul class="chip-row" aria-label="About Nora Evans"><li class="chip">55 years old</li><li class="chip">Nurse</li><li class="chip">Site User</li><li class="chip">New York</li></ul>
+  <p>Nora took a bachelor&rsquo;s in nursing and has had several jobs in the medical industry during her career. In her current role at a big pharma company she is a nursing assistant to a doctor in clinical drug trials. She is not the best with technology, but she has an iPhone and an iPad and regularly uses them to take pictures of her family.</p>
+  <div class="persona-more" id="nora-more" data-more="nora-more">
+    <h5>Goals</h5><ul><li>To help people with rare diseases in medical trials</li><li>To complete her work as quickly as possible, because she has a lot of it and often jumps from patient to patient</li><li>To get home on time to spend time with her grandchildren</li></ul>
+    <h5>Frustrations</h5><ul><li>Technology is sometimes not her friend, and she can get confused using complicated websites on computers</li><li>She is afraid of falling behind with work, because she has to complete it and she already doesn&rsquo;t spend enough time with her grandchildren</li><li>Sometimes she feels overwhelmed by complicated interfaces, and she fears that if she doesn&rsquo;t learn them they will hire someone younger who is more tech savvy</li></ul>
+  </div>
+  <button class="btn btn-text more-toggle" type="button" aria-expanded="false" aria-controls="nora-more" hidden><span class="more-label">Read more</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 15.4 6 9.4 7.4 8l4.6 4.6L16.6 8 18 9.4l-6 6Z"/></svg></button>
+</article>
+
+      <article class="persona" aria-labelledby="dave-name">
+  <div class="persona-head">
+    <div class="persona-photo"><img src="../images/chillipharm-app/persona-dave.webp" width="297" height="297" alt="" loading="lazy" decoding="async"></div>
+    <div><p class="persona-label">Persona #2</p><h4 id="dave-name">Dave Stevens</h4></div>
+  </div>
+  <ul class="chip-row" aria-label="About Dave Stevens"><li class="chip">32 years old</li><li class="chip">Doctor</li><li class="chip">Reviewer</li><li class="chip">San Diego</li></ul>
+  <p>Dave has a PhD in medical research. He enjoys his job, but it is not what he thought he would be doing with his PhD; he would like to be more hands on with patients rather than reviewing videos for the sponsor. He did his PhD because his younger brother died young after being diagnosed with a rare disease. He still works extremely hard, but is looking to move position soon. He recently had a child and is feeling the stress of a young family and a very busy job.</p>
+  <div class="persona-more" id="dave-more" data-more="dave-more">
+    <h5>Goals</h5><ul><li>To discover new medicines and see how they can improve patients over time</li><li>To do all his online paperwork before the end of the working day</li><li>To ensure the doctors performing the assessments are doing so correctly</li></ul>
+    <h5>Frustrations</h5><ul><li>To review the videos he needs an internet connection, so on his commute he can&rsquo;t work because he doesn&rsquo;t have a stable connection</li><li>He feels that if he doesn&rsquo;t complete all of his paperwork in the day, he is slowing down bringing the drugs to market and helping the wider population</li><li>Needing a desktop computer or laptop to complete his work forces him to be inside, and he would love to be more active and work at the same time</li></ul>
+  </div>
+  <button class="btn btn-text more-toggle" type="button" aria-expanded="false" aria-controls="dave-more" hidden><span class="more-label">Read more</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 15.4 6 9.4 7.4 8l4.6 4.6L16.6 8 18 9.4l-6 6Z"/></svg></button>
+</article>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="ux-design" aria-labelledby="ux-design-title">
+  <div class="wrap">
+    <h2 id="ux-design-title" class="headline">UX Design</h2>
+    <div class="cs-block">
+      <h3>Prioritisation and Project Goals</h3>
+      <p>While the business goals were mainly focused on fixing the iOS storage issue and reducing costs for clients, I had a deeper vision of how the app could also benefit users on a usability level, and I was able to identify where the two sets of goals aligned.</p>
+      <div class="goals-venn">
+        <div class="business"><h4>Business goals</h4><ul><li>Fix the iPad storage issue</li><li>Gain new clients with a new selling point</li><li>Reduce costs for clients, as they will no longer need iPads</li><li>Having an app on the market makes the company look more professional</li></ul></div>
+        <div class="shared"><h4>Shared goals</h4><ul><li>Meet strict pharmaceutical industry regulations for storing and sharing clinical trial data</li><li>A user friendly app that covers both classic ChilliPharm and the new platform</li><li>Record on the phones users already know how to use</li></ul></div>
+        <div class="user"><h4>User goals</h4><ul><li>Download assets to my phone to review while commuting</li><li>Review assets and complete forms while commuting</li><li>Never have to factory reset an iPad because the storage is full</li></ul></div>
+      </div>
+    </div>
+    <div class="cs-block">
+      <h3>Features Roadmap</h3>
+      <p>After reviewing the first draft of the MVP, I had to reduce the features to what users needed from an MVP. The final version included the basics: signing in, access to both classic ChilliPharm and PVA, uploading assets and creating forms.</p>
+      <figure class="cs-figure"><img src="../images/chillipharm-app/features-roadmap.webp" width="1180" height="1076" alt="Features roadmap table. The MVP covers login, access to PVA and to Libraries, creating a new subject, starting visits and assessments, uploading assets, completing tasks, creating updates and comments, and completing forms. Phase 2 adds downloading videos, flagging an assessment and adding chapters to a video. Phase 3 adds moving assets and editing or deleting subjects. Each feature lists the research supporting it, such as compliant legislation or user interviews." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: Features roadmap"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>Features roadmap</figcaption></figure>
+    </div>
+    <div class="cs-block">
+      <h3>Information Architecture</h3>
+      <p>The information architecture was straightforward to set up, because I followed the architecture of the existing desktop ChilliPharm. I still had to adapt it for an app, so I built a site map considering primary, secondary and tertiary navigation.</p>
+      <figure class="cs-figure"><img src="../images/chillipharm-app/information-architecture.webp" width="2569" height="1227" alt="Information architecture. Log in leads to Help, My Settings and Trial. A trial splits into Site and Library. A site leads to Subject, Visit and Assessment, where the user can open an individual asset to download or move it, record, complete tasks, fill in forms and post updates. A library leads to All content, where the user can open an individual asset to see its metadata, comments and forms, download or move it, or record and upload a new one." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: Information architecture, colour coded by primary, secondary and tertiary navigation"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>Information architecture, colour coded by primary, secondary and tertiary navigation</figcaption></figure>
+    </div>
+    <div class="cs-block">
+      <h3>User Flows</h3>
+      <p>I immediately identified 2 user flows, each needed for both classic ChilliPharm and PVA:</p>
+      <ul>
+        <li>Clinical evaluators (site users) who upload assets</li>
+        <li>Reviewers who use forms and review assets</li>
+      </ul>
+      <p>Both users need access to the assessment page and need to be able to view assets, but only the reviewer needs to create and complete forms.</p>
+      <div class="fig-grid"><figure class="cs-figure"><img src="../images/chillipharm-app/flow-site-user.webp" width="2392" height="1198" alt="Site user flow. The site user is ready to start the clinical assessment, opens the ChilliPharm app on their phone, signs in and selects their trial and library, creates the subject by typing in a patient number, enters the correct visit and assessment, fills in the assessment details, uploads their recordings and completes their task, and an email notification lets everyone else know." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: User flow: Clinical Evaluator (Site User)"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>User flow: Clinical Evaluator (Site User)</figcaption></figure><figure class="cs-figure"><img src="../images/chillipharm-app/flow-reviewer.webp" width="2386" height="1218" alt="Reviewer flow. The reviewer logs into the app and goes to the correct trial and site, then the correct subject, visit and assessment, reviews the video, fills out their QC form and completes their task. Once all tasks are complete they change the assessment status from In Progress to Complete, and email notifications tell other users the assessment is complete." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: User flow: Reviewer"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>User flow: Reviewer</figcaption></figure></div>
+    </div>
+    <div class="cs-block">
+      <h3>Low Fidelity Wireframes</h3>
+      <p>I designed a sign in page and a trial and site or library page used by all users. The flows and UI split when the user taps into either a &lsquo;Site&rsquo; (PVA) or a &lsquo;Library&rsquo; (classic ChilliPharm). From there, the user either uploads an asset to be reviewed, or reviews the asset and completes a form.</p>
+      <figure class="cs-figure"><img src="../images/chillipharm-app/wireframes.webp" width="1168" height="672" alt="Four low fidelity wireframes for the Libraries flow: a login screen, a choose trial screen, a choose library screen, and a library screen showing all content with an Add files button." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: Low fidelity wireframes: the Libraries flow"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>Low fidelity wireframes: the Libraries flow</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="ui-design" aria-labelledby="ui-design-title">
+  <div class="wrap">
+    <h2 id="ui-design-title" class="headline">UI Design</h2>
+    <div class="cs-block">
+      <h3>UI Library Components</h3>
+      <p>Developing the component library was straightforward because I could build on the existing component library for PVA, but I had to adapt its typography and spacing rules for mobile devices, researching the industry standards at the time (Q4 2024) and implementing them.</p>
+      <div class="callout"><p>A strategic decision I made was to use PVA&rsquo;s colour palette and component library for the classic ChilliPharm side of the app too. That kept the brand consistent throughout the app, and made life easier for the engineering team.</p></div>
+      <figure class="cs-figure"><img src="../images/chillipharm-app/component-library.webp" width="2346" height="988" alt="The component library. A colour palette of CP Black #000F23, CP Blue #004096, CP Red #C8102E, CP White #FFFFFF, CP Black Medium #29354B and CP Blue Medium #E6ECF9. Primary long, primary and secondary buttons in their enabled and pressed states. A Lato type scale: title 20 regular, modal heading 20 bold, sub heading 17 bold, body 17 regular, footnote 13, caption 12 and caption 2 at 10." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: The component library: colours, buttons and type scale"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>The component library: colours, buttons and type scale</figcaption></figure>
+    </div>
+    <div class="cs-block">
+      <h3>High Fidelity Key Screens</h3>
+      <p>Adding these components to my wireframes led to the high fidelity key screens.</p>
+      <div class="fig-grid phones"><figure class="cs-figure"><img src="../images/chillipharm-app/screen-subjects.webp" width="999" height="2048" alt="The Site screen for Vitality Medical Centre, listing four subjects with their created date and who created them, and an Add New Subject button above the Lobby, Asset Storage and Help navigation bar." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: A site and its subjects"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>A site and its subjects</figcaption></figure><figure class="cs-figure"><img src="../images/chillipharm-app/screen-assessment.webp" width="999" height="2048" alt="An assessment screen with an Assessment Details dropdown, a Record button, a video player and a strip of thumbnails showing 1 of 7 assets, with Tasks, Forms and Updates tabs below." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: An assessment, with its videos"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>An assessment, with its videos</figcaption></figure><figure class="cs-figure"><img src="../images/chillipharm-app/screen-tasks.webp" width="999" height="2048" alt="The Tasks tab of an assessment: a progress bar at 25% with 1 of 4 tasks complete, an Action Required button, three tasks to do assigned to the clinical evaluator, and one completed task." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: The tasks for an assessment"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>The tasks for an assessment</figcaption></figure></div>
+    </div>
+    <div class="cs-block" id="prototype">
+      <h3>Try the prototype</h3>
+      <p class="muted">The prototype is made in Figma, so it works best with a mouse or trackpad. The key screens are also shown as images on this page.</p>
+      <div class="proto" data-figma-url="https://www.figma.com/proto/RRKqTE9tV9U3RQtZqw4dph/Portfolio?node-id=1852-586&amp;p=f&amp;viewport=-55%2C95%2C0.05&amp;t=oZ1EBugBNEbInKJN-0&amp;scaling=scale-down&amp;content-scaling=fixed&amp;starting-point-node-id=2246%3A4530&amp;show-proto-sidebar=1" data-title="ChilliPharm App, interactive Figma prototype">
+        <button class="proto-play" type="button">
+          <span class="play-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path fill="currentColor" d="M8 5v14l11-7L8 5Z"/></svg></span>
+          <span>Load the interactive prototype</span>
+        </button>
+      </div>
+      <div class="proto-small"><a class="btn btn-filled" href="https://www.figma.com/proto/RRKqTE9tV9U3RQtZqw4dph/Portfolio?node-id=1852-586&amp;p=f&amp;viewport=-55%2C95%2C0.05&amp;t=oZ1EBugBNEbInKJN-0&amp;scaling=scale-down&amp;content-scaling=fixed&amp;starting-point-node-id=2246%3A4530&amp;show-proto-sidebar=1" style="background: var(--brand); color: var(--on-brand)">Open the prototype in Figma</a></div>
+      <p style="margin-top: var(--s2)"><a href="https://www.figma.com/proto/RRKqTE9tV9U3RQtZqw4dph/Portfolio?node-id=1852-586&amp;p=f&amp;viewport=-55%2C95%2C0.05&amp;t=oZ1EBugBNEbInKJN-0&amp;scaling=scale-down&amp;content-scaling=fixed&amp;starting-point-node-id=2246%3A4530&amp;show-proto-sidebar=1">Open the prototype in Figma in a full window</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="usability-testing" aria-labelledby="testing-title">
+  <div class="wrap">
+    <h2 id="testing-title" class="headline">Usability Testing</h2>
+    <div class="cs-block">
+      <h3>The prototype</h3>
+      <p>I set up the key pages with a navigation bar fixed on every page, to give the impression of a working app. Because I worked with components and variants, building the prototype was straightforward. I used the same mild transition throughout to keep the flow neat, and built an upload animation to make the prototype feel more realistic.</p>
+    </div>
+    <div class="cs-block">
+      <h3>Testing</h3>
+      <p>I tested the prototype with 6 participants aged 24 to 55. Each had a set of predefined tasks: record and upload a video in both libraries, complete a task, make a comment or update, download a video and view it in the asset storage section. The flow proved very simple for users, and feedback was positive overall.</p>
+      <p class="muted">The colour of each note links it back to the research: coral notes answer a major issue, yellow notes answer a minor issue, and blue notes are new findings from testing.</p>
+      <div class="boards"><section class="board worked" aria-labelledby="board-worked"><h4 id="board-worked"><span class="emoji" aria-hidden="true">✅</span>What worked</h4><ul class="sticky-notes"><li><div class="sticky c-coral"><p>The app looks great and it&rsquo;s very simple and easy to use. I love how both Libraries and PVA have the same designs.</p></div></li><li><div class="sticky c-yellow"><p>This is going to solve a lot of storage issues, and it&rsquo;s going to make the company look a lot more professional.</p></div></li><li><div class="sticky c-coral"><p>This is going to save clients a lot of money as well, because we no longer need to sell them iPads to record the assessments with.</p></div></li></ul></section><section class="board improve" aria-labelledby="board-improve"><h4 id="board-improve"><span class="emoji" aria-hidden="true">⚠️</span>Needs improving</h4><ul class="sticky-notes"><li><div class="sticky c-yellow"><p>I am not sure how third party users will use this app. I think for the time being they will still need to use the desktop version, but as we are their clients I am not too concerned.</p></div></li><li><div class="sticky c-blue"><p>The upload animation on the desktop version is great. Can we have it here as well?</p></div></li><li><div class="sticky c-blue"><p>A site user would need the ability to edit or delete a subject if they accidentally enter the name wrong.</p></div></li></ul></section><section class="board ideas" aria-labelledby="board-ideas"><h4 id="board-ideas"><span class="emoji" aria-hidden="true">💡</span>Ideas</h4><ul class="sticky-notes"><li><div class="sticky c-blue"><p>Can we make sure that in future iterations, third party users will be able to use the app as well?</p></div></li><li><div class="sticky c-blue"><p>Put the upload animation and card on the app too.</p></div></li></ul></section></div>
+    </div>
+    <div class="cs-block">
+      <h3>Iterations</h3>
+      <p>Testing led to two iterations. I added the upload animation and an upload card to the app, so users can see exactly what is uploading and what has finished. I also added a menu to each subject card, so a site user who enters a subject wrongly can edit or deactivate it without leaving the site screen.</p>
+      <div class="fig-grid phones"><figure class="cs-figure"><img src="../images/chillipharm-app/iteration-upload.webp" width="999" height="2048" alt="An assessment screen with the Upload Queue open over the video player: one file uploaded at 100% with a green tick, and another uploading at 15%." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: The upload queue"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>The upload queue</figcaption></figure><figure class="cs-figure"><img src="../images/chillipharm-app/iteration-edit-subject.webp" width="999" height="2048" alt="The Site screen with a subject&rsquo;s menu open, offering Edit Subject and Deactivate Subject." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: Editing a subject"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>Editing a subject</figcaption></figure></div>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="results" aria-labelledby="results-title">
+  <div class="wrap">
+    <h2 id="results-title" class="headline" style="margin-bottom: var(--s5)">Results</h2>
+    <div class="results-grid">
+      <div class="result-stat"><span class="big">20 min</span><p>Saved per task on average in usability testing, by letting users record, upload and review on the phone they already use.</p></div>
+      <div class="result-stat"><span class="big">6</span><p>Participants aged 24 to 55 completed the key tasks in testing, with positive feedback overall.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="key-takeaways" aria-labelledby="takeaways-title">
+  <div class="wrap">
+    <h2 id="takeaways-title" class="headline" style="margin-bottom: var(--s6)">Key Takeaways</h2>
+    <div class="takeaways">
+      <article class="takeaway">
+        <h3>Challenge</h3>
+        <p>One of the biggest challenges for me was designing one app for both sides of ChilliPharm, Libraries and PVA. On desktop they have very different UI and components, so deciding what to include in the app was a struggle; at times it felt like designing 2 separate apps in one. Using the same component library for both saved time for me and the developers, and kept the ChilliPharm brand consistent.</p>
+        <p>I also started the high fidelity designs without using components and variants, which made every change to each screen take far longer. I quickly recognised this, and spent time creating components and updating each page to use them.</p>
+      </article>
+      <article class="takeaway">
+        <h3>Lessons Learned</h3>
+        <ul>
+          <li>Create components and variants as early as possible, to make designing easier from the start.</li>
+          <li>Make sure the most important parts of the app are covered in the MVP, and get business executives to sign off on them.</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT PROJECT -->
+<section class="next-project" aria-labelledby="next-title">
+  <div class="wrap">
+    <h2 id="next-title" class="title-lg" style="margin-bottom: var(--s3)">Next project</h2>
+    <ul class="work-list" style="grid-template-columns: 1fr">
+      <li class="project brand-chillipharm">
+        <div class="project-body">
+          <p class="project-outcome">Platform pricing cut by 50% and user errors down 14%</p>
+          <h3><a href="chillipharm-platform.html">The ChilliPharm Web Platform</a></h3>
+          <p>An end to end redesign of a clinical trial video platform, including the permissions based feature that halved the price for clients.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section id="contact" class="contact" aria-labelledby="contact-title">
+  <div class="wrap">
+    <h2 id="contact-title" class="headline">Thanks for watching.</h2>
+    <p class="body-lg">If you would like to talk about a role, a project or even a film, I would love to hear from you.</p>
+    <div class="contact-actions">
+      <a class="btn btn-filled" href="mailto:cameron.jordan.hasan@gmail.com">Email me</a>
+      <a class="btn btn-outlined" href="https://www.linkedin.com/in/cameron-hasan-5b36291b6/">Connect on LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+</main>
+<script src="../js/main.js"></script>
+</body>
+</html>

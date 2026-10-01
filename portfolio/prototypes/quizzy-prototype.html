@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quizzy McQuizface prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* 8pt grid */
+    --s1:4px; --s2:8px; --s3:16px; --s4:24px; --s5:32px; --s6:40px; --s7:48px; --s8:64px;
+
+    /* Single-colour system: navy primary, cream surfaces. Secondary aliases to primary. */
+    --primary:#1D3A6E;
+    --primary-dark:#12294F;
+    --on-primary:#FFFFFF;
+    --primary-container:#DCE6F5;
+    --on-primary-container:#0B2440;
+
+    --secondary:var(--primary);
+    --on-secondary:var(--on-primary);
+    --secondary-container:var(--primary-container);
+    --on-secondary-container:var(--on-primary-container);
+
+    --tertiary:#B3261E;
+    --on-tertiary:#FFFFFF;
+    --tertiary-container:#FFDAD4;
+    --on-tertiary-container:#410E0B;
+
+    --success:#00695C;
+    --success-container:#B2F2E5;
+    --on-success-container:#00201C;
+
+    --accent-light:#F3D9FF;
+
+    --surface:#FFFFFF;
+    --surface-dim:#DCE6F5;
+    --surface-container:#DCE6F5;
+    --surface-container-high:#DCE6F5;
+    --on-surface:#12294F;
+    --on-surface-variant:#5A6E8C;
+    --outline:#A9C6EF;
+    --outline-variant:#CBDDF6;
+    --warning:#C9A227;
+
+    --shape-sm:8px; --shape-md:12px; --shape-lg:16px; --shape-xl:28px; --shape-full:999px;
+    --font-display:'Fredoka', sans-serif;
+    --font-body:'Roboto', sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:var(--s5) var(--s3);
+    background:#EAF0FA;
+    font-family:var(--font-body);
+    color:var(--on-surface);
+    display:flex; flex-direction:column; align-items:center; gap:var(--s4);
+  }
+
+  h1,h2,h3{font-family:var(--font-display); font-weight:600; margin:0;}
+
+  .tabbar{ display:flex; flex-wrap:wrap; gap:var(--s2); justify-content:center; max-width:900px; }
+  .tab{
+    font-family:var(--font-body); font-size:14px; font-weight:500;
+    padding:var(--s2) var(--s3); border-radius:var(--shape-full);
+    border:1px solid var(--outline-variant); background:var(--surface);
+    color:var(--on-surface-variant); cursor:pointer;
+  }
+  .tab[aria-selected="true"]{
+    background:var(--primary); color:var(--on-primary);
+    border-color:var(--primary); font-weight:700;
+  }
+  .tab:focus-visible, button:focus-visible, [tabindex]:focus-visible{
+    outline:3px solid var(--secondary); outline-offset:2px;
+  }
+  input:focus-visible{
+    outline:none; border-color:var(--primary); border-width:2px;
+  }
+
+  .phone{
+    width:360px; min-height:780px; background:var(--surface);
+    border-radius:36px; border:8px solid #111; overflow:hidden;
+    display:flex; flex-direction:column; box-shadow:0 20px 40px rgba(0,0,0,.25);
+  }
+
+  .topbar{
+    background:var(--primary-container); color:var(--on-primary-container);
+    padding:var(--s4) var(--s3) var(--s5); border-radius:0 0 24px 24px;
+    display:flex; align-items:center; gap:var(--s2);
+  }
+  .topbar h2{ font-size:20px; color:inherit; }
+
+  .icon-btn{
+    width:40px; height:40px; border-radius:50%; border:none; background:transparent;
+    display:flex; align-items:center; justify-content:center; color:inherit; cursor:pointer; flex-shrink:0;
+  }
+  .icon-btn:hover{ background:rgba(0,0,0,.08); }
+  .icon-btn:active{ background:rgba(0,0,0,.16); }
+
+  .screen{ flex:1; display:none; flex-direction:column; gap:var(--s3); }
+  .screen.active{ display:flex; }
+  .screen-body{ flex:1; display:flex; flex-direction:column; gap:var(--s3); padding:var(--s3); }
+
+  .btn{
+    font-family:var(--font-body); font-weight:700; font-size:15px;
+    height:48px; border-radius:var(--shape-full); border:none; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; gap:var(--s2);
+  }
+  .btn-filled{ background:var(--primary); color:var(--on-primary); margin:var(--s3); margin-top:0; }
+  .btn-filled:hover{ background:var(--primary-dark); }
+  .btn-secondary{ background:transparent; border:2px solid var(--primary); color:var(--primary); }
+  .btn-outlined{ background:transparent; color:var(--primary); border:1px solid var(--primary); }
+
+  label.field-label{ font-size:12px; font-weight:700; color:var(--on-surface-variant); text-transform:uppercase; letter-spacing:.04em; }
+  input[type=text], input[type=number], select{
+    height:48px; border-radius:var(--shape-md); border:1px solid var(--outline);
+    background:var(--surface); padding:0 var(--s3); font-size:16px; font-family:var(--font-body);
+    color:var(--on-surface); width:100%;
+  }
+  input:focus{ border-color:var(--primary); border-width:2px; }
+  .helper{ font-size:12px; color:var(--on-surface-variant); line-height:1.5; }
+  .card{ border-radius:var(--shape-lg); padding:var(--s3); background:var(--surface-container); }
+  .card.tint-secondary{ background:var(--secondary-container); color:var(--on-secondary-container); }
+  .card.tint-secondary .helper{ color:var(--on-secondary-container); opacity:.85; }
+  .card.tint-tertiary{ background:var(--tertiary-container); color:var(--on-tertiary-container); }
+  .card.tint-tertiary .helper{ color:var(--on-tertiary-container); opacity:.85; }
+  .card.tint-info{ background:var(--success-container); color:#00332E; }
+  .card.tint-info .helper{ color:#00332E; opacity:.85; }
+
+  .switch-row{ display:flex; align-items:center; justify-content:space-between; gap:var(--s3); }
+  .switch{ position:relative; width:52px; height:32px; flex-shrink:0; }
+  .switch input{ opacity:0; width:100%; height:100%; position:absolute; margin:0; cursor:pointer; }
+  .switch .track{ position:absolute; inset:0; background:rgba(0,0,0,.25); border-radius:var(--shape-full); transition:.15s; }
+  .switch .thumb{ position:absolute; top:4px; left:4px; width:24px; height:24px; border-radius:50%; background:var(--surface); box-shadow:0 1px 3px rgba(0,0,0,.3); transition:.15s; }
+  .switch input:checked + .track{ background:var(--primary); }
+  .switch input:checked + .track + .thumb{ transform:translateX(20px); background:var(--on-primary); }
+
+  .segmented{ display:flex; background:var(--surface-container-high); border-radius:var(--shape-full); padding:4px; gap:2px; }
+  .segmented button{
+    flex:1; border:none; background:transparent; font-family:var(--font-body); font-size:11px; font-weight:700;
+    padding:var(--s2) 2px; border-radius:var(--shape-full); cursor:pointer; color:var(--on-surface-variant);
+  }
+  .segmented button[aria-pressed="true"]{ background:var(--primary); color:var(--on-primary); }
+
+  .round-card{ border:1px solid var(--outline-variant); border-radius:var(--shape-lg); padding:var(--s3); display:flex; flex-direction:column; gap:var(--s2); position:relative; background:var(--surface); }
+  .round-card-head{ display:flex; align-items:center; gap:var(--s2); }
+  .round-badge{ width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex-shrink:0; }
+  .round-card-head .field-label{ flex:1; }
+  .fab-add{
+    align-self:center; width:56px; height:56px; border-radius:var(--shape-lg); border:none;
+    background:var(--secondary-container); color:var(--on-secondary-container); font-size:24px; cursor:pointer;
+  }
+
+  .code-chip{
+    align-self:center; border-radius:var(--shape-lg);
+    background:var(--primary-dark); color:#fff; padding:var(--s4) var(--s5); text-align:center;
+  }
+  .code-chip .code{ font-family:var(--font-display); font-size:36px; letter-spacing:.12em; font-weight:700; }
+  .code-chip .lbl{ font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--outline-variant); }
+
+  .player-row{ display:flex; align-items:center; gap:var(--s2); font-size:14px; }
+  .avatar{ width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; color:#fff; }
+
+  .team-chip{
+    display:flex; align-items:center; justify-content:space-between; gap:var(--s2);
+    padding:var(--s2) var(--s3); border-radius:var(--shape-md);
+  }
+
+  .timer-bar{ height:8px; border-radius:var(--shape-full); background:var(--outline-variant); overflow:hidden; }
+  .timer-bar .fill{ height:100%; background:var(--primary); width:100%; transition:width 1s linear; }
+
+  .question-card{ background:var(--primary-container); color:var(--on-primary-container); border-radius:var(--shape-xl); padding:var(--s4); font-size:18px; font-weight:600; min-height:120px; display:flex; align-items:center; }
+  .option-btn{
+    text-align:left; padding:var(--s3); border-radius:var(--shape-md); border:1px solid var(--outline-variant);
+    background:var(--surface); font-size:15px; font-family:var(--font-body); cursor:pointer;
+  }
+  .option-btn[aria-pressed="true"]{ background:var(--primary-container); border-color:var(--primary); font-weight:700; }
+  .option-btn.correct-reveal{ background:var(--success-container); border-color:var(--success); border-width:2px; color:#00201C; font-weight:700; }
+  .option-btn.user-pick-wrong{ background:var(--surface-container-high); border-color:var(--on-surface-variant); border-width:2px; }
+
+  .winner-badge{ align-self:center; text-align:center; }
+  .winner-badge .ring{ width:88px; height:88px; border-radius:50%; background:var(--secondary-container); display:flex; align-items:center; justify-content:center; font-size:36px; margin:0 auto var(--s2); }
+  .leaderboard-row{ display:flex; justify-content:space-between; padding:var(--s2) 0; border-bottom:1px solid var(--outline-variant); font-size:14px; }
+  .ad-card{ border:1px dashed var(--outline); border-radius:var(--shape-lg); padding:var(--s3); text-align:center; color:var(--on-surface-variant); font-size:12px; }
+  .ad-card .ad-label{ font-weight:700; text-transform:uppercase; letter-spacing:.06em; font-size:12px; }
+
+  .btn[disabled]{ opacity:.4; cursor:not-allowed; }
+  .empty-state{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s3); text-align:center; padding:var(--s4); }
+  .empty-state .icon{ width:72px; height:72px; border-radius:50%; background:var(--surface-container-high); display:flex; align-items:center; justify-content:center; font-size:32px; }
+  .banner{ display:flex; align-items:center; gap:var(--s2); border-radius:var(--shape-md); padding:var(--s2) var(--s3); font-size:13px; font-weight:500; }
+  .banner.warn{ background:var(--tertiary-container); color:var(--on-tertiary-container); }
+  .banner.info{ background:var(--success-container); color:#00332E; }
+  .banner .dot{ width:8px; height:8px; border-radius:50%; background:currentColor; flex-shrink:0; animation:pulse 1.2s infinite; }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.3;} }
+  @media (prefers-reduced-motion: reduce){
+    .banner .dot{ animation:none; }
+    .timer-bar .fill{ transition:none; }
+    .check-burst{ animation:none; }
+  }
+  .team-option{ display:flex; align-items:center; justify-content:space-between; padding:var(--s3); border-radius:var(--shape-md); border:1px solid var(--outline-variant); cursor:pointer; background:var(--surface); }
+  .team-option[aria-pressed="true"]{ border-color:var(--primary); border-width:2px; background:var(--primary-container); }
+  .numeric-input{ height:64px; border-radius:var(--shape-md); border:2px solid var(--outline); text-align:center; font-family:var(--font-display); font-size:28px; width:100%; }
+  .field-error{ border-color:var(--tertiary) !important; border-width:2px !important; }
+  .bank-badge{ font-size:11px; font-weight:700; padding:4px 10px; border-radius:999px; display:inline-flex; align-items:center; gap:4px; width:fit-content; }
+  .bank-badge.instant{ background:var(--success-container); color:var(--on-success-container); }
+  .bank-badge.custom{ background:var(--primary-container); color:var(--on-primary-container); }
+  .manual-round-summary{ display:flex; flex-direction:column; gap:var(--s2); }
+  .manual-round-summary .title-row{ display:flex; justify-content:space-between; align-items:center; gap:var(--s2); }
+  .correct-radio{ width:28px; height:28px; border-radius:50%; border:2px solid var(--outline); background:transparent; flex-shrink:0; cursor:pointer; display:flex; align-items:center; justify-content:center; color:transparent; font-size:14px; }
+  .correct-radio[aria-pressed="true"]{ background:var(--success-container); border-color:var(--success); color:var(--success); }
+  .manual-option-row{ display:flex; align-items:center; gap:var(--s2); }
+  .manual-option-row input{ flex:1; }
+  .save-indicator{ font-size:11px; font-weight:700; color:var(--success); opacity:0; transition:opacity .3s; display:flex; align-items:center; gap:4px; height:16px; }
+  .save-indicator.show{ opacity:1; }
+  .library-row{ display:flex; align-items:center; justify-content:space-between; gap:var(--s2); padding:var(--s3); border:1px solid var(--outline-variant); border-radius:var(--shape-lg); background:var(--surface); }
+  .library-row .meta{ font-size:11px; color:var(--on-surface-variant); }
+  .check-burst{ width:96px; height:96px; border-radius:50%; background:var(--success-container); color:#00332E; display:flex; align-items:center; justify-content:center; font-size:40px; animation:burst .5s ease; }
+  @keyframes burst{ 0%{transform:scale(.3); opacity:0;} 60%{transform:scale(1.15); opacity:1;} 100%{transform:scale(1);} }
+</style>
+</head>
+<body>
+
+<div class="tabbar" role="tablist" aria-label="Prototype screens" id="tabbar"></div>
+
+<div class="phone">
+
+  <section class="screen active" data-screen="name" role="tabpanel">
+    <div class="topbar"><h2>Welcome</h2></div>
+    <div class="screen-body" style="justify-content:center;">
+      <div style="width:64px;height:64px;border-radius:50%;background:var(--secondary-container);display:flex;align-items:center;justify-content:center;font-size:28px;align-self:center;" aria-hidden="true">🎉</div>
+      <h1 style="font-size:28px; text-align:center;">What should we<br>call you?</h1>
+      <div>
+        <label class="field-label" for="nameInput">Your name</label>
+        <input type="text" id="nameInput" placeholder="e.g. Sam" value="Sam" style="margin-top:var(--s2);">
+      </div>
+    </div>
+    <button class="btn btn-filled" onclick="go('choice')">Continue</button>
+  </section>
+
+  <section class="screen" data-screen="choice" role="tabpanel">
+    <div class="topbar"><h2>Hey Sam</h2></div>
+    <div class="screen-body" style="justify-content:center;">
+      <button class="btn btn-filled" style="height:72px; font-size:18px; border-radius:var(--shape-xl); margin:0;" onclick="go('settings')">Create quiz</button>
+      <button class="btn btn-secondary" style="height:72px; font-size:18px; border-radius:var(--shape-xl); margin:0;" onclick="go('lobbyPlayer')">Join quiz</button>
+    </div>
+  </section>
+
+  <section class="screen" data-screen="settings" role="tabpanel">
+    <div class="topbar">
+      <button class="icon-btn" onclick="go('choice')" aria-label="Back">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <h2>Quiz settings</h2>
+    </div>
+    <div class="screen-body">
+      <div class="switch-row card tint-secondary">
+        <div>
+          <div style="font-weight:700; font-size:14px;">Team mode</div>
+          <div class="helper">Play solo, or split into teams</div>
+        </div>
+        <label class="switch"><input type="checkbox" checked id="teamToggle" onchange="toggleTeams()"><span class="track"></span><span class="thumb"></span></label>
+      </div>
+      <div class="switch-row card tint-info">
+        <div>
+          <div style="font-weight:700; font-size:14px;">Host also plays</div>
+          <div class="helper" id="hostPlaysHelper">You referee, no spoilers.</div>
+        </div>
+        <label class="switch"><input type="checkbox" id="hostPlaysToggle" onchange="toggleHostPlays()"><span class="track"></span><span class="thumb"></span></label>
+      </div>
+      <div id="teamCountField">
+        <label class="field-label" for="teamCount">Number of teams</label>
+        <input type="number" id="teamCount" min="2" max="10" value="3" inputmode="numeric" style="margin-top:var(--s2);">
+      </div>
+      <div>
+        <label class="field-label" for="rounds">Number of rounds</label>
+        <input type="number" id="rounds" min="1" max="15" value="4" inputmode="numeric" style="margin-top:var(--s2);">
+      </div>
+      <div>
+        <label class="field-label" for="qpr">Questions per round</label>
+        <input type="number" id="qpr" min="1" max="20" value="8" inputmode="numeric" style="margin-top:var(--s2);">
+      </div>
+      <div>
+        <label class="field-label" id="diffLabel">Difficulty</label>
+        <div class="segmented" role="group" aria-labelledby="diffLabel" style="margin-top:var(--s2);">
+          <button aria-pressed="false" onclick="setDiff(this)">Very easy</button>
+          <button aria-pressed="false" onclick="setDiff(this)">Easy</button>
+          <button aria-pressed="true" onclick="setDiff(this)">Medium</button>
+          <button aria-pressed="false" onclick="setDiff(this)">Hard</button>
+          <button aria-pressed="false" onclick="setDiff(this)">Quiz master</button>
+        </div>
+      </div>
+      <div style="border-top:1px solid var(--outline-variant); padding-top:var(--s3); display:flex; flex-direction:column; gap:var(--s2); align-items:center; text-align:center;">
+        <p class="helper" style="margin:0;">Prefer to write your own round?</p>
+        <button class="btn btn-outlined" style="height:40px; padding:0 var(--s4); margin:0;" onclick="openWriteNew(null)">Create a round</button>
+      </div>
+    </div>
+    <button class="btn btn-filled" onclick="populateRounds(); go('rounds')">Next: build rounds</button>
+  </section>
+
+  <section class="screen" data-screen="rounds" role="tabpanel">
+    <div class="topbar">
+      <button class="icon-btn" onclick="go('settings')" aria-label="Back">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <h2>Build your rounds</h2>
+    </div>
+    <div class="screen-body">
+      <div id="roundList" style="display:flex; flex-direction:column; gap:var(--s2);"></div>
+      <button class="fab-add" onclick="addRound()" aria-label="Add another round">+</button>
+    </div>
+    <button class="btn btn-filled" id="generateBtn" onclick="go('lobbyHost')">Generate quiz</button>
+  </section>
+
+  <section class="screen" data-screen="roundsEmpty" role="tabpanel">
+    <div class="topbar"><h2>Build your rounds</h2></div>
+    <div class="empty-state">
+      <div class="icon" aria-hidden="true">📝</div>
+      <h3 style="font-size:18px;">No rounds yet</h3>
+      <p class="helper">Add a topic to get started — the more specific, the better your questions will be.</p>
+      <button class="btn btn-filled" style="margin:0; padding:0 var(--s4);" onclick="go('rounds')">Add your first round</button>
+    </div>
+  </section>
+
+  <section class="screen" data-screen="genError" role="tabpanel">
+    <div class="topbar"><h2>Generating quiz</h2></div>
+    <div class="empty-state">
+      <div class="icon" style="background:var(--tertiary-container); color:var(--on-tertiary-container);" aria-hidden="true">⚠️</div>
+      <h3 style="font-size:18px;">Round 3 didn't generate</h3>
+      <p class="helper">"90s one-hit wonders" came back empty after two tries. Try rewording the topic, or skip it for now.</p>
+      <div style="display:flex; gap:var(--s2); width:100%;">
+        <button class="btn btn-outlined" style="flex:1;" onclick="go('rounds')">Edit topic</button>
+        <button class="btn btn-filled" style="flex:1; margin:0;" onclick="go('lobbyHost')">Retry</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" data-screen="writeNew" role="tabpanel">
+    <div class="topbar">
+      <button class="icon-btn" onclick="go(wnReturnScreen)" aria-label="Back">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <h2>Write your round</h2>
+    </div>
+    <div class="screen-body">
+      <div>
+        <label class="field-label" for="wnTitle">Round title</label>
+        <input type="text" id="wnTitle" placeholder="e.g. Office trivia" style="margin-top:var(--s2);" oninput="wnUpdateTitle(this.value); checkModeration(this);">
+      </div>
+      <div class="save-indicator" id="wnSaveIndicator">✓ Saved to My rounds</div>
+      <div class="card" style="display:flex; flex-direction:column; gap:var(--s3);">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span class="helper" id="wnProgress" style="font-weight:700; color:var(--on-surface);">Question 1</span>
+          <button class="icon-btn" style="width:32px;height:32px;color:var(--tertiary);" id="wnDeleteBtn" aria-label="Delete this question" onclick="wnDeleteQuestion()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path></svg>
+          </button>
+        </div>
+        <div>
+          <label class="field-label" for="wnQuestionText">Question</label>
+          <input type="text" id="wnQuestionText" placeholder="e.g. Who won the office fantasy football league in 2024?" style="margin-top:var(--s2);" oninput="wnUpdateField(); checkModeration(this);">
+        </div>
+        <div>
+          <label class="field-label">Answer options — tap the circle to mark the correct one</label>
+          <div style="display:flex; flex-direction:column; gap:var(--s2); margin-top:var(--s2);" id="wnOptions">
+            <div class="manual-option-row"><button class="correct-radio" aria-pressed="false" aria-label="Mark option 1 correct" onclick="wnSetCorrect(0)">✓</button><input type="text" placeholder="Option 1" oninput="wnUpdateField(); checkModeration(this);"></div>
+            <div class="manual-option-row"><button class="correct-radio" aria-pressed="false" aria-label="Mark option 2 correct" onclick="wnSetCorrect(1)">✓</button><input type="text" placeholder="Option 2" oninput="wnUpdateField(); checkModeration(this);"></div>
+            <div class="manual-option-row"><button class="correct-radio" aria-pressed="false" aria-label="Mark option 3 correct" onclick="wnSetCorrect(2)">✓</button><input type="text" placeholder="Option 3" oninput="wnUpdateField(); checkModeration(this);"></div>
+            <div class="manual-option-row"><button class="correct-radio" aria-pressed="false" aria-label="Mark option 4 correct" onclick="wnSetCorrect(3)">✓</button><input type="text" placeholder="Option 4" oninput="wnUpdateField(); checkModeration(this);"></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex; gap:var(--s2);">
+        <button class="btn btn-outlined" style="flex:1;" id="wnBackBtn" onclick="wnPrev()">Back</button>
+        <button class="btn btn-filled" style="flex:1; margin:0;" id="wnNextBtn" onclick="wnNext()">Next question</button>
+      </div>
+    </div>
+    <button class="btn btn-outlined" style="margin:16px;" onclick="wnFinish()">Finish round (<span id="wnCount">1</span> question<span id="wnPlural"></span>)</button>
+  </section>
+
+  <section class="screen" data-screen="myRounds" role="tabpanel">
+    <div class="topbar">
+      <button class="icon-btn" onclick="go('rounds')" aria-label="Back">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <h2>My rounds</h2>
+    </div>
+    <div class="screen-body" id="libraryList"></div>
+  </section>
+
+  <section class="screen" data-screen="lobbyHost" role="tabpanel">
+    <div class="topbar"><h2>Lobby</h2></div>
+    <div class="screen-body">
+      <div class="code-chip">
+        <div class="lbl">Join code</div>
+        <div class="code">P8K2</div>
+      </div>
+      <div class="card" style="display:flex; flex-direction:column; gap:var(--s2);">
+        <div class="player-row"><span class="avatar" style="background:var(--primary);">S</span> Sam <span class="helper" style="margin-left:auto;">Host</span></div>
+        <div class="player-row"><span class="avatar" style="background:#8A5A22;">J</span> Jordan</div>
+        <div class="player-row"><span class="avatar" style="background:#6B4FA0;">A</span> Alex</div>
+        <div class="player-row"><span class="avatar" style="background:#2E7D6E;">R</span> Robin</div>
+      </div>
+      <div>
+        <div class="helper" style="margin-bottom:var(--s2);">Teams auto-assign in <span id="timerText">30</span>s, or make them now</div>
+        <div class="timer-bar"><div class="fill" id="timerFill"></div></div>
+      </div>
+      <button class="btn btn-outlined" onclick="makeTeams()">Make teams</button>
+      <div id="teamChips" style="display:none; flex-direction:column; gap:var(--s2);"></div>
+    </div>
+    <button class="btn btn-filled" onclick="go('questionHost')">Start quiz</button>
+  </section>
+
+  <section class="screen" data-screen="lobbyEmpty" role="tabpanel">
+    <div class="topbar"><h2>Lobby</h2></div>
+    <div class="screen-body">
+      <div class="code-chip">
+        <div class="lbl">Join code</div>
+        <div class="code">P8K2</div>
+      </div>
+      <div class="card" style="display:flex; flex-direction:column; gap:var(--s2);">
+        <div class="player-row"><span class="avatar" style="background:var(--primary);">S</span> Sam <span class="helper" style="margin-left:auto;">Host</span></div>
+      </div>
+      <div class="empty-state" style="padding:var(--s3);">
+        <p class="helper">Waiting for players to join — share the code above.</p>
+        <div style="font-family:var(--font-display); font-weight:700; font-size:22px; color:var(--primary);">1 of 4 players</div>
+      </div>
+      <div class="helper" style="text-align:center;">Make teams unlocks once 4 players have joined</div>
+      <button class="btn btn-outlined" disabled aria-disabled="true">Make teams</button>
+    </div>
+    <button class="btn btn-filled" disabled aria-disabled="true">Start quiz</button>
+  </section>
+
+  <section class="screen" data-screen="lobbyPlayer" role="tabpanel">
+    <div class="topbar">
+      <button class="icon-btn" onclick="go('choice')" aria-label="Back">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <h2>Join a quiz</h2>
+    </div>
+    <div class="screen-body">
+      <div>
+        <label class="field-label" for="codeInput">Join code</label>
+        <input type="text" id="codeInput" placeholder="e.g. P8K2" style="margin-top:var(--s2); text-transform:uppercase; letter-spacing:.1em; font-family:var(--font-display); font-size:20px; text-align:center;">
+      </div>
+      <p class="helper" style="text-align:center;">Waiting for the host to start once you're in.</p>
+      <button class="btn-text" style="align-self:center; color:var(--tertiary); font-size:12px; background:none; border:none; cursor:pointer;" onclick="go('codeError')">See what an invalid code looks like →</button>
+    </div>
+    <button class="btn btn-filled" onclick="go('teamSelect')">Join</button>
+  </section>
+
+  <section class="screen" data-screen="codeError" role="tabpanel">
+    <div class="topbar">
+      <button class="icon-btn" onclick="go('lobbyPlayer')" aria-label="Back">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <h2>Join a quiz</h2>
+    </div>
+    <div class="screen-body">
+      <div>
+        <label class="field-label" for="codeInput2">Join code</label>
+        <input type="text" id="codeInput2" value="ZZZZ" style="margin-top:var(--s2); border-color:var(--tertiary); border-width:2px; text-transform:uppercase; letter-spacing:.1em; font-family:var(--font-display); font-size:20px; text-align:center;">
+      </div>
+      <div class="banner warn"><span aria-hidden="true">⚠️</span> That code isn't active — check with your host or ask for a fresh one.</div>
+    </div>
+    <button class="btn btn-filled" onclick="go('lobbyPlayer')">Try again</button>
+  </section>
+
+  <section class="screen" data-screen="teamSelect" role="tabpanel">
+    <div class="topbar">
+      <button class="icon-btn" onclick="go('lobbyPlayer')" aria-label="Back">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <h2>Pick your team</h2>
+    </div>
+    <div class="screen-body">
+      <button class="team-option" aria-pressed="true" onclick="pickTeam(this)"><span>The Quizzical Fringe · 2 players</span><span>✓</span></button>
+      <button class="team-option" aria-pressed="false" onclick="pickTeam(this)"><span>Answer's Trap · 2 players</span><span></span></button>
+      <button class="team-option" aria-pressed="false" onclick="pickTeam(this)"><span>Buzzworthy · 1 player</span><span></span></button>
+      <button class="btn btn-secondary" style="margin-top:var(--s2);">+ Create a new team</button>
+      <p class="helper" style="text-align:center;">You can switch teams or rename yours any time before the quiz starts.</p>
+    </div>
+    <button class="btn btn-filled" onclick="go('questionPlayer')">Continue</button>
+  </section>
+
+  <section class="screen" data-screen="questionHost" role="tabpanel">
+    <div class="topbar"><h2>Round 2 of 4</h2></div>
+    <div class="screen-body">
+      <div class="card">
+        <div class="helper" style="margin-bottom:var(--s2);">Live standings</div>
+        <div class="leaderboard-row"><span>The Quizzical Fringe</span><span>420</span></div>
+        <div class="leaderboard-row"><span>Answer's Trap</span><span>380</span></div>
+        <div class="leaderboard-row"><span>Buzzworthy</span><span>310</span></div>
+      </div>
+      <p class="helper" style="text-align:center;">No question text is shown here — you're refereeing, not playing.</p>
+      <div style="display:flex; gap:var(--s2);">
+        <button class="btn btn-outlined" style="flex:1;">Pause</button>
+        <button class="btn btn-filled" style="flex:1; margin:0;" onclick="go('results')">Next round</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" data-screen="questionPlayer" role="tabpanel">
+    <div class="topbar"><h2>Question 4 of 8</h2></div>
+    <div class="screen-body">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span class="helper">Answer fast for more points</span>
+        <span id="qTimerText" style="font-family:var(--font-display); font-weight:700; font-size:18px; color:var(--primary);">15</span>
+      </div>
+      <div class="timer-bar"><div class="fill" id="qTimerFill"></div></div>
+      <div class="helper" id="answeredCount" style="text-align:center;">0 of 4 answered</div>
+      <div class="question-card">Which team won the Premier League in the 2015–16 season?</div>
+      <button class="option-btn" data-correct="true" onclick="pickOption(this)">Leicester City</button>
+      <button class="option-btn" onclick="pickOption(this)">Manchester City</button>
+      <button class="option-btn" onclick="pickOption(this)">Chelsea</button>
+      <button class="option-btn" onclick="pickOption(this)">Arsenal</button>
+      <div id="pointsReadout" class="banner info" style="display:none;"></div>
+    </div>
+  </section>
+
+  <section class="screen" data-screen="questionTransition" role="tabpanel">
+    <div class="topbar"><h2>Nice work!</h2></div>
+    <div class="empty-state">
+      <div class="check-burst" aria-hidden="true">✓</div>
+      <h3 style="font-size:18px;">Everyone's answered</h3>
+      <p class="helper">Moving to the next question…</p>
+      <div class="card" style="width:100%;">
+        <div class="leaderboard-row"><span>The Quizzical Fringe</span><span>420</span></div>
+        <div class="leaderboard-row"><span>Answer's Trap</span><span>380</span></div>
+        <div class="leaderboard-row" style="border-bottom:none;"><span>Buzzworthy</span><span>310</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" data-screen="disconnected" role="tabpanel">
+    <div class="topbar"><h2>Question 4 of 8</h2></div>
+    <div class="screen-body">
+      <div class="banner warn"><span class="dot"></span> Jordan disconnected — reconnecting, their score is safe</div>
+      <div class="timer-bar"><div class="fill" style="width:60%;"></div></div>
+      <div class="question-card">Which team won the Premier League in the 2015–16 season?</div>
+      <button class="option-btn">Leicester City</button>
+      <button class="option-btn">Manchester City</button>
+      <button class="option-btn">Chelsea</button>
+      <button class="option-btn">Arsenal</button>
+    </div>
+  </section>
+
+  <section class="screen" data-screen="tieBreak" role="tabpanel">
+    <div class="topbar" style="background:var(--secondary-container); color:var(--on-secondary-container);"><h2>Sudden death tie-break</h2></div>
+    <div class="screen-body">
+      <div class="banner" style="background:var(--secondary-container); color:var(--on-secondary-container);"><span aria-hidden="true">🏆</span> The Quizzical Fringe and Answer's Trap are tied at 590</div>
+      <p class="helper">Closest answer wins it. Both teams see this question at the same time.</p>
+      <div class="question-card" style="background:var(--secondary-container); color:var(--on-secondary-container);">In what year was the first FA Cup Final played?</div>
+      <label class="field-label" for="tieAnswer">Your answer</label>
+      <input type="number" id="tieAnswer" class="numeric-input" placeholder="e.g. 1871">
+    </div>
+    <button class="btn btn-filled" onclick="go('results')">Lock in answer</button>
+  </section>
+
+  <section class="screen" data-screen="results" role="tabpanel">
+    <div class="topbar"><h2>Results</h2></div>
+    <div class="screen-body">
+      <div class="winner-badge">
+        <div class="ring" aria-hidden="true">🏆</div>
+        <div style="font-family:var(--font-display); font-weight:700; font-size:20px;">The Quizzical Fringe wins!</div>
+        <div class="helper">610 points</div>
+      </div>
+      <div class="card">
+        <div class="leaderboard-row"><span>1. The Quizzical Fringe</span><span>610</span></div>
+        <div class="leaderboard-row"><span>2. Answer's Trap</span><span>590</span></div>
+        <div class="leaderboard-row"><span>3. Buzzworthy</span><span>540</span></div>
+      </div>
+      <div class="ad-card"><div class="ad-label">Advertisement</div><div style="margin-top:var(--s1);">Ad content placeholder</div></div>
+    </div>
+    <button class="btn btn-outlined" style="margin:16px;" onclick="go('choice')">Back to home</button>
+  </section>
+
+  <section class="screen" data-screen="resultsSolo" role="tabpanel">
+    <div class="topbar"><h2>Results</h2></div>
+    <div class="screen-body">
+      <div class="winner-badge">
+        <div class="ring" aria-hidden="true">🏆</div>
+        <div style="font-family:var(--font-display); font-weight:700; font-size:20px;">Jordan wins!</div>
+        <div class="helper">340 points</div>
+      </div>
+      <div class="card">
+        <div class="leaderboard-row"><span>1. Jordan</span><span>340</span></div>
+        <div class="leaderboard-row"><span>2. Sam</span><span>310</span></div>
+        <div class="leaderboard-row"><span>3. Alex</span><span>295</span></div>
+        <div class="leaderboard-row" style="border-bottom:none;"><span>4. Robin</span><span>260</span></div>
+      </div>
+      <div class="ad-card"><div class="ad-label">Advertisement</div><div style="margin-top:var(--s1);">Ad content placeholder</div></div>
+    </div>
+    <button class="btn btn-outlined" style="margin:16px;" onclick="go('choice')">Back to home</button>
+  </section>
+
+</div>
+
+<script>
+  const order = ['name','choice','settings','rounds','roundsEmpty','genError','writeNew','myRounds','lobbyHost','lobbyEmpty','lobbyPlayer','codeError','teamSelect','questionHost','questionPlayer','questionTransition','disconnected','tieBreak','results','resultsSolo'];
+  const labels = {name:'Name',choice:'Create/Join',settings:'Settings',rounds:'Rounds',roundsEmpty:'Rounds (empty)',genError:'Rounds (AI error)',writeNew:'Write new round',myRounds:'My rounds',lobbyHost:'Lobby (host)',lobbyEmpty:'Lobby (waiting)',lobbyPlayer:'Join code',codeError:'Join (invalid code)',teamSelect:'Team select',questionHost:'Host controller',questionPlayer:'Question',questionTransition:'Question transition',disconnected:'Question (disconnect)',tieBreak:'Tie-break',results:'Results (teams)',resultsSolo:'Results (solo)'};
+
+  const tabbar = document.getElementById('tabbar');
+  order.forEach(id=>{
+    const b = document.createElement('button');
+    b.className='tab'; b.textContent=labels[id]; b.role='tab';
+    b.setAttribute('aria-selected', id==='name');
+    b.onclick=()=>go(id);
+    b.id='tab-'+id;
+    tabbar.appendChild(b);
+  });
+
+  function go(id){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active', s.dataset.screen===id));
+    document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected', t.id==='tab-'+id));
+    if(id==='questionPlayer'){ startQuestionTimer(); }
+  }
+
+  function toggleTeams(){
+    const on = document.getElementById('teamToggle').checked;
+    document.getElementById('teamCountField').style.display = on ? 'block' : 'none';
+  }
+
+  function toggleHostPlays(){
+    const on = document.getElementById('hostPlaysToggle').checked;
+    document.getElementById('hostPlaysHelper').textContent = on
+      ? 'You play too — an automated check screens questions instead of you reviewing them.'
+      : 'You referee, no spoilers.';
+  }
+
+  function setDiff(btn){
+    btn.parentElement.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed','false'));
+    btn.setAttribute('aria-pressed','true');
+  }
+
+  const roundColors = [
+    {bg:'#E6DFFF', text:'#211551'}, // purple
+    {bg:'#FFE7A3', text:'#3A2A00'}, // gold
+    {bg:'#F3D9FF', text:'#3A0057'}, // plum
+    {bg:'#B2F2E5', text:'#00201C'}, // teal
+    {bg:'#D3E4FF', text:'#001C38'}, // sky
+    {bg:'#FFD8E4', text:'#3E001E'}, // rose
+    {bg:'#DCF5C7', text:'#1B2E0A'}, // lime
+    {bg:'#FFDCC0', text:'#3A1800'}  // orange
+  ];
+  let roundUidCounter = 0;
+  const roundManualData = {}; // uid -> {title, questions: [{text, options:[4], correct}], sourceType}
+  function createRoundCard(n){
+    const card = document.createElement('div');
+    card.className='round-card';
+    const uid = 'r' + (++roundUidCounter);
+    card.dataset.uid = uid;
+    card.dataset.source = 'auto';
+    const c = roundColors[(n-1) % roundColors.length];
+    card.innerHTML = `
+      <div class="round-card-head">
+        <div class="round-badge" style="background:${c.bg};color:${c.text};">${n}</div>
+        <label class="field-label">Round ${n}</label>
+        <button class="icon-btn" style="width:32px;height:32px;color:var(--tertiary);" aria-label="Remove round ${n}" onclick="removeRound(this)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div class="segmented" role="group" aria-label="Round ${n} source">
+        <button aria-pressed="true" onclick="setRoundSource(this,'auto')">Auto-build</button>
+        <button aria-pressed="false" onclick="setRoundSource(this,'library')">My rounds</button>
+      </div>
+      <div class="source-content source-auto">
+        <input type="text" placeholder="e.g. English Premier League, 2012 onwards" oninput="checkModeration(this); checkBankMatch(this);">
+        <div class="bank-badge" style="display:none;"></div>
+        <p class="helper">Be as specific as you like — the more detail you give, the more on-target your questions will be.</p>
+      </div>
+      <div class="source-content source-manual" style="display:none;">
+        <div class="manual-round-summary"></div>
+      </div>
+      <div class="switch-row" style="padding-top:4px;">
+        <div style="font-size:13px; font-weight:700;">Double points round</div>
+        <label class="switch"><input type="checkbox"><span class="track"></span><span class="thumb"></span></label>
+      </div>`;
+    renderManualSummary(card);
+    return card;
+  }
+
+  function setRoundSource(btn, mode){
+    const card = btn.closest('.round-card');
+    card.dataset.source = mode;
+    card.querySelectorAll('.segmented button').forEach(b=>b.setAttribute('aria-pressed', b===btn));
+    card.querySelector('.source-auto').style.display = mode==='auto' ? 'flex' : 'none';
+    card.querySelector('.source-auto').style.flexDirection = 'column';
+    card.querySelector('.source-auto').style.gap = 'var(--s2)';
+    card.querySelector('.source-manual').style.display = mode==='auto' ? 'none' : 'block';
+    if(mode!=='auto'){ renderManualSummary(card); }
+    updateGenerateButtonState();
+  }
+
+  function renderManualSummary(card){
+    const uid = card.dataset.uid;
+    const wrap = card.querySelector('.manual-round-summary');
+    const data = roundManualData[uid];
+    if(data && data.questions.length){
+      const tag = data.sourceType === 'library' ? '📚 From My rounds' : '✍️ Manual';
+      wrap.innerHTML = `
+        <div class="title-row">
+          <div>
+            <div style="font-weight:700; font-size:14px;">${data.title || 'Untitled round'}</div>
+            <div class="helper">${data.questions.length} question${data.questions.length===1?'':'s'} — ${tag}</div>
+          </div>
+          <div style="display:flex; gap:var(--s2);">
+            <button class="btn btn-outlined" style="height:36px; padding:0 var(--s3); font-size:12px;" onclick="openWriteNew('${uid}')">Edit</button>
+            <button class="btn btn-outlined" style="height:36px; padding:0 var(--s3); font-size:12px;" onclick="openMyRounds('${uid}')">Change</button>
+          </div>
+        </div>`;
+    } else {
+      wrap.innerHTML = `
+        <p class="helper">No round picked yet. Rounds you write from Settings show up here.</p>
+        <button class="btn btn-outlined" style="height:40px; margin:0;" onclick="openMyRounds('${uid}')">Browse my rounds</button>`;
+    }
+  }
+
+  function renumberRounds(){
+    const cards = document.querySelectorAll('#roundList .round-card');
+    cards.forEach((card, i)=>{
+      const n = i+1;
+      const c = roundColors[(n-1) % roundColors.length];
+      const badge = card.querySelector('.round-badge');
+      badge.textContent = n;
+      badge.style.background = c.bg;
+      badge.style.color = c.text;
+      card.querySelector('.field-label').textContent = `Round ${n}`;
+      card.querySelector('.icon-btn').setAttribute('aria-label', `Remove round ${n}`);
+    });
+  }
+
+  function populateRounds(){
+    const count = Math.max(1, parseInt(document.getElementById('rounds').value, 10) || 1);
+    const list = document.getElementById('roundList');
+    list.innerHTML='';
+    for(let i=1;i<=count;i++){ list.appendChild(createRoundCard(i)); }
+  }
+
+  function addRound(){
+    const list = document.getElementById('roundList');
+    list.appendChild(createRoundCard(list.children.length + 1));
+  }
+
+  function removeRound(btn){
+    const list = document.getElementById('roundList');
+    if(list.children.length <= 1) return;
+    btn.closest('.round-card').remove();
+    renumberRounds();
+  }
+
+  // ---- Write New (paginated question stepper) ----
+  // Two entry contexts: uid provided = editing a specific round card's
+  // assigned content (finishing returns to Rounds). uid null = creating a
+  // fresh round from Settings, which only ever saves into the personal
+  // library (finishing returns to Settings) — it isn't assigned to any
+  // round slot until the host later picks it via "My rounds".
+  let wnActiveUid = null;
+  let wnReturnScreen = 'rounds';
+  let wnLibraryDraftId = null;
+  let wnQuestions = [];
+  let wnIndex = 0;
+  let wnSaveTimeout = null;
+
+  function blankWnQuestion(){ return { text:'', options:['','','',''], correct:null }; }
+
+  function openWriteNew(uid){
+    wnActiveUid = uid;
+    wnReturnScreen = uid ? 'rounds' : 'settings';
+    wnLibraryDraftId = null;
+    const existing = uid ? roundManualData[uid] : null;
+    document.getElementById('wnTitle').value = existing ? existing.title : '';
+    wnQuestions = existing && existing.questions.length ? JSON.parse(JSON.stringify(existing.questions)) : [blankWnQuestion()];
+    wnIndex = 0;
+    go('writeNew');
+    wnRender();
+  }
+
+  function wnRender(){
+    const q = wnQuestions[wnIndex];
+    document.getElementById('wnProgress').textContent = `Question ${wnIndex+1}`;
+    document.getElementById('wnQuestionText').value = q.text;
+    const optionInputs = document.querySelectorAll('#wnOptions input');
+    const radios = document.querySelectorAll('#wnOptions .correct-radio');
+    optionInputs.forEach((inp,i)=>{ inp.value = q.options[i]; });
+    radios.forEach((r,i)=>{ r.setAttribute('aria-pressed', q.correct===i); });
+    document.getElementById('wnBackBtn').disabled = wnIndex===0;
+    document.getElementById('wnDeleteBtn').style.visibility = wnQuestions.length>1 ? 'visible' : 'hidden';
+    document.getElementById('wnNextBtn').textContent = wnIndex === wnQuestions.length-1
+      ? (wnQuestions.length>=12 ? 'Question added' : 'Next question (add new)')
+      : 'Next question';
+    if(wnIndex === wnQuestions.length-1 && wnQuestions.length>=12){
+      document.getElementById('wnNextBtn').disabled = true;
+    } else {
+      document.getElementById('wnNextBtn').disabled = false;
+    }
+    document.getElementById('wnCount').textContent = wnQuestions.length;
+    document.getElementById('wnPlural').textContent = wnQuestions.length===1 ? '' : 's';
+  }
+
+  function wnUpdateField(){
+    const q = wnQuestions[wnIndex];
+    q.text = document.getElementById('wnQuestionText').value;
+    document.querySelectorAll('#wnOptions input').forEach((inp,i)=>{ q.options[i] = inp.value; });
+    wnAutosave();
+  }
+
+  function wnSetCorrect(i){
+    wnQuestions[wnIndex].correct = i;
+    document.querySelectorAll('#wnOptions .correct-radio').forEach((r,idx)=>r.setAttribute('aria-pressed', idx===i));
+    wnAutosave();
+  }
+
+  function wnUpdateTitle(val){
+    if(wnActiveUid && roundManualData[wnActiveUid]) roundManualData[wnActiveUid].title = val;
+    wnAutosave();
+  }
+
+  function wnAutosave(){
+    const title = document.getElementById('wnTitle').value;
+    const completeQuestions = wnQuestions.filter(q => q.text && q.options.every(o=>o) && q.correct!==null);
+    if(completeQuestions.length === 0) return;
+    const ind = document.getElementById('wnSaveIndicator');
+    if(wnActiveUid){
+      // Editing a round already assigned to a slot — updates that slot's own
+      // copy only. Deliberately does NOT rewrite the saved library template,
+      // so a quick in-context tweak for tonight doesn't silently change the
+      // reusable version for next time.
+      roundManualData[wnActiveUid] = { title, questions: JSON.parse(JSON.stringify(wnQuestions)), sourceType: roundManualData[wnActiveUid]?.sourceType || 'written' };
+      ind.textContent = '✓ Saved';
+    } else {
+      // Fresh round started from Settings — autosaves straight into the
+      // personal library, since it isn't assigned to any round slot yet.
+      if(!wnLibraryDraftId){
+        wnLibraryDraftId = 'lib' + Date.now();
+        libraryData.push({ id: wnLibraryDraftId, title, questions: [], lastUsed: 'Just created' });
+      }
+      const entry = libraryData.find(r=>r.id===wnLibraryDraftId);
+      entry.title = title;
+      entry.questions = JSON.parse(JSON.stringify(wnQuestions));
+      ind.textContent = '✓ Saved to My rounds';
+    }
+    ind.classList.add('show');
+    clearTimeout(wnSaveTimeout);
+    wnSaveTimeout = setTimeout(()=>ind.classList.remove('show'), 1500);
+  }
+
+  function wnNext(){
+    if(wnIndex < wnQuestions.length-1){ wnIndex++; }
+    else if(wnQuestions.length < 12){ wnQuestions.push(blankWnQuestion()); wnIndex++; }
+    wnRender();
+  }
+
+  function wnPrev(){
+    if(wnIndex>0){ wnIndex--; wnRender(); }
+  }
+
+  function wnDeleteQuestion(){
+    if(wnQuestions.length<=1) return;
+    wnQuestions.splice(wnIndex,1);
+    if(wnIndex >= wnQuestions.length) wnIndex = wnQuestions.length-1;
+    wnAutosave();
+    wnRender();
+  }
+
+  function wnFinish(){
+    wnAutosave();
+    if(wnActiveUid){
+      const card = document.querySelector(`.round-card[data-uid="${wnActiveUid}"]`);
+      if(card) renderManualSummary(card);
+      updateGenerateButtonState();
+    }
+    go(wnReturnScreen);
+  }
+
+  // ---- My Rounds (library) ----
+  let libraryActiveUid = null;
+  let libraryData = [
+    { id:'lib1', title:'Office trivia', questions:new Array(5).fill(0), lastUsed:'Used 2 weeks ago' },
+    { id:'lib2', title:'90s throwback', questions:new Array(8).fill(0), lastUsed:'Used last month' }
+  ];
+  let libraryPendingDelete = null;
+
+  function openMyRounds(uid){
+    libraryActiveUid = uid;
+    go('myRounds');
+    renderLibrary();
+  }
+
+  function renderLibrary(){
+    const wrap = document.getElementById('libraryList');
+    if(!libraryData.length){
+      wrap.innerHTML = `<div class="empty-state"><div class="icon" aria-hidden="true">📚</div><h3 style="font-size:18px;">No saved rounds yet</h3><p class="helper">Rounds you write are saved here automatically.</p></div>`;
+      return;
+    }
+    wrap.innerHTML = libraryData.map(r => `
+      <div class="library-row">
+        <div>
+          <div style="font-weight:700; font-size:14px;">${r.title}</div>
+          <div class="meta">${r.questions.length} questions — ${r.lastUsed}</div>
+        </div>
+        <div style="display:flex; gap:var(--s2); align-items:center;">
+          ${libraryPendingDelete===r.id
+            ? `<button class="btn btn-outlined" style="height:36px; padding:0 var(--s3); font-size:11px; border-color:var(--tertiary); color:var(--tertiary);" onclick="confirmDeleteLibraryRound('${r.id}')">Confirm delete?</button>`
+            : `<button class="icon-btn" style="width:32px;height:32px;color:var(--tertiary);" aria-label="Delete ${r.title}" onclick="deleteLibraryRound('${r.id}')">
+                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path></svg>
+               </button>`}
+          <button class="btn btn-filled" style="height:36px; padding:0 var(--s3); font-size:12px; margin:0;" onclick="useLibraryRound('${r.id}')">Use</button>
+        </div>
+      </div>`).join('');
+  }
+
+  function useLibraryRound(id){
+    const r = libraryData.find(x=>x.id===id);
+    if(!r || !libraryActiveUid) return;
+    roundManualData[libraryActiveUid] = {
+      title: r.title,
+      sourceType: 'library',
+      questions: r.questions.map(()=>({ text:'Sample question', options:['A','B','C','D'], correct:0 }))
+    };
+    const card = document.querySelector(`.round-card[data-uid="${libraryActiveUid}"]`);
+    if(card) renderManualSummary(card);
+    updateGenerateButtonState();
+    go('rounds');
+  }
+
+  function deleteLibraryRound(id){
+    libraryPendingDelete = id;
+    renderLibrary();
+    setTimeout(()=>{ if(libraryPendingDelete===id){ libraryPendingDelete=null; renderLibrary(); } }, 3000);
+  }
+
+  function confirmDeleteLibraryRound(id){
+    libraryData = libraryData.filter(r=>r.id!==id);
+    libraryPendingDelete = null;
+    renderLibrary();
+  }
+
+  const qTotalPlayers = 4;
+  let qSecondsLeft = 15, qTimerHandle = null, qAnsweredCount = 0, qAiTimeouts = [];
+
+  // DEMO ONLY: illustrates the moderation UI pattern (inline flag + blocked submission).
+  // The real trigger list must come from the app's live server-side profanity
+  // filter (nameModeration.js, per the design-system-handoff) — never a
+  // hardcoded client-side list, which is trivially bypassed. Wired to every
+  // field the host can type into: round topics, and now round titles,
+  // question text, and every answer option in Write New.
+  const moderationDemoTriggers = ['banned'];
+  function checkModeration(input){
+    const val = input.value.toLowerCase();
+    const anchor = input.closest('.manual-option-row') || input;
+    const flagged = moderationDemoTriggers.some(w => val.includes(w));
+    let msg = anchor.nextElementSibling && anchor.nextElementSibling.classList.contains('mod-warning') ? anchor.nextElementSibling : null;
+    if(flagged){
+      input.classList.add('field-error');
+      input.setAttribute('aria-invalid','true');
+      if(!msg){
+        msg = document.createElement('div');
+        msg.className = 'banner warn mod-warning';
+        msg.textContent = "This looks like it might not be appropriate — please rephrase it.";
+        anchor.insertAdjacentElement('afterend', msg);
+      }
+    } else {
+      input.classList.remove('field-error');
+      input.removeAttribute('aria-invalid');
+      if(msg) msg.remove();
+    }
+    updateGenerateButtonState();
+  }
+
+  function updateGenerateButtonState(){
+    const btn = document.getElementById('generateBtn');
+    if(!btn) return;
+    const anyFlagged = document.querySelectorAll('#roundList input.field-error').length > 0;
+    const anyIncompleteManual = Array.from(document.querySelectorAll('#roundList .round-card')).some(card=>{
+      const mode = card.dataset.source;
+      if(mode==='auto') return false;
+      const data = roundManualData[card.dataset.uid];
+      return !data || !data.questions.length;
+    });
+    const blocked = anyFlagged || anyIncompleteManual;
+    btn.disabled = blocked;
+    btn.setAttribute('aria-disabled', blocked);
+  }
+
+  // DEMO: simple keyword match standing in for real fuzzy category matching server-side.
+  // Real implementation matches against the BankQuestion category list (see handoff doc §4).
+  const bankCategories = {
+    'general knowledge': 'General knowledge', 'general': 'General knowledge',
+    'movie': 'Movies', 'film': 'Movies', 'friends': 'Friends', 'simpsons': 'The Simpsons',
+    'harry potter': 'Harry Potter', 'star wars': 'Star Wars', 'marvel': 'Marvel', 'disney': 'Disney/Pixar',
+    'music': 'Music', 'song': 'Music', '80s music': '80s Music', '90s music': '90s Music',
+    '70s music': '70s Music', '2000s music': '2000s Music', 'rock music': 'Rock', 'hip hop': 'Hip-Hop/Rap',
+    'sport': 'Sport', 'football': 'Football/Soccer', 'soccer': 'Football/Soccer', 'premier league': 'Premier League',
+    'rugby': 'Rugby', 'cricket': 'Cricket', 'nfl': 'American Football', 'nba': 'Basketball',
+    'tennis': 'Tennis', 'golf': 'Golf', 'formula 1': 'Formula 1', 'f1': 'Formula 1', 'olympics': 'Olympics',
+    'history': 'History', 'geography': 'Geography', 'capitals': 'World Capitals', 'flags': 'Flags',
+    'science': 'Science', 'space': 'Space/Astronomy', 'tv': 'TV', 'television': 'TV',
+    'food': 'Food & Drink', 'drink': 'Food & Drink', 'cocktails': 'Food & Drink',
+    'video games': 'Video Games', 'gaming': 'Video Games'
+  };
+  function checkBankMatch(input){
+    const val = input.value.toLowerCase().trim();
+    const badge = input.parentElement.querySelector('.bank-badge');
+    if(!badge) return;
+    if(val.length < 3){ badge.style.display='none'; return; }
+    let matched = null;
+    for(const key in bankCategories){
+      if(val === key || val === bankCategories[key].toLowerCase()){ matched = bankCategories[key]; break; }
+    }
+    badge.style.display = 'inline-flex';
+    if(matched){
+      badge.className = 'bank-badge instant';
+      badge.innerHTML = `⚡ Instant — pulled from our ${matched} question bank`;
+    } else {
+      badge.className = 'bank-badge custom';
+      badge.innerHTML = `✨ Custom round — AI will generate this specifically`;
+    }
+  }
+
+  function pickOption(btn){
+    const wrap = btn.closest('.screen-body');
+    if(wrap.dataset.locked==='true') return;
+    wrap.dataset.locked='true';
+    wrap.querySelectorAll('.option-btn').forEach(b=>b.setAttribute('aria-pressed', b===btn ? 'true' : 'false'));
+
+    const correct = btn.dataset.correct === 'true';
+    const points = correct ? Math.round(100 + 400 * (qSecondsLeft/15)) : 0;
+    wrap.dataset.pendingCorrect = correct;
+    wrap.dataset.pendingPoints = points;
+
+    const readout = document.getElementById('pointsReadout');
+    if(readout){
+      readout.style.display='flex';
+      readout.className='banner info';
+      readout.textContent='Locked in — waiting for everyone else to answer…';
+    }
+    qAnsweredCount++;
+    updateAnsweredText();
+    if(qAnsweredCount >= qTotalPlayers){ revealAndAdvance(); }
+  }
+
+  function updateAnsweredText(){
+    const el = document.getElementById('answeredCount');
+    if(el) el.textContent = `${Math.min(qAnsweredCount, qTotalPlayers)} of ${qTotalPlayers} answered`;
+  }
+
+  function scheduleSimulatedAnswers(){
+    qAiTimeouts.forEach(t=>clearTimeout(t));
+    qAiTimeouts = [2,3,4].map(()=>{
+      const delay = 2000 + Math.random()*10000;
+      return setTimeout(()=>{
+        qAnsweredCount++;
+        updateAnsweredText();
+        if(qAnsweredCount >= qTotalPlayers){ revealAndAdvance(); }
+      }, delay);
+    });
+  }
+
+  function revealAnswer(){
+    const wrap = document.querySelector('[data-screen="questionPlayer"] .screen-body');
+    if(!wrap) return;
+    wrap.querySelectorAll('.option-btn').forEach(b=>{
+      if(b.dataset.correct==='true'){ b.classList.add('correct-reveal'); }
+      else if(b.getAttribute('aria-pressed')==='true'){ b.classList.add('user-pick-wrong'); }
+    });
+    const readout = document.getElementById('pointsReadout');
+    const correctBtn = wrap.querySelector('.option-btn[data-correct="true"]');
+    const correctText = correctBtn ? correctBtn.textContent.trim() : '';
+    if(readout){
+      const wasCorrect = wrap.dataset.pendingCorrect === 'true';
+      const points = wrap.dataset.pendingPoints || 0;
+      readout.className = wasCorrect ? 'banner info' : 'banner warn';
+      readout.textContent = wasCorrect
+        ? `Correct! ${correctText} — +${points} points`
+        : `Correct answer: ${correctText} — you scored 0`;
+    }
+  }
+
+  function revealAndAdvance(){
+    clearInterval(qTimerHandle);
+    qAiTimeouts.forEach(t=>clearTimeout(t));
+    revealAnswer();
+    setTimeout(()=>{ advanceQuestion(); }, 1800);
+  }
+
+  function advanceQuestion(){
+    go('questionTransition');
+    setTimeout(()=>{ go('questionPlayer'); }, 2200);
+  }
+
+  function startQuestionTimer(){
+    clearInterval(qTimerHandle);
+    qAiTimeouts.forEach(t=>clearTimeout(t));
+    qSecondsLeft = 15;
+    qAnsweredCount = 0;
+    const wrap = document.querySelector('[data-screen="questionPlayer"] .screen-body');
+    if(wrap){ wrap.dataset.locked='false'; delete wrap.dataset.pendingCorrect; delete wrap.dataset.pendingPoints; }
+    const readout = document.getElementById('pointsReadout');
+    if(readout) readout.style.display='none';
+    document.querySelectorAll('[data-screen="questionPlayer"] .option-btn').forEach(b=>{
+      b.setAttribute('aria-pressed','false');
+      b.classList.remove('correct-reveal','user-pick-wrong');
+    });
+    updateAnsweredText();
+    const fill = document.getElementById('qTimerFill');
+    const text = document.getElementById('qTimerText');
+    if(fill){ fill.style.transition='none'; fill.style.width='100%'; requestAnimationFrame(()=>{ fill.style.transition='width 1s linear'; }); }
+    if(text) text.textContent = qSecondsLeft;
+    scheduleSimulatedAnswers();
+    qTimerHandle = setInterval(()=>{
+      qSecondsLeft--;
+      if(fill) fill.style.width = (qSecondsLeft/15*100)+'%';
+      if(text) text.textContent = Math.max(qSecondsLeft,0);
+      if(qSecondsLeft<=0){
+        clearInterval(qTimerHandle);
+        if(wrap && wrap.dataset.locked!=='true'){
+          wrap.dataset.locked='true';
+          wrap.dataset.pendingCorrect='false';
+          wrap.dataset.pendingPoints='0';
+        }
+        revealAndAdvance();
+      }
+    }, 1000);
+  }
+
+  function pickTeam(btn){
+    btn.parentElement.querySelectorAll('.team-option').forEach(b=>{ b.setAttribute('aria-pressed','false'); b.querySelector('span:last-child').textContent=''; });
+    btn.setAttribute('aria-pressed','true');
+    btn.querySelector('span:last-child').textContent='✓';
+  }
+
+  const funnyNames = ['The Quizzical Fringe',"Answer's Trap",'Buzzworthy','Sofa Kingdom','Trivial Pursuits','Quiztopher Walken'];
+  const teamTints = ['primary-container','success-container','accent-light'];
+  function makeTeams(){
+    const count = Math.max(1, parseInt(document.getElementById('teamCount').value, 10) || 1);
+    const wrap = document.getElementById('teamChips');
+    wrap.innerHTML='';
+    wrap.style.display='flex';
+    for(let i=0;i<count;i++){
+      const row = document.createElement('div');
+      const tint = teamTints[i % teamTints.length];
+      row.className='team-chip';
+      row.style.background = `var(--${tint})`;
+      row.innerHTML = `<span>${funnyNames[i % funnyNames.length]}</span><span class="helper">${i===0?2:1} player${i===0?'s':''}</span>`;
+      wrap.appendChild(row);
+    }
+  }
+
+  populateRounds();
+
+  let secondsLeft = 30;
+  setInterval(()=>{
+    if(secondsLeft>0){ secondsLeft--; }
+    const fill = document.getElementById('timerFill');
+    const text = document.getElementById('timerText');
+    if(fill && text){ fill.style.width = (secondsLeft/30*100)+'%'; text.textContent = secondsLeft; }
+    if(secondsLeft===0){ makeTeams(); }
+  }, 1000);
+</script>
+</body>
+</html>
