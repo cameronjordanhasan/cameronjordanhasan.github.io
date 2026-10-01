@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quizzy McQuizface, a case study by Cameron Hasan</title>
+<meta name="description" content="How Cameron Hasan designed and built Quizzy McQuizface, a live multiplayer pub quiz app on the App Store, from competitor research to a responsive web build.">
+<meta property="og:title" content="Quizzy McQuizface, a case study by Cameron Hasan">
+<meta property="og:description" content="A live multiplayer pub quiz app, designed and built solo and live on the App Store.">
+<meta property="og:type" content="article">
+<meta name="theme-color" content="#1A44B8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500..700&family=Roboto:wght@400;500&family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap" rel="stylesheet">
+<script>
+  document.documentElement.classList.add('js');
+  try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/case-study.css">
+</head>
+<body class="cs-quizzy">
+
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <clipPath id="cookie" clipPathUnits="objectBoundingBox"><path d="M0.9900 0.5000 L0.9881 0.5128 L0.9826 0.5253 L0.9739 0.5373 L0.9625 0.5486 L0.9491 0.5591 L0.9346 0.5688 L0.9199 0.5778 L0.9059 0.5863 L0.8935 0.5945 L0.8832 0.6027 L0.8756 0.6112 L0.8709 0.6205 L0.8692 0.6308 L0.8704 0.6422 L0.8738 0.6549 L0.8791 0.6688 L0.8855 0.6839 L0.8920 0.6998 L0.8981 0.7161 L0.9027 0.7325 L0.9053 0.7484 L0.9053 0.7632 L0.9024 0.7766 L0.8964 0.7880 L0.8874 0.7973 L0.8756 0.8042 L0.8615 0.8087 L0.8456 0.8111 L0.8286 0.8118 L0.8111 0.8111 L0.7940 0.8098 L0.7777 0.8084 L0.7628 0.8077 L0.7497 0.8083 L0.7385 0.8108 L0.7292 0.8155 L0.7219 0.8228 L0.7161 0.8327 L0.7114 0.8450 L0.7075 0.8594 L0.7038 0.8753 L0.6998 0.8920 L0.6950 0.9088 L0.6891 0.9248 L0.6819 0.9392 L0.6732 0.9512 L0.6630 0.9603 L0.6514 0.9660 L0.6387 0.9682 L0.6251 0.9668 L0.6110 0.9622 L0.5967 0.9548 L0.5825 0.9454 L0.5688 0.9346 L0.5557 0.9234 L0.5434 0.9127 L0.5317 0.9034 L0.5208 0.8962 L0.5103 0.8916 L0.5000 0.8900 L0.4897 0.8916 L0.4792 0.8962 L0.4683 0.9034 L0.4566 0.9127 L0.4443 0.9234 L0.4312 0.9346 L0.4175 0.9454 L0.4033 0.9548 L0.3890 0.9622 L0.3749 0.9668 L0.3613 0.9682 L0.3486 0.9660 L0.3370 0.9603 L0.3268 0.9512 L0.3181 0.9392 L0.3109 0.9248 L0.3050 0.9088 L0.3002 0.8920 L0.2962 0.8753 L0.2925 0.8594 L0.2886 0.8450 L0.2839 0.8327 L0.2781 0.8228 L0.2708 0.8155 L0.2615 0.8108 L0.2503 0.8083 L0.2372 0.8077 L0.2223 0.8084 L0.2060 0.8098 L0.1889 0.8111 L0.1714 0.8118 L0.1544 0.8111 L0.1385 0.8087 L0.1244 0.8042 L0.1126 0.7973 L0.1036 0.7880 L0.0976 0.7766 L0.0947 0.7632 L0.0947 0.7484 L0.0973 0.7325 L0.1019 0.7161 L0.1080 0.6998 L0.1145 0.6839 L0.1209 0.6688 L0.1262 0.6549 L0.1296 0.6422 L0.1308 0.6308 L0.1291 0.6205 L0.1244 0.6112 L0.1168 0.6027 L0.1065 0.5945 L0.0941 0.5863 L0.0801 0.5778 L0.0654 0.5688 L0.0509 0.5591 L0.0375 0.5486 L0.0261 0.5373 L0.0174 0.5253 L0.0119 0.5128 L0.0100 0.5000 L0.0119 0.4872 L0.0174 0.4747 L0.0261 0.4627 L0.0375 0.4514 L0.0509 0.4409 L0.0654 0.4312 L0.0801 0.4222 L0.0941 0.4137 L0.1065 0.4055 L0.1168 0.3973 L0.1244 0.3888 L0.1291 0.3795 L0.1308 0.3692 L0.1296 0.3578 L0.1262 0.3451 L0.1209 0.3312 L0.1145 0.3161 L0.1080 0.3002 L0.1019 0.2839 L0.0973 0.2675 L0.0947 0.2516 L0.0947 0.2368 L0.0976 0.2234 L0.1036 0.2120 L0.1126 0.2027 L0.1244 0.1958 L0.1385 0.1913 L0.1544 0.1889 L0.1714 0.1882 L0.1889 0.1889 L0.2060 0.1902 L0.2223 0.1916 L0.2372 0.1923 L0.2503 0.1917 L0.2615 0.1892 L0.2708 0.1845 L0.2781 0.1772 L0.2839 0.1673 L0.2886 0.1550 L0.2925 0.1406 L0.2962 0.1247 L0.3002 0.1080 L0.3050 0.0912 L0.3109 0.0752 L0.3181 0.0608 L0.3268 0.0488 L0.3370 0.0397 L0.3486 0.0340 L0.3613 0.0318 L0.3749 0.0332 L0.3890 0.0378 L0.4033 0.0452 L0.4175 0.0546 L0.4312 0.0654 L0.4443 0.0766 L0.4566 0.0873 L0.4683 0.0966 L0.4792 0.1038 L0.4897 0.1084 L0.5000 0.1100 L0.5103 0.1084 L0.5208 0.1038 L0.5317 0.0966 L0.5434 0.0873 L0.5557 0.0766 L0.5688 0.0654 L0.5825 0.0546 L0.5967 0.0452 L0.6110 0.0378 L0.6251 0.0332 L0.6387 0.0318 L0.6514 0.0340 L0.6630 0.0397 L0.6732 0.0488 L0.6819 0.0608 L0.6891 0.0752 L0.6950 0.0912 L0.6998 0.1080 L0.7038 0.1247 L0.7075 0.1406 L0.7114 0.1550 L0.7161 0.1673 L0.7219 0.1772 L0.7292 0.1845 L0.7385 0.1892 L0.7497 0.1917 L0.7628 0.1923 L0.7777 0.1916 L0.7940 0.1902 L0.8111 0.1889 L0.8286 0.1882 L0.8456 0.1889 L0.8615 0.1913 L0.8756 0.1958 L0.8874 0.2027 L0.8964 0.2120 L0.9024 0.2234 L0.9053 0.2368 L0.9053 0.2516 L0.9027 0.2675 L0.8981 0.2839 L0.8920 0.3002 L0.8855 0.3161 L0.8791 0.3312 L0.8738 0.3451 L0.8704 0.3578 L0.8692 0.3692 L0.8709 0.3795 L0.8756 0.3888 L0.8832 0.3973 L0.8935 0.4055 L0.9059 0.4137 L0.9199 0.4222 L0.9346 0.4312 L0.9491 0.4409 L0.9625 0.4514 L0.9739 0.4627 L0.9826 0.4747 L0.9881 0.4872 Z"/></clipPath>
+</svg>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="../index.html" aria-label="Cameron Hasan, home">
+      <span class="brand-mark" aria-hidden="true">C</span>
+      <span class="brand-name">Cameron Hasan</span>
+    </a>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <ul class="nav-list">
+        <li><a href="../index.html#work">Work</a></li>
+        <li><a href="../index.html#story">Experience</a></li>
+        <li><a href="../index.html#kind-words">Kind words</a></li>
+        <li><a href="../index.html#films">Films</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch to dark theme">
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12.3 22q-2.1 0-3.9-.8t-3.2-2.1-2.1-3.2T2.3 12q0-3.6 2.3-6.3T10.4 2.2q-.4 2.1.2 4.1t2.1 3.5 3.5 2.1 4.1.2q-.6 3.5-3.3 5.8T12.3 22Z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></g></svg>
+    </button>
+    <button class="icon-btn menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+      <svg class="icon-menu" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 18v-2h18v2H3Zm0-5v-2h18v2H3Zm0-5V6h18v2H3Z"/></svg>
+      <svg class="icon-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.4 19 5 17.6 10.6 12 5 6.4 6.4 5 12 10.6 17.6 5 19 6.4 13.4 12 19 17.6 17.6 19 12 13.4 6.4 19Z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+<div class="cs-hero">
+  <div class="wrap">
+    <a class="back-link" href="../index.html#work"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="m10 18-6-6 6-6 1.4 1.45L7.85 11H20v2H7.85l3.55 3.55L10 18Z"/></svg>All work</a>
+    <div class="hero-split">
+      <div class="hero-media">
+        <div class="hero-reel">
+          <video class="reel" poster="../images/quizzy/highlights-poster.png" width="720" height="1566" muted loop playsinline preload="metadata" aria-label="A 32 second silent highlight reel of Quizzy McQuizface: building two rounds, the quiz generating, the lobby with its join code, answering a double points question and seeing the reveal, a correct answer with confetti, the leaderboard and the final results"><source src="../video/quizzy-highlights.mp4" type="video/mp4"><source src="../video/quizzy-highlights.webm" type="video/webm"></video>
+          <button class="icon-btn reel-toggle" type="button" aria-label="Play the highlight reel" aria-pressed="false"><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5v14l11-7L8 5Z"/></svg><svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6 19h4V5H6v14Zm8-14v14h4V5h-4Z"/></svg></button>
+        </div>
+      </div>
+      <div class="hero-text">
+        <h1 class="cs-title">Quizzy McQuizface</h1>
+    <p class="cs-subtitle">A live, multiplayer pub quiz app I designed and built myself, from competitor research through to a shipped iOS app and a responsive web build.</p>
+    <div class="cs-actions">
+      <a class="btn btn-action" href="https://apps.apple.com/us/app/quizzy-mcquizface/id6801551550">Download on the App Store <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M5 21q-.8 0-1.4-.6T3 19V5q0-.8.6-1.4T5 3h7v2H5v14h14v-7h2v7q0 .8-.6 1.4T19 21H5Zm4.7-5.3-1.4-1.4L17.6 5H14V3h7v7h-2V6.4l-9.3 9.3Z"/></svg></a>
+      <a class="btn btn-outlined" href="https://quizzymcquizface-1.onrender.com">Play in your browser <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M5 21q-.8 0-1.4-.6T3 19V5q0-.8.6-1.4T5 3h7v2H5v14h14v-7h2v7q0 .8-.6 1.4T19 21H5Zm4.7-5.3-1.4-1.4L17.6 5H14V3h7v7h-2V6.4l-9.3 9.3Z"/></svg></a>
+    </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="cs-section" aria-labelledby="overview-title">
+  <div class="wrap">
+    <h2 id="overview-title" class="visually-hidden">Project overview</h2>
+    <dl class="cs-details">
+      <div><dt>Project type</dt><dd>Independent product, iOS app and web</dd></div>
+      <div><dt>Role</dt><dd>Designer and builder</dd></div>
+      <div><dt>Industry</dt><dd>Social gaming</dd></div>
+      <div><dt>Tools</dt><dd>Claude Design, Claude Code, React Native, ChatGPT API</dd></div>
+      <div><dt>Duration</dt><dd>Aug to Sep 2026</dd></div>
+    </dl>
+    <h3 class="title-lg" style="margin-bottom: var(--s2)">Key summary</h3>
+    <p class="cs-summary">Quizzy McQuizface is a live, multiplayer pub quiz app for iOS and the web. A host builds a quiz of four or more rounds, and each round can be a topic written by AI, a topic matched instantly from a hand curated bank of 3,130 questions, or a round the host writes themselves. Everyone joins from their own phone with a short code, answers against a countdown and watches a live leaderboard build to the final results. There are no accounts; a session lives for as long as the game does. I took it from competitor research all the way to a live app on the App Store, and nearly every decision along the way came from research or from watching real people play it.</p>
+  </div>
+</section>
+
+<nav class="section-nav" aria-label="Case study sections">
+  <div class="wrap">
+    <ul>
+      <li><a href="#the-idea">The Idea</a></li>
+      <li><a href="#designing-it">Designing It</a></li>
+      <li><a href="#prototype">Prototype</a></li>
+      <li><a href="#look-and-feel">Look and Feel</a></li>
+      <li><a href="#testing">Testing</a></li>
+      <li><a href="#key-takeaways">Key Takeaways</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="cs-section" id="the-idea" aria-labelledby="the-idea-title">
+  <div class="wrap">
+    <h2 id="the-idea-title" class="headline">The Idea</h2>
+
+<div class="cs-block">
+      <h3>The Gap in the Market</h3>
+      <p>Before any design work started, I looked at the quiz apps that already existed. The market split cleanly into two camps, and neither of them did the whole job.</p>
+      <div class="comp-grid"><div class="comp-card"><p class="comp-camp">Live multiplayer</p><h4>Kahoot</h4><p><span class="comp-label">Strength</span>Frictionless join by PIN and a huge library</p><p><span class="comp-label gap">Gap</span>AI generation is generic, not topic specific</p></div><div class="comp-card"><p class="comp-camp">Live multiplayer</p><h4>SpeedQuizzing</h4><p><span class="comp-label">Strength</span>Built for real pub venues, with team play</p><p><span class="comp-label gap">Gap</span>No AI generation, and the host needs a laptop</p></div><div class="comp-card"><p class="comp-camp">Live multiplayer</p><h4>QED Express</h4><p><span class="comp-label">Strength</span>Code or QR join, teams and a live leaderboard</p><p><span class="comp-label gap">Gap</span>No AI generation</p></div><div class="comp-card"><p class="comp-camp">AI generators</p><h4>Quizify, QuizRise and Examize</h4><p><span class="comp-label">Strength</span>Strong AI generation from source material</p><p><span class="comp-label gap">Gap</span>Single player, with no live social layer</p></div></div>
+      <div class="callout"><p>Nobody combined genuinely specific topics with a live, social, team based game. So the round topic input, where a host can type something as specific as &ldquo;English Premier League, 2012 onwards&rdquo; and get accurately scoped questions back, became the hero interaction of the whole app.</p></div>
+    </div>
+
+<div class="cs-block">
+      <h3>Research Goals</h3>
+      <p>I wanted to find the gap the existing apps were leaving, understand what hosts and players each need from a quiz night, and find the moments in a game that matter most to the people playing it.</p>
+    </div>
+
+    <div class="cs-block">
+      <h3>User Personas</h3>
+      <p>Three personas anchored every decision that came after.</p>
+      <div class="personas three"><article class="persona persona-host" aria-labelledby="host-name">
+  <div class="persona-head">
+    <div class="persona-photo emoji" aria-hidden="true">🎤</div>
+    <div><p class="persona-label">Persona #1 · Host</p><h4 id="host-name">The Quiz Master</h4></div>
+  </div>
+  <p>The host. Wants a genuinely specific, good quiz running in minutes, needs confidence that a specific request gives specific questions, and wants visible control over difficulty and pacing.</p>
+  <div class="persona-more" id="host-more" data-more="host-more">
+    <h5>Who</h5><p>Mid 20s to 40s, and organises the social calendar for their friend group or work team. Has run a pub quiz off a laptop or a WhatsApp group before.</p>
+    <h5>Goals</h5><ul><li>Get a genuinely good, specific quiz running in under 3 minutes</li><li>Look good in front of the group, so questions need to land, not embarrass them with a dud round</li></ul><h5>Frustrations</h5><ul><li>Generic quiz apps give bland, overly easy or repeated questions</li><li>Setting up teams and manually tracking scores is a hassle</li></ul><h5>Needs from the app</h5><ul><li>Fast round creation</li><li>Confidence that a specific input produces specific output</li><li>Visible control over difficulty and pacing</li><li>An easy way to referee a tie</li></ul>
+  </div>
+  <button class="btn btn-text more-toggle" type="button" aria-expanded="false" aria-controls="host-more" hidden><span class="more-label">Read more</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 15.4 6 9.4 7.4 8l4.6 4.6L16.6 8 18 9.4l-6 6Z"/></svg></button>
+</article><article class="persona persona-player" aria-labelledby="player-name">
+  <div class="persona-head">
+    <div class="persona-photo emoji" aria-hidden="true">📱</div>
+    <div><p class="persona-label">Persona #2 · Player</p><h4 id="player-name">The Player</h4></div>
+  </div>
+  <p>Wants to join in seconds with no account, understand what to do straight away, and get clear feedback that their answer has registered.</p>
+  <div class="persona-more" id="player-more" data-more="player-more">
+    <h5>Who</h5><p>Any age, and joining because a friend sent them a code. Zero patience for setup friction.</p>
+    <h5>Goals</h5><ul><li>Join in under 10 seconds</li><li>Understand what to do immediately</li><li>Have fun, and not feel stupid if they don&rsquo;t know an answer</li></ul><h5>Frustrations</h5><ul><li>Apps that need an account just to join one session</li><li>Confusing team joining flows</li><li>Not knowing if their answer registered</li></ul><h5>Needs from the app</h5><ul><li>Name entry only, with no forced sign up</li><li>A code field that forgives case and spaces</li><li>Clear team selection</li><li>Immediate answer feedback</li></ul>
+  </div>
+  <button class="btn btn-text more-toggle" type="button" aria-expanded="false" aria-controls="player-more" hidden><span class="more-label">Read more</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 15.4 6 9.4 7.4 8l4.6 4.6L16.6 8 18 9.4l-6 6Z"/></svg></button>
+</article><article class="persona persona-regular" aria-labelledby="regular-name">
+  <div class="persona-head">
+    <div class="persona-photo emoji" aria-hidden="true">🏆</div>
+    <div><p class="persona-label">Persona #3 · Secondary</p><h4 id="regular-name">The Regular</h4></div>
+  </div>
+  <p>Plays every week with the same group. Cares about difficulty actually feeling different from tier to tier, and about a tie breaker that feels fair rather than random.</p>
+  <div class="persona-more" id="regular-more" data-more="regular-more">
+    <h5>Who</h5><p>Plays weekly with the same group, is competitive, and cares about the leaderboard and the tie breaker.</p>
+    <h5>Goals</h5><ul><li>Consistent difficulty from round to round</li><li>A fair and satisfying tie breaker</li><li>Bragging rights</li></ul><h5>Needs from the app</h5><ul><li>Difficulty tiers that actually feel different in practice, not just in name</li><li>A tie breaker that feels legitimate rather than arbitrary, like a closest number or sudden death question</li></ul>
+  </div>
+  <button class="btn btn-text more-toggle" type="button" aria-expanded="false" aria-controls="regular-more" hidden><span class="more-label">Read more</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 15.4 6 9.4 7.4 8l4.6 4.6L16.6 8 18 9.4l-6 6Z"/></svg></button>
+</article></div>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="designing-it" aria-labelledby="designing-it-title">
+  <div class="wrap">
+    <h2 id="designing-it-title" class="headline">Designing It</h2>
+
+    <div class="cs-block">
+      <h3>Journey Maps</h3>
+      <p>I mapped the full host and player journeys stage by stage; what they are doing, thinking and feeling, and where the design opportunities are. Two moments stood out, and they shaped the rest of the project.</p>
+      
+      <div class="screen-tabs" data-tabs>
+        <div class="tab-list" role="tablist" aria-label="Journey maps"><button class="tab" type="button" role="tab" id="tab-host-journey" aria-controls="panel-host-journey" aria-selected="true">🎤 Host journey</button><button class="tab" type="button" role="tab" id="tab-player-journey" aria-controls="panel-player-journey" aria-selected="false" tabindex="-1">📱 Player journey</button></div>
+        <div class="tab-panel" role="tabpanel" id="panel-host-journey" aria-labelledby="tab-host-journey"><div class="journey" tabindex="0" role="region" aria-label="Host journey map, scrollable"><ol><li class="j-stage mood-mid"><p class="j-num">1</p><h4>Entry</h4><p class="j-feel"><span class="j-emoji" aria-hidden="true">😐</span>Neutral, slightly rushed</p><p class="j-act">Opens the app and enters a name</p><p class="j-think">&ldquo;Let&rsquo;s get this set up before people arrive&rdquo;</p><p class="j-opp"><strong>Opportunity</strong>Skip forced login</p></li><li class="j-stage mood-up"><p class="j-num">2</p><h4>Decision</h4><p class="j-feel"><span class="j-emoji" aria-hidden="true">😎</span>Confident</p><p class="j-act">Taps Create Quiz</p><p class="j-think">&ldquo;I&rsquo;m in charge of this&rdquo;</p><p class="j-opp"><strong>Opportunity</strong>Make this the visually dominant action</p></li><li class="j-stage mood-mid"><p class="j-num">3</p><h4>Configuration</h4><p class="j-feel"><span class="j-emoji" aria-hidden="true">🤔</span>Slightly uncertain</p><p class="j-act">Sets rounds, questions per round and difficulty</p><p class="j-think">&ldquo;Will this actually match what I want?&rdquo;</p><p class="j-opp"><strong>Opportunity</strong>Live preview or an example question as they type the topic</p></li><li class="j-stage mood-mid"><p class="j-num">4</p><h4>Round input</h4><p class="j-feel"><span class="j-emoji" aria-hidden="true">🤞</span>Hopeful, a little anxious</p><p class="j-act">Types a topic and how specific it is</p><p class="j-think">&ldquo;I hope it understands &lsquo;EPL post 2012&rsquo;&rdquo;</p><p class="j-opp"><strong>Opportunity</strong>Inline confidence signal and example ghost text</p></li><li class="j-stage mood-up"><p class="j-num">5</p><h4>Add more rounds</h4><p class="j-feel"><span class="j-emoji" aria-hidden="true">😄</span>Playful</p><p class="j-act">Taps +</p><p class="j-think">&ldquo;One more, for the music fans&rdquo;</p><p class="j-opp"><strong>Opportunity</strong>Keep it lightweight, not a full page detour</p></li><li class="j-stage mood-up"><p class="j-num">6</p><h4>Code generation</h4><p class="j-feel"><span class="j-emoji" aria-hidden="true">🤩</span>Anticipation</p><p class="j-act">Gets a code and shares it with the group</p><p class="j-think">&ldquo;Come on, join!&rdquo;</p><p class="j-opp"><strong>Opportunity</strong>A big, copyable, shareable code</p></li><li class="j-stage mood-mid"><p class="j-num">7</p><h4>Waiting lobby</h4><p class="j-feel"><span class="j-emoji" aria-hidden="true">⏳</span>Mild impatience</p><p class="j-act">Watches players and teams join</p><p class="j-think">&ldquo;Is everyone in?&rdquo;</p><p class="j-opp"><strong>Opportunity</strong>Live player list, visible team forming, start when ready</p></li><li class="j-stage mood-key"><p class="j-num">8</p><h4>Play</h4><p class="j-feel"><span class="j-emoji" aria-hidden="true">🎯</span>Validated or disappointed</p><p class="j-act">Hosts or watches the rounds run</p><p class="j-think">&ldquo;Are these questions actually good?&rdquo;</p><p class="j-opp"><strong>Opportunity</strong>The make or break beat: question quality decides whether they come back</p></li><li class="j-stage mood-mid"><p class="j-num">9</p><h4>Tie break</h4><p class="j-feel"><span class="j-emoji" aria-hidden="true">😬</span>Tense, excited</p><p class="j-act">Triggers the tie breaker</p><p class="j-think">&ldquo;How do we settle this fairly?&rdquo;</p><p class="j-opp"><strong>Opportunity</strong>Make the mechanic visible and clearly explained in the moment</p></li><li class="j-stage mood-key"><p class="j-num">10</p><h4>Results</h4><p class="j-feel"><span class="j-emoji" aria-hidden="true">🥳</span>The peak of the session</p><p class="j-act">Winner announced</p><p class="j-think">&ldquo;We nailed it&rdquo;</p><p class="j-opp"><strong>Opportunity</strong>Protect this moment from friction</p></li><li class="j-stage mood-down"><p class="j-num">11</p><h4>Ad</h4><p class="j-feel"><span class="j-emoji" aria-hidden="true">😑</span>Neutral to negative</p><p class="j-act">Sees the end of quiz ad</p><p class="j-opp"><strong>Opportunity</strong>Keep it short, and place it after the winner celebration</p></li></ol></div></div>
+        <div class="tab-panel" role="tabpanel" id="panel-player-journey" aria-labelledby="tab-player-journey"><div class="journey" tabindex="0" role="region" aria-label="Player journey map, scrollable"><ol><li class="j-stage mood-down"><p class="j-num">1</p><h4>Entry</h4><p class="j-feel"><span class="j-emoji" aria-hidden="true">😤</span>Impatient</p><p class="j-act">Opens the app and enters a name</p><p class="j-think">&ldquo;Just let me in&rdquo;</p><p class="j-opp"><strong>Opportunity</strong>No account required</p></li><li class="j-stage mood-mid"><p class="j-num">2</p><h4>Decision</h4><p class="j-feel"><span class="j-emoji" aria-hidden="true">😐</span>Neutral</p><p class="j-act">Taps Join Quiz</p><p class="j-opp"><strong>Opportunity</strong>Equal visual weight to Create, not buried</p></li><li class="j-stage mood-mid"><p class="j-num">3</p><h4>Code entry</h4><p class="j-feel"><span class="j-emoji" aria-hidden="true">🤔</span>Slight friction risk</p><p class="j-act">Types the shared code</p><p class="j-think">&ldquo;Did I type that right?&rdquo;</p><p class="j-opp"><strong>Opportunity</strong>Auto uppercase, trim spaces, a large input</p></li><li class="j-stage mood-up"><p class="j-num">4</p><h4>Team select</h4><p class="j-feel"><span class="j-emoji" aria-hidden="true">😄</span>Social, fun</p><p class="j-act">Joins or creates a team</p><p class="j-think">&ldquo;Who am I with?&rdquo;</p><p class="j-opp"><strong>Opportunity</strong>Visual team cards with editable names</p></li><li class="j-stage mood-mid"><p class="j-num">5</p><h4>Lobby</h4><p class="j-feel"><span class="j-emoji" aria-hidden="true">⏳</span>Mild uncertainty</p><p class="j-act">Waits for the host to start</p><p class="j-think">&ldquo;Is this working?&rdquo;</p><p class="j-opp"><strong>Opportunity</strong>A live &ldquo;waiting for host&rdquo; state, with other players joining</p></li><li class="j-stage mood-key"><p class="j-num">6</p><h4>Play</h4><p class="j-feel"><span class="j-emoji" aria-hidden="true">🎯</span>Engaged, competitive</p><p class="j-act">Answers questions</p><p class="j-think">&ldquo;Was I right?&rdquo;</p><p class="j-opp"><strong>Opportunity</strong>Immediate feedback on every answer, and a running score</p></li><li class="j-stage mood-key"><p class="j-num">7</p><h4>Results</h4><p class="j-feel"><span class="j-emoji" aria-hidden="true">🥳</span>High if they won, still positive if it was close</p><p class="j-act">Sees the final standings</p><p class="j-opp"><strong>Opportunity</strong>Team and individual results</p></li></ol></div></div>
+      </div>
+      <p class="muted small-note">Scroll sideways through each journey. The two key moments are marked in green.</p>
+      <div class="with-screen">
+        <div class="with-screen-text stack"><div class="card-grid"><div class="insight"><h4>The review moment</h4><p>A host checking the AI questions before players see them is the biggest trust risk in the whole flow, and it spoils the quiz if the host wants to play too. So I added a &ldquo;host also plays&rdquo; toggle, which skips the human review and runs an automated quality check instead.</p></div><div class="insight"><h4>The winner moment</h4><p>The results screen is the emotional peak of the night. That is why the ad sits after the celebration rather than before it, and why &ldquo;Play again&rdquo; resets the same lobby instead of sending everyone back to the start.</p></div></div></div>
+        <figure class="cs-figure app-figure"><img class="app-shot" src="../images/quizzy/results.png" width="1206" height="2622" alt="The Results screen: a trophy, Cam wins with 2053 points, the full leaderboard, and Play again and Back to home buttons" loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: The winner moment, with Play again right there"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>The winner moment, with Play again right there</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="cs-block">
+      <h3>Information Architecture</h3>
+      <div class="with-screen">
+        <div class="with-screen-text"><p>I produced a full sitemap before designing a single screen. Everyone enters their name once at a shared starting point, then Create and Join sit side by side as equal choices, because hosts and players need different things. From there it branches into an optional AI review step, and a separate host view and player view once the game is live.</p><div class="ia-tree"><div class="ia-root"><span>Enter your name</span><small>Once, before anything else. No account.</small></div><div class="ia-branches"><section class="ia-branch ia-create" aria-label="Create Quiz"><h4>Create Quiz</h4><ul><li>Quiz settings<ul><li>Solo or teams</li><li>Host also plays</li><li>Number of teams</li><li>Rounds and questions per round</li><li>Difficulty, Very easy to Quiz expert</li></ul></li><li>Round builder<ul><li>Auto build from a topic</li><li>Write a new round</li><li>My rounds library</li><li>Add a round</li></ul></li><li>Generate and check (with a review step if the host is not playing)</li><li>Lobby, host view<ul><li>Join code to share</li><li>Live player list</li><li>Make teams</li><li>Start quiz</li></ul></li></ul></section><section class="ia-branch ia-join" aria-label="Join Quiz"><h4>Join Quiz</h4><ul><li>Enter the join code</li><li>Pick a team (teams mode only)</li><li>Lobby, player view<ul><li>See your team</li><li>Switch team</li><li>Rename team</li></ul></li></ul></section><section class="ia-branch ia-live" aria-label="Live Quiz"><h4>Live Quiz</h4><ul><li>Host controller view (host not playing)</li><li>Question, timer and answers</li><li>Answer reveal</li><li>Round leaderboard</li><li>Sudden death tie breaker</li></ul></section><section class="ia-branch ia-results" aria-label="Results"><h4>Results</h4><ul><li>Winner announcement</li><li>Full leaderboard</li><li>End of quiz ad</li><li>Play again in the same lobby</li></ul></section></div></div></div>
+        <figure class="cs-figure app-figure"><img class="app-shot" src="../images/quizzy/create-or-join.png" width="1206" height="2622" alt="The home screen after entering a name: Hey Cam, with Create quiz as a filled button and Join quiz as an outlined button of the same size" loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: Create and Join, side by side as equal choices"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>Create and Join, side by side as equal choices</figcaption></figure>
+      </div>
+    </div>
+
+<div class="cs-block">
+      <h3>Core Flows</h3>
+      <div class="two-col">
+        <div class="flow-card"><h4>Hosting a quiz</h4><ol>
+          <li>Enter a name, then choose to create a quiz.</li>
+          <li>Pick solo or team mode, the number of rounds, questions per round and difficulty.</li>
+          <li>Build each round from a topic, or write one by hand, with a personal library of saved rounds to reuse later.</li>
+          <li>Check each round has generated, with a clear retry or edit option for anything that failed.</li>
+          <li>Land in a lobby with a join code, watch players and teams join live, then start.</li>
+          <li>Play through live, then see the results and leaderboard, with one tap to play again in the same lobby.</li>
+        </ol></div>
+        <div class="flow-card"><h4>Joining a quiz</h4><ol>
+          <li>Enter a name, then a join code.</li>
+          <li>Pick a team if the host has chosen team mode.</li>
+          <li>Wait in the lobby, watching everyone else arrive.</li>
+          <li>Play through live, then see the same results screen as the host.</li>
+        </ol></div>
+      </div>
+    </div>
+
+    <div class="cs-block">
+      <h3>Game Mechanics as Design Decisions</h3>
+      <p>Some of the game rules involved real trade offs, so I treated them as design decisions rather than technical details.</p>
+      
+      <div class="with-screen">
+        <div class="with-screen-text"><div class="insight"><h4>Scoring</h4><p>Every question has a 15 second timer, and points fall from 500 to 100 the longer you take. A correct answer always scores at least 100 and a wrong answer always scores zero, so a careful answer beats a fast guess and nobody learns to just tap the first option.</p></div><div class="scorer">
+        <div>
+          <label for="answer-time">Try it: how long did you take to answer?</label>
+          <input type="range" id="answer-time" min="0" max="15" step="1" value="3">
+          <div class="scale" aria-hidden="true"><span>Instant</span><span>15 seconds</span></div>
+          <span class="timer" aria-hidden="true"></span>
+        </div>
+        <div class="score-boxes" aria-live="polite">
+          <div class="score-box"><span class="num" data-points>440</span>points for a correct answer</div>
+          <div class="score-box wrong"><span class="num">0</span>points for a wrong answer, however fast</div>
+        </div>
+        <small>A simplified version of the scoring curve, for illustration.</small>
+      </div></div>
+        <figure class="cs-figure app-figure"><img class="app-shot" src="../images/quizzy/question.png" width="1206" height="2622" alt="A live question: Round 1 of 2, Film. A countdown bar and number, 0 of 4 answered, a question about Tron: Legacy and four answer options" loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: A live question with its countdown"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>A live question with its countdown</figcaption></figure>
+      </div>
+      <div class="with-screen">
+        <div class="with-screen-text"><div class="insight"><h4>A fair reveal</h4><p>Nobody finds out whether they were right until everyone has answered or the timer runs out. Otherwise a fast player&rsquo;s phone could give the answer away to slower teammates sitting next to them.</p></div><div class="insight"><h4>Moving on</h4><p>A question ends as soon as everyone has answered, followed by a short animated transition. I first cut straight to the next question, but players told me it felt jarring.</p></div></div>
+        <figure class="cs-figure app-figure"><img class="app-shot" src="../images/quizzy/answer-reveal.png" width="1206" height="2622" alt="The answer reveal after time is up: 4 of 4 answered, the correct answer highlighted in green, and small avatars showing which player picked which answer, with a streak counter and confetti" loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: The reveal, only once everyone has answered"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>The reveal, only once everyone has answered</figcaption></figure>
+      </div>
+      <div class="card-grid"><div class="insight"><h4>Teams</h4><p>The host picks how many teams and players are split as evenly as possible. If the host gets distracted, a 30 second countdown sorts the teams automatically, and every team gets a playful name instead of Team 1, 2 and 3.</p></div><div class="insight"><h4>Tie breakers</h4><p>Because wrong answers score zero, exact ties happen more often than you would think, so ties are settled by a sudden death question where the closest number wins.</p></div></div>
+    </div>
+
+    <div class="cs-block">
+      <h3>Question Sourcing</h3>
+      <div class="with-screen">
+        <div class="with-screen-text">
+      <p>The question bank started as a problem, not a plan. Generating every round live with AI kept hitting rate limits during real games. Rather than just paying for a bigger quota, I changed the design: common topics like &ldquo;Movies&rdquo;, &ldquo;80s music&rdquo; or &ldquo;Premier League&rdquo; now come instantly from a hand curated bank of 3,130 questions across 13 categories, with no wait and no cost, and only genuinely specific topics go to ChatGPT.</p>
+      <p>I built the categories out in a lot of detail, with film and TV franchises, music split by decade and by genre, and sport split by discipline, so that a host&rsquo;s topic hits the fast, free path as often as possible.</p>
+    </div>
+        <figure class="cs-figure app-figure"><img class="app-shot" src="../images/quizzy/build-rounds.png" width="1206" height="2622" alt="The Build your rounds screen: Round 1, Film, is marked Question bank, and Round 2, Dog breeds, is marked AI written, each with a Double points round toggle" loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: Film comes from the bank, Dog breeds goes to AI"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>Film comes from the bank, Dog breeds goes to AI</figcaption></figure>
+      </div>
+    </div>
+
+<div class="cs-block">
+      <h3>Writing Your Own Rounds</h3>
+      <p>Hosts can also write rounds by hand, and a few decisions went into making that feel easy.</p>
+      <div class="card-grid"><div class="insight"><h4>Its own doorway</h4><p>Writing a full round takes several minutes, so I moved it from a small third option on the round card to its own entry on the Settings screen.</p></div><div class="insight"><h4>One question at a time</h4><p>Each question is its own page with a title, the question, four options and the correct answer, which gives a clear sense of progress on an effortful task.</p></div><div class="insight"><h4>Autosave</h4><p>Nothing is lost if a host backs out halfway through writing.</p></div><div class="insight"><h4>Tonight&rsquo;s copy</h4><p>Editing a round in tonight&rsquo;s quiz only changes that copy, so a quick tweak never overwrites the saved version for next time.</p></div><div class="insight"><h4>Not yet: sharing</h4><p>I considered letting hosts share rounds, but deliberately left it for later, as it needs its own moderation and ownership rules.</p></div></div>
+    </div>
+
+    <div class="cs-block">
+      <h3>Trust and Safety</h3>
+      <div class="with-screen">
+        <div class="with-screen-text">
+      <p>Round topics and player and team names are free text that everyone in the game can see. That makes them user generated content, and Apple&rsquo;s App Store review requires it to be handled properly, so I designed for it on two sides.</p>
+      <div class="card-grid"><div class="insight"><h4>Before anyone sees it</h4><p>Topics, team names and player names are all checked before they are submitted. Round topics also feed straight into the AI, so checking them protects against prompt injection as well as bad language.</p></div><div class="insight"><h4>Once it is visible</h4><p>Anyone can report a name or topic from the lobby, and a host can remove a disruptive player, who is disconnected and sent back to the start with a clear message. Every one of these actions is rate limited, so the tools for handling abuse cannot be abused themselves.</p></div></div>
+    </div>
+        <figure class="cs-figure app-figure"><img class="app-shot" src="../images/quizzy/lobby.png" width="1206" height="2622" alt="The Lobby: a large join code, CLT4B4, a list of four people with Report and Remove next to each player, a did you know fact, and Start quiz and Leave lobby buttons" loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: The lobby, with Report and Remove on every player"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>The lobby, with Report and Remove on every player</figcaption></figure>
+      </div>
+    </div>
+
+<div class="cs-block">
+      <h3>When the AI Gets It Wrong</h3>
+      <p>AI generation can fail for reasons a generic error message does not explain; the daily quota runs out, a topic has no real facts to quiz on, or the content gets blocked. So instead of one &ldquo;something went wrong&rdquo; message, each failure explains itself and offers the right next step.</p>
+      <div class="card-grid"><div class="insight tinted"><h4>A blocked topic</h4><p>The host is asked to rephrase the topic and try again.</p></div><div class="insight tinted"><h4>Nothing to ask about</h4><p>The app explains why, and hides the Retry button entirely. Retrying would fail in exactly the same way, so offering it would be a false promise.</p></div><div class="insight tinted"><h4>Anything else</h4><p>A plain, simple retry.</p></div></div>
+      <p style="margin-top: var(--s3)">I also tell people plainly when AI is involved. A one time notice on the round builder explains that topics needing AI are sent to a provider that may use them for training, and it never appears again once dismissed.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="prototype" aria-labelledby="prototype-title">
+  <div class="wrap">
+    <h2 id="prototype-title" class="headline">Prototype</h2>
+
+    <div class="cs-block">
+      <h3>Play the Prototype</h3>
+      <p>Before building anything, I made a clickable prototype of every screen in the app. Pick any screen from the buttons along the top to jump straight to it. It is worth comparing with the real screenshots on this page, as a few things changed once real people started playing.</p>
+      <div class="proto proto-app" data-src="../prototypes/quizzy-prototype.html" data-title="Quizzy McQuizface, clickable prototype">
+        <button class="proto-play" type="button">
+          <span class="play-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path fill="currentColor" d="M8 5v14l11-7L8 5Z"/></svg></span>
+          <span>Load the clickable prototype</span>
+        </button>
+      </div>
+      <p style="margin-top: var(--s2)"><a href="../prototypes/quizzy-prototype.html">Open the prototype in a full window</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="look-and-feel" aria-labelledby="look-and-feel-title">
+  <div class="wrap">
+    <h2 id="look-and-feel-title" class="headline">Look and Feel</h2>
+
+    <div class="cs-block">
+      <h3>The Design System</h3>
+      <p>The final system uses a single navy accent with white and pale blue neutrals, and one deliberate exception: a warm gold that only appears when the timer is running low. Everything sits on an 8pt grid, with two named exceptions; 44pt tap targets to match Apple&rsquo;s guidelines, and a toggle switch sized to match the platform standard. Headings use Fredoka, a rounded and friendly typeface, against Roboto for body text, on a six step type scale with nothing smaller than 12px. The same handful of cards, pills and corner radii carry across every screen.</p>
+      <p>Getting there took a lot of testing for a second accent colour, until I realised two bold filled buttons compete for attention whatever colour the second one is. So every screen has one filled button, with everything else outlined in the same navy.</p>
+      <div class="ds-panel app-ds" role="group" aria-labelledby="qds-title">
+        <p class="visually-hidden" id="qds-title">Quizzy McQuizface design system</p>
+        <h4>Colour</h4>
+        <ul class="ba-swatches"><li><span class="ba-swatch" style="--sw:#1D3A6E" aria-hidden="true"></span><span class="ba-swatch-name">Navy</span><code>#1D3A6E</code><span class="sw-use">Filled buttons, headings</span></li><li><span class="ba-swatch" style="--sw:#12294F" aria-hidden="true"></span><span class="ba-swatch-name">Dark navy</span><code>#12294F</code><span class="sw-use">Join code, body text</span></li><li><span class="ba-swatch" style="--sw:#DCE6F5" aria-hidden="true"></span><span class="ba-swatch-name">Pale blue</span><code>#DCE6F5</code><span class="sw-use">Headers and cards</span></li><li><span class="ba-swatch" style="--sw:#FFFFFF" aria-hidden="true"></span><span class="ba-swatch-name">White</span><code>#FFFFFF</code><span class="sw-use">Screens</span></li><li><span class="ba-swatch" style="--sw:#B2F2E5" aria-hidden="true"></span><span class="ba-swatch-name">Correct</span><code>#B2F2E5</code><span class="sw-use">Right answers</span></li><li><span class="ba-swatch" style="--sw:#00695C" aria-hidden="true"></span><span class="ba-swatch-name">Timer teal</span><code>#00695C</code><span class="sw-use">Countdown and points</span></li><li><span class="ba-swatch" style="--sw:#C9A227" aria-hidden="true"></span><span class="ba-swatch-name">Timer gold</span><code>#C9A227</code><span class="sw-use">Only when time is low</span></li><li><span class="ba-swatch" style="--sw:#FFDAD4" aria-hidden="true"></span><span class="ba-swatch-name">Wrong</span><code>#FFDAD4</code><span class="sw-use">Wrong answers</span></li></ul>
+        <h4>Typography</h4>
+        <div class="type-specimens">
+          <div class="specimen"><p class="specimen-meta"><strong>Fredoka</strong> for headings</p><p class="specimen-sample fredoka">What should we call you?</p></div>
+          <div class="specimen"><p class="specimen-meta"><strong>Roboto</strong> for body text</p><p class="specimen-sample roboto">Be as specific as you like; the more detail you give, the more on target your questions will be.</p></div>
+        </div>
+        <h4>One filled button per screen</h4>
+        <div class="btn-stage" role="img" aria-label="The two button styles, as they appear in the lobby: a filled navy Start quiz button above an outlined navy Leave lobby button">
+          <div class="stage light app-stage"><span class="q-btn filled">Start quiz</span><span class="q-btn outline">Leave lobby</span></div>
+        </div>
+        <h4>8pt spacing grid</h4>
+        <div class="spacing-scale" role="img" aria-label="Spacing scale: 4, 8, 16, 24, 32, 40, 48 and 64 pixels"><span style="--w:4px"><i></i>4</span><span style="--w:8px"><i></i>8</span><span style="--w:16px"><i></i>16</span><span style="--w:24px"><i></i>24</span><span style="--w:32px"><i></i>32</span><span style="--w:40px"><i></i>40</span><span style="--w:48px"><i></i>48</span><span style="--w:64px"><i></i>64</span></div>
+      </div>
+    </div>
+
+<div class="cs-block">
+      <h3>Accessibility, Built In</h3>
+      <div class="card-grid"><div class="insight"><h4>Contrast</h4><p>Every colour pairing actually used in the app was checked against WCAG AA, not just a few spot checks.</p></div><div class="insight"><h4>One focus indicator</h4><p>I found and fixed a bug where text inputs showed two focus indicators at once, a colour change and an outline, and cut it down to one clear indicator per control.</p></div><div class="insight"><h4>Quiet emoji</h4><p>Decorative icons and emoji are hidden from screen readers, so they read the text beside them instead of announcing &ldquo;trophy&rdquo; or &ldquo;warning sign&rdquo;.</p></div><div class="insight"><h4>Reduced motion</h4><p>Transitions and status animations respect the reduced motion setting.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="testing" aria-labelledby="testing-title">
+  <div class="wrap">
+    <h2 id="testing-title" class="headline">Testing</h2>
+
+<div class="cs-block">
+      <h3>Testing on a Real Quiz Night</h3>
+      <p>I ran informal usability testing with a group of target users in a live social setting, watching real multiplayer games, how people joined, and how engaged they stayed. What I saw fed straight into refining the onboarding and the flow of a session.</p>
+    </div>
+
+<div class="cs-block">
+      <h3>Polish Found Through Real Play</h3>
+      <p>A handful of small fixes only showed up once real people played on real phones.</p>
+      <div class="before-after">
+        <div class="ba-card"><h4>Connection status</h4><dl><div><dt>Before</dt><dd>A first connection said &ldquo;Reconnecting&hellip;&rdquo;, which suggested a drop that never happened.</dd></div><div class="after"><dt>After</dt><dd>A separate &ldquo;Connecting&hellip;&rdquo; state for a fresh connection, and &ldquo;Reconnecting&hellip;&rdquo; only for a real drop.</dd></div></dl></div>
+        <div class="ba-card"><h4>Double points</h4><dl><div><dt>Before</dt><dd>A double points round was a small grey note that was easy to miss completely.</dd></div><div class="after"><dt>After</dt><dd>After &ldquo;make it more visible&rdquo; feedback, it became its own badge, a coloured border on the question card and a callout in the reveal.</dd></div></dl></div>
+        <div class="ba-card"><h4>The back button</h4><dl><div><dt>Before</dt><dd>Going back from the lobby reset the whole session.</dd></div><div class="after"><dt>After</dt><dd>Back now steps to the round builder so a topic can be fixed, with a separate &ldquo;Leave lobby&rdquo; that asks for confirmation.</dd></div></dl></div>
+      </div>
+    </div>
+
+<div class="cs-block">
+      <h3>The Web Redesign</h3>
+      <h4 class="cs-sub">The problem</h4>
+      <p>The web version was simply the iPhone layout stretched or boxed onto a desktop screen. Every screen, from a simple choice screen to a live lobby, sat at roughly phone width however wide the browser was. Buttons either stayed phone sized in a sea of empty space or stretched into huge pills that looked accidental rather than designed.</p>
+      <h4 class="cs-sub">The goals</h4>
+      <ul class="goal-list plain-goals">
+        <li>Change the web version only, leaving the iOS app exactly as it was</li>
+        <li>Real multi column layouts where the content benefits, not just a wider single column</li>
+        <li>Comfortable line lengths, tap target sizes, zoom support and a reading order that matches the layout</li>
+        <li>Buttons stay a normal size at any width, while cards and fields stretch to use the space</li>
+        <li>A full width colour banner across the top of the browser</li>
+      </ul>
+      <h4 class="cs-sub">Six rounds of iteration</h4>
+      <ol class="steps">
+        <li><strong>A centred column</strong>Every screen went into one centred column. It was the right instinct, but it still looked like a phone in a box on a wide monitor.</li>
+        <li><strong>Real multi column layouts</strong>Screens that benefit, like the round builder, library, lobby and results, got true multi column layouts, while simple forms stayed single column but wider.</li>
+        <li><strong>A full width banner</strong>The top banner stretched across the whole browser, and the boxed blue page frame became plain white margins.</li>
+        <li><strong>What stretches and what does not</strong>Cards and inputs grow with the page, while buttons got their own width limit so they never grow just because their container does.</li>
+        <li><strong>Fixing what testing found</strong>Live testing showed a few regressions, including the standings card popping in beside the question and shifting it on the reveal, so it went back to sitting underneath.</li>
+        <li><strong>One last inconsistency</strong>A footer with two buttons side by side had inherited the single button width limit, making those buttons smaller than every other button in the app, so it got its own wider option.</li>
+      </ol>
+      <h4 class="cs-sub">Key decisions</h4>
+      <div class="table-wrap">
+        <table class="decisions-table">
+          <thead><tr><th scope="col">Decision</th><th scope="col">Why</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">One shared breakpoint</th><td>Every layout decision checks the same number, so screens never switch layout inconsistently.</td></tr>
+            <tr><th scope="row">Buttons set their own width</th><td>Cards and inputs can use the extra space on a wide screen without dragging the button size along with them.</td></tr>
+            <tr><th scope="row">Reading order fixed in the code</th><td>Screen reader and keyboard order always matches the visual order at every width, rather than relying on a CSS trick.</td></tr>
+            <tr><th scope="row">Standings stay under the question</th><td>A card popping in beside the question was distracting, and stacking kept the feel players already knew.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="cs-block">
+      <h3>&ldquo;We Couldn&rsquo;t Ready Up&rdquo;</h3>
+      <div class="with-screen">
+        <div class="with-screen-text">
+      <p>Playtesting the new lobby turned up a real gameplay bug, not just a visual one. If a player&rsquo;s connection dropped between rounds, the rest of the group could not ready up for the next round, and the game made everyone wait out a 45 second safety timer. To the players, it looked like the game had frozen.</p>
+      <p>The cause was a fix for an earlier bug, where a brief wifi blip let the game skip a player before they had a fair chance to press ready. I solved it by reusing a pattern the app already used mid question: a disconnected player only stops counting once they have been gone for a few seconds. A quick blip still gets a fair chance, but a real disconnect no longer holds the whole group hostage.</p>
+      <aside class="commentary" aria-label="Director's commentary"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M4 22V4q0-.8.6-1.4T6 2h12q.8 0 1.4.6T20 4v12q0 .8-.6 1.4T18 18H8l-4 4Zm4-8h8v-2H8v2Zm0-3h8V9H8v2Zm0-3h8V6H8v2Z"/></svg><div><span class="label">Director&rsquo;s commentary</span><p>The bug report came straight from a live game, word for word: &ldquo;we couldn&rsquo;t ready up for the next round&rdquo;.</p></div></aside>
+      <p>Every change was checked in the browser at desktop and mobile widths, including a read out of the accessibility tree to confirm the reading order. The fix was proven with a new automated test that recreates the exact scenario, and all 681 automated tests stayed green throughout.</p>
+    </div>
+        <figure class="cs-figure app-figure"><img class="app-shot" src="../images/quizzy/round-complete.png" width="1206" height="2622" alt="The Round complete screen: a leaderboard of four players, 0 of 4 ready, a did you know fact, and a large I&rsquo;m ready! button" loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: Between rounds, everyone presses I&rsquo;m ready"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>Between rounds, everyone presses I&rsquo;m ready</figcaption></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="key-takeaways" aria-labelledby="takeaways-title">
+  <div class="wrap">
+    <h2 id="takeaways-title" class="headline" style="margin-bottom: var(--s6)">Key Takeaways</h2>
+    <div class="cs-block">
+      <h3>Challenge</h3>
+      <p>The hardest part was holding myself to evidence. It is tempting to polish the things you think might be wrong, but nearly every fix in this project traces back to a specific moment where a real player got confused or stuck, or to a specific piece of research. Designing and building it myself also meant I felt every trade off between what was ideal and what was possible.</p>
+    </div>
+    <div class="cs-block">
+      <h3>Lessons Learned</h3>
+      <div class="lessons">
+        <div class="lesson"><h4>Ship it, then watch</h4><p>Putting something reasonable in front of real players taught me more than any amount of guessing about what might work.</p></div>
+        <div class="lesson"><h4>Check the question</h4><p>After testing more than a dozen colours, the real answer was realising I was asking the wrong question.</p></div>
+        <div class="lesson"><h4>Constraints can be features</h4><p>A rate limit problem became the question bank, and the fastest, cheapest path became the best experience for most hosts.</p></div>
+      </div>
+      <div class="cs-actions">
+        <a class="btn btn-filled" href="https://apps.apple.com/us/app/quizzy-mcquizface/id6801551550" style="background: var(--brand); color: var(--on-brand)">Download on the App Store <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M5 21q-.8 0-1.4-.6T3 19V5q0-.8.6-1.4T5 3h7v2H5v14h14v-7h2v7q0 .8-.6 1.4T19 21H5Zm4.7-5.3-1.4-1.4L17.6 5H14V3h7v7h-2V6.4l-9.3 9.3Z"/></svg></a>
+        <a class="btn btn-outlined" href="https://quizzymcquizface-1.onrender.com">Play in your browser <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M5 21q-.8 0-1.4-.6T3 19V5q0-.8.6-1.4T5 3h7v2H5v14h14v-7h2v7q0 .8-.6 1.4T19 21H5Zm4.7-5.3-1.4-1.4L17.6 5H14V3h7v7h-2V6.4l-9.3 9.3Z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="next-project" aria-labelledby="next-title">
+  <div class="wrap">
+    <h2 id="next-title" class="title-lg" style="margin-bottom: var(--s3)">Next project</h2>
+    <ul class="work-list" style="grid-template-columns: 1fr">
+      <li class="project brand-beyond-bank">
+        <div class="project-body">
+          <p class="project-outcome">Car loan page redesign lifted traffic and engagement by 3%</p>
+          <h3><a href="beyond-bank.html">Beyond Bank Australia</a></h3>
+          <p>Data led UX across car loans, home loans and everyday banking.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section id="contact" class="contact" aria-labelledby="contact-title">
+  <div class="wrap">
+    <h2 id="contact-title" class="headline">Thanks for watching.</h2>
+    <p class="body-lg">If you would like to talk about a role, a project or even a film, I would love to hear from you.</p>
+    <div class="contact-actions">
+      <a class="btn btn-filled" href="mailto:cameron.jordan.hasan@gmail.com">Email me</a>
+      <a class="btn btn-outlined" href="https://www.linkedin.com/in/cameron-hasan-5b36291b6/">Connect on LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+</main>
+<script src="../js/main.js"></script>
+</body>
+</html>

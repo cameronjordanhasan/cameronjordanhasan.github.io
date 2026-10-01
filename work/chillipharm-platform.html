@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The ChilliPharm Web Platform, a case study by Cameron Hasan</title>
+<meta name="description" content="How Cameron Hasan redesigned the ChilliPharm clinical trial video platform, reducing user errors by 14%, and designed the feature that cut the price to clients by 50%.">
+<meta property="og:title" content="The ChilliPharm Web Platform, a case study by Cameron Hasan">
+<meta property="og:description" content="User errors down 14% and a feature that halved the price to clients.">
+<meta property="og:type" content="article">
+<meta name="theme-color" content="#005A53">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap" rel="stylesheet">
+<script>
+  document.documentElement.classList.add('js');
+  try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/case-study.css">
+</head>
+<body class="cs-chillipharm">
+
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <clipPath id="cookie" clipPathUnits="objectBoundingBox"><path d="M0.9900 0.5000 L0.9881 0.5128 L0.9826 0.5253 L0.9739 0.5373 L0.9625 0.5486 L0.9491 0.5591 L0.9346 0.5688 L0.9199 0.5778 L0.9059 0.5863 L0.8935 0.5945 L0.8832 0.6027 L0.8756 0.6112 L0.8709 0.6205 L0.8692 0.6308 L0.8704 0.6422 L0.8738 0.6549 L0.8791 0.6688 L0.8855 0.6839 L0.8920 0.6998 L0.8981 0.7161 L0.9027 0.7325 L0.9053 0.7484 L0.9053 0.7632 L0.9024 0.7766 L0.8964 0.7880 L0.8874 0.7973 L0.8756 0.8042 L0.8615 0.8087 L0.8456 0.8111 L0.8286 0.8118 L0.8111 0.8111 L0.7940 0.8098 L0.7777 0.8084 L0.7628 0.8077 L0.7497 0.8083 L0.7385 0.8108 L0.7292 0.8155 L0.7219 0.8228 L0.7161 0.8327 L0.7114 0.8450 L0.7075 0.8594 L0.7038 0.8753 L0.6998 0.8920 L0.6950 0.9088 L0.6891 0.9248 L0.6819 0.9392 L0.6732 0.9512 L0.6630 0.9603 L0.6514 0.9660 L0.6387 0.9682 L0.6251 0.9668 L0.6110 0.9622 L0.5967 0.9548 L0.5825 0.9454 L0.5688 0.9346 L0.5557 0.9234 L0.5434 0.9127 L0.5317 0.9034 L0.5208 0.8962 L0.5103 0.8916 L0.5000 0.8900 L0.4897 0.8916 L0.4792 0.8962 L0.4683 0.9034 L0.4566 0.9127 L0.4443 0.9234 L0.4312 0.9346 L0.4175 0.9454 L0.4033 0.9548 L0.3890 0.9622 L0.3749 0.9668 L0.3613 0.9682 L0.3486 0.9660 L0.3370 0.9603 L0.3268 0.9512 L0.3181 0.9392 L0.3109 0.9248 L0.3050 0.9088 L0.3002 0.8920 L0.2962 0.8753 L0.2925 0.8594 L0.2886 0.8450 L0.2839 0.8327 L0.2781 0.8228 L0.2708 0.8155 L0.2615 0.8108 L0.2503 0.8083 L0.2372 0.8077 L0.2223 0.8084 L0.2060 0.8098 L0.1889 0.8111 L0.1714 0.8118 L0.1544 0.8111 L0.1385 0.8087 L0.1244 0.8042 L0.1126 0.7973 L0.1036 0.7880 L0.0976 0.7766 L0.0947 0.7632 L0.0947 0.7484 L0.0973 0.7325 L0.1019 0.7161 L0.1080 0.6998 L0.1145 0.6839 L0.1209 0.6688 L0.1262 0.6549 L0.1296 0.6422 L0.1308 0.6308 L0.1291 0.6205 L0.1244 0.6112 L0.1168 0.6027 L0.1065 0.5945 L0.0941 0.5863 L0.0801 0.5778 L0.0654 0.5688 L0.0509 0.5591 L0.0375 0.5486 L0.0261 0.5373 L0.0174 0.5253 L0.0119 0.5128 L0.0100 0.5000 L0.0119 0.4872 L0.0174 0.4747 L0.0261 0.4627 L0.0375 0.4514 L0.0509 0.4409 L0.0654 0.4312 L0.0801 0.4222 L0.0941 0.4137 L0.1065 0.4055 L0.1168 0.3973 L0.1244 0.3888 L0.1291 0.3795 L0.1308 0.3692 L0.1296 0.3578 L0.1262 0.3451 L0.1209 0.3312 L0.1145 0.3161 L0.1080 0.3002 L0.1019 0.2839 L0.0973 0.2675 L0.0947 0.2516 L0.0947 0.2368 L0.0976 0.2234 L0.1036 0.2120 L0.1126 0.2027 L0.1244 0.1958 L0.1385 0.1913 L0.1544 0.1889 L0.1714 0.1882 L0.1889 0.1889 L0.2060 0.1902 L0.2223 0.1916 L0.2372 0.1923 L0.2503 0.1917 L0.2615 0.1892 L0.2708 0.1845 L0.2781 0.1772 L0.2839 0.1673 L0.2886 0.1550 L0.2925 0.1406 L0.2962 0.1247 L0.3002 0.1080 L0.3050 0.0912 L0.3109 0.0752 L0.3181 0.0608 L0.3268 0.0488 L0.3370 0.0397 L0.3486 0.0340 L0.3613 0.0318 L0.3749 0.0332 L0.3890 0.0378 L0.4033 0.0452 L0.4175 0.0546 L0.4312 0.0654 L0.4443 0.0766 L0.4566 0.0873 L0.4683 0.0966 L0.4792 0.1038 L0.4897 0.1084 L0.5000 0.1100 L0.5103 0.1084 L0.5208 0.1038 L0.5317 0.0966 L0.5434 0.0873 L0.5557 0.0766 L0.5688 0.0654 L0.5825 0.0546 L0.5967 0.0452 L0.6110 0.0378 L0.6251 0.0332 L0.6387 0.0318 L0.6514 0.0340 L0.6630 0.0397 L0.6732 0.0488 L0.6819 0.0608 L0.6891 0.0752 L0.6950 0.0912 L0.6998 0.1080 L0.7038 0.1247 L0.7075 0.1406 L0.7114 0.1550 L0.7161 0.1673 L0.7219 0.1772 L0.7292 0.1845 L0.7385 0.1892 L0.7497 0.1917 L0.7628 0.1923 L0.7777 0.1916 L0.7940 0.1902 L0.8111 0.1889 L0.8286 0.1882 L0.8456 0.1889 L0.8615 0.1913 L0.8756 0.1958 L0.8874 0.2027 L0.8964 0.2120 L0.9024 0.2234 L0.9053 0.2368 L0.9053 0.2516 L0.9027 0.2675 L0.8981 0.2839 L0.8920 0.3002 L0.8855 0.3161 L0.8791 0.3312 L0.8738 0.3451 L0.8704 0.3578 L0.8692 0.3692 L0.8709 0.3795 L0.8756 0.3888 L0.8832 0.3973 L0.8935 0.4055 L0.9059 0.4137 L0.9199 0.4222 L0.9346 0.4312 L0.9491 0.4409 L0.9625 0.4514 L0.9739 0.4627 L0.9826 0.4747 L0.9881 0.4872 Z"/></clipPath>
+</svg>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="../index.html" aria-label="Cameron Hasan, home">
+      <span class="brand-mark" aria-hidden="true">C</span>
+      <span class="brand-name">Cameron Hasan</span>
+    </a>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <ul class="nav-list">
+        <li><a href="../index.html#work">Work</a></li>
+        <li><a href="../index.html#story">Experience</a></li>
+        <li><a href="../index.html#kind-words">Kind words</a></li>
+        <li><a href="../index.html#films">Films</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch to dark theme">
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12.3 22q-2.1 0-3.9-.8t-3.2-2.1-2.1-3.2T2.3 12q0-3.6 2.3-6.3T10.4 2.2q-.4 2.1.2 4.1t2.1 3.5 3.5 2.1 4.1.2q-.6 3.5-3.3 5.8T12.3 22Z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></g></svg>
+    </button>
+    <button class="icon-btn menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+      <svg class="icon-menu" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 18v-2h18v2H3Zm0-5v-2h18v2H3Zm0-5V6h18v2H3Z"/></svg>
+      <svg class="icon-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.4 19 5 17.6 10.6 12 5 6.4 6.4 5 12 10.6 17.6 5 19 6.4 13.4 12 19 17.6 17.6 19 12 13.4 6.4 19Z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+<div class="cs-hero">
+  <div class="wrap">
+    <a class="back-link" href="../index.html#work"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="m10 18-6-6 6-6 1.4 1.45L7.85 11H20v2H7.85l3.55 3.55L10 18Z"/></svg>All work</a>
+    <div class="hero-split">
+      <div class="hero-media">
+        <img src="../images/chillipharm/hero.png" width="590" height="358" alt="The redesigned ChilliPharm assessment page on a laptop, with a trial video beside the forms panel" decoding="async">
+      </div>
+      <div class="hero-text">
+        <h1 class="cs-title">The ChilliPharm Web Platform</h1>
+    <p class="cs-subtitle">A brand new platform that reduced user errors by 14% and halved the price to clients.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="cs-section" aria-labelledby="overview-title">
+  <div class="wrap">
+    <h2 id="overview-title" class="visually-hidden">Project overview</h2>
+    <dl class="cs-details">
+      <div><dt>Project type</dt><dd>End-to-end website</dd></div>
+      <div><dt>Role</dt><dd>Junior UX/UI designer, with the support from my mentor, Jess Dams</dd></div>
+      <div><dt>Industry</dt><dd>Pharmaceutical SaaS</dd></div>
+      <div><dt>Tools</dt><dd>Figma, Balsamiq Cloud</dd></div>
+      <div><dt>Duration</dt><dd>2023 to 2024</dd></div>
+    </dl>
+    <h3 class="title-lg" style="margin-bottom: var(--s2)">Key summary</h3>
+    <p class="cs-summary">This project showcases the end-to-end redesign of the ChilliPharm platform, improving how pharmaceutical companies upload, organise, and manage clinical trial video assets. The work focused on enhancing data integrity, reducing upload mistakes, and introducing a structured organisation system to streamline workflows for both site users and reviewers. Once the new platform launched, our data showed a 14% reduction in user errors, thanks to the improved organisation and simplified data entry process. Along the way I also designed a permissions based feature that lets de-identified and raw clinical trial videos be managed within a single system, which reduced clients&rsquo; storage requirements by 50% and ultimately cut overall costs by 50%.</p>
+    <div class="cs-actions">
+      <a class="btn btn-filled" href="#prototype" style="background: var(--brand); color: var(--on-brand)">Try the prototype</a>
+      <a class="btn btn-outlined" href="#key-decisions">Skip to the key design decisions</a>
+    </div>
+  </div>
+</section>
+
+<nav class="section-nav" aria-label="Case study sections">
+  <div class="wrap">
+    <ul>
+      <li><a href="#ux-research">UX Research</a></li>
+      <li><a href="#ux-design">UX Design</a></li>
+      <li><a href="#key-decisions">Key Decisions</a></li>
+      <li><a href="#ui-design">UI Design</a></li>
+      <li><a href="#usability-testing">Usability Testing</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#key-takeaways">Key Takeaways</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="cs-section" id="ux-research" aria-labelledby="ux-research-title">
+  <div class="wrap">
+    <h2 id="ux-research-title" class="headline">UX Research</h2>
+
+    <div class="cs-block">
+      <h3>Overview</h3>
+      <p>This project was initially started with a desire to do several things; improve and update on the existing website, to centralise data integrity and to build a website that can also be created into an app further down the line.</p>
+      <p>Part way through, the director of sales gave us a second problem to solve. He explained to us that the company was having to charge clients who require video de-identification double the amount because we need to bill for 2 accounts instead of 1; the &lsquo;raw&rsquo; unprocessed videos and an account for the blurred de-identified videos. With both in mind, this led to an investigation:</p>
+    </div>
+
+    <div class="cs-block brand-box">
+      <h3>Research Goals</h3>
+      <p>We wanted to understand the users&rsquo; requirements at the time, so that we understood what would make their journey quicker and simpler and improve their data integrity. We also wanted to understand the requirements of each client that used the de-identification service, the internal video team&rsquo;s workflow, and how they used ChilliPharm in this process.</p>
+    </div>
+
+    <div class="cs-block">
+      <h3>Internal Account Manager and Video Department Interviews</h3>
+      <p>Our first port of call was to interview the account managers for our clients. This was a deliberate move because the account managers understand the clients&rsquo; requirements better than the clients themselves. Furthermore different clients have different requirements so we would be able to understand all their pain points rather than just those of a single client.</p>
+      <p>For the video team, I was in a great position; having worked in the ChilliPharm video department for 2 years I already had an excellent understanding of the video team&rsquo;s clients and their process, but I still executed rigorous internal research to ensure I understood the workflow of the video team and the requirements for each client.</p>
+      <div class="card-grid"><div class="insight"><h4>Mistakes Happen</h4><p>When uploading, site users would often make mistakes with the additional information fields leading to skewed data if this mistake was missed.</p></div><div class="insight"><h4>Organisation</h4><p>There were some organisational tools but most clients ignored them and chose to upload assets to &lsquo;All Content&rsquo;, making assets more difficult to find.</p></div><div class="insight"><h4>Out with the old</h4><p>The current ChilliPharm libraries system looks old and outdated, clients expect a slick and clean designed UI, something that current Libraries does not offer.</p></div><div class="insight"><h4>3 separate workflows</h4><p>The video team has several different workflows for different clients, and some workflows include 3rd party vendors. All these workflows and considerations need to be accounted for.</p></div><div class="insight"><h4>Cost</h4><p>The director of sales would like to halve the cost of our product for those who need video services. He believes that if it&rsquo;s cheaper we could get more clients on the platform.</p></div><div class="insight"><h4>Some things can&rsquo;t change</h4><p>The video team currently use a Quality Control library in order to check that the blurred videos meet the standards of the client and can be copied over. It is imperative this part of their workflow does not change.</p></div></div>
+    </div>
+
+    <div class="cs-block">
+      <h3>User Interviews</h3>
+      <p>For the platform, 5 people were interviewed: 2 client users (a site user and video reviewer), 2 account managers and a member of ChilliPharm&rsquo;s video service team. I conducted the internal interviews face to face and the client interviews I conducted over Zoom.</p>
+      <p>For video services, 5 people were interviewed: 2 account managers, 2 members of ChilliPharm&rsquo;s video service team and the director of sales. I conducted all the interviews face to face.</p>
+      <div class="sticky-group"><h4>What we heard about the platform</h4><ul class="sticky-notes"><li><figure class="sticky"><blockquote><p>&ldquo;I have so much work to do, I just want to upload as quickly as possible, and if I make a mistake someone picks it up.&rdquo;</p></blockquote></figure></li><li><figure class="sticky"><blockquote><p>&ldquo;It would be good if we could have a better organisational structure, like subject groups, visits and assessments.&rdquo;</p></blockquote></figure></li><li><figure class="sticky"><blockquote><p>&ldquo;The forms function is great, but it&rsquo;s annoying having to fill out a form on each asset when I&rsquo;m mostly just repeating information.&rdquo;</p></blockquote></figure></li><li><figure class="sticky"><blockquote><p>&ldquo;It would be great if we could see all the assets at once. It&rsquo;s tedious having to open each individual asset.&rdquo;</p></blockquote></figure></li><li><figure class="sticky"><blockquote><p>&ldquo;Data integrity is the most important thing. When a client makes a mistake in the information, it&rsquo;s a domino effect: the video team can&rsquo;t work on it until it&rsquo;s fixed, and that can take over a day.&rdquo;</p></blockquote></figure></li><li><figure class="sticky"><blockquote><p>&ldquo;ChilliPharm is clearly optimised for desktop, not tablet or mobile, as it looks very bad on these devices.&rdquo;</p></blockquote></figure></li></ul></div><div class="sticky-group"><h4>What we heard about video services</h4><ul class="sticky-notes"><li><figure class="sticky"><blockquote><p>&ldquo;We need to continue to use the QC library to ensure every frame has been redacted and the videos are fit for the sponsor.&rdquo;</p></blockquote><figcaption>Video team</figcaption></figure></li><li><figure class="sticky"><blockquote><p>&ldquo;If we remove the second account and have all the videos in one place, we can halve the cost of video services, make it affordable to a wider range of clients and sign more clients up.&rdquo;</p></blockquote><figcaption>Director of sales</figcaption></figure></li><li><figure class="sticky"><blockquote><p>&ldquo;The video team is the company&rsquo;s biggest revenue stream. I want clients to be ready to use video services when the MVP is released.&rdquo;</p></blockquote><figcaption>Director of sales</figcaption></figure></li><li><figure class="sticky"><blockquote><p>&ldquo;The 3rd party vendors still need access to assessments and still need to give instructions to us, the video team.&rdquo;</p></blockquote><figcaption>Account managers</figcaption></figure></li></ul></div>
+    </div>
+
+    <div class="cs-block">
+      <h3>Research Findings</h3>
+      <div class="card-grid"><div class="insight tinted"><h4><span class="emoji" aria-hidden="true">📝</span>Information Field</h4><p>The information fields the user must fill out when uploading assets is a good feature but often mistakes happen which leads to poor data integrity and a negative domino effect.</p></div><div class="insight tinted"><h4><span class="emoji" aria-hidden="true">🔒</span>Data Integrity</h4><p>Data integrity is vital to the sponsor (the client paying for the clinical drug trial). If the data is incorrect then nothing can be used.</p></div><div class="insight tinted"><h4><span class="emoji" aria-hidden="true">📱</span>Poor Designs</h4><p>ChilliPharm does not look good on tablet and mobile to put it bluntly. This is an issue considering all client based users who upload to ChilliPharm do so via iPad.</p></div><div class="insight tinted"><h4><span class="emoji" aria-hidden="true">👀</span>Side by Side</h4><p>Reviewers would like to be able to fill out forms without the need to keep switching between individual assets.</p></div><div class="insight tinted"><h4><span class="emoji" aria-hidden="true">🔍</span>The QC Library</h4><p>The QC library is non negotiable for the video team, it is an imperative part of their workflow.</p></div><div class="insight tinted"><h4><span class="emoji" aria-hidden="true">💰</span>Half the cost</h4><p>By halving the cost we can sign a wider variety of clients who are not as financially strong as others and increase the company&rsquo;s overall revenue.</p></div><div class="insight tinted"><h4><span class="emoji" aria-hidden="true">🤝</span>3rd party vendors</h4><p>They must also be considered as they are integral to some of the video team&rsquo;s workflow.</p></div></div>
+    </div>
+
+    <div class="cs-block">
+      <h3>User Personas</h3>
+      <p>The platform had to work for everyone in the chain, from the nurse filming the assessment to the editor blurring it.</p>
+      <div class="personas">
+      <article class="persona" aria-labelledby="emily-name">
+  <div class="persona-head">
+    <div class="persona-photo"><img src="../images/chillipharm/persona-emily.png" width="297" height="297" alt="" loading="lazy" decoding="async"></div>
+    <div><p class="persona-label">Persona #1</p><h4 id="emily-name">Emily Rodriguez</h4></div>
+  </div>
+  <ul class="chip-row" aria-label="About Emily Rodriguez"><li class="chip">34 years old</li><li class="chip">Clinical Research Nurse</li><li class="chip">Site User</li><li class="chip">Maryland</li></ul>
+  <p>Emily is a clinical research nurse working in a hospital&rsquo;s clinical trial unit. She is responsible for managing patient interactions in clinical drug trials, administering trial medications, and monitoring patients for side effects. Part of her role involves creating and uploading the assessment videos to the pharmaceutical cloud platform. These videos document trial assessments, patient interactions, and medication administration techniques, which are then used by trial reviewers to ensure procedural compliance and track the overall progress of the trial.</p>
+  <div class="persona-more" id="emily-more" data-more="emily-more">
+    <h5>Goals</h5><ul><li><strong>Efficient and Secure Uploading:</strong> Emily needs to upload videos quickly and securely, ensuring patient privacy is protected.</li><li><strong>Clear Documentation:</strong> She needs a platform that enables her to attach documentation and annotations with her video uploads to provide necessary context for reviewers.</li><li><strong>Compliance:</strong> Emily is focused on compliance and aims to ensure that all videos meet regulatory standards, especially concerning patient confidentiality and trial protocols.</li></ul>
+    <h5>Pain Points</h5><ul><li><strong>Limited Time:</strong> Managing multiple patients in a trial setting leaves Emily with limited time for administrative tasks, so she values a fast and intuitive upload process, currently ChilliPharm does not let users leave the upload page when uploading.</li><li><strong>Video File Sizes:</strong> Clinical videos are often high-quality and large in size, leading to slow upload speeds if the platform isn&rsquo;t optimised.</li></ul>
+  </div>
+  <button class="btn btn-text more-toggle" type="button" aria-expanded="false" aria-controls="emily-more" hidden><span class="more-label">Read more</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 15.4 6 9.4 7.4 8l4.6 4.6L16.6 8 18 9.4l-6 6Z"/></svg></button>
+</article>
+      
+      <article class="persona" aria-labelledby="steve-name">
+  <div class="persona-head">
+    <div class="persona-photo"><img src="../images/chillipharm/persona-steve.png" width="297" height="297" alt="" loading="lazy" decoding="async"></div>
+    <div><p class="persona-label">Persona #2</p><h4 id="steve-name">Steve Smith</h4></div>
+  </div>
+  <ul class="chip-row" aria-label="About Steve Smith"><li class="chip">22 years old</li><li class="chip">Junior Video Editor</li><li class="chip">ChilliPharm Video Service User</li><li class="chip">London</li></ul>
+  <p>Steve Smith has a bachelor&rsquo;s degree in film and over his short career has created a wide portfolio which is mostly focused on editing. He wanted to become a writer but also recognises that it&rsquo;s a hard industry to get into and he knows he needs a job in order to live. He is very good with technology and understands the ins and outs of the ChilliPharm video team workflow. He is fairly new to the video team so is still learning.</p>
+  <div class="persona-more" id="steve-more" data-more="steve-more">
+    <h5>Goals</h5><ul><li>Because he has a lot of work to do he wants to be able to quickly download videos, follow the instructions and begin editing as quick as possible.</li><li>He is still new to the team so he makes great use of the QC library. He hopes that one day all his videos will pass the QC check first time.</li><li>To quickly and simply identify the work instructions for each set of videos to edit/blur so he can spend more time writing his films.</li></ul>
+    <h5>Frustrations</h5><ul><li>When using the copy function in the QC library to copy the video that has passed QC there is no search function so he has to manually find the correct library to copy the asset to.</li><li>He does not like the idea of uploading a video directly into the client&rsquo;s assessment page because if there is no QC on the video there might be some non blurred frames which would lead to the company getting in trouble and ultimately him getting into trouble.</li></ul>
+  </div>
+  <button class="btn btn-text more-toggle" type="button" aria-expanded="false" aria-controls="steve-more" hidden><span class="more-label">Read more</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 15.4 6 9.4 7.4 8l4.6 4.6L16.6 8 18 9.4l-6 6Z"/></svg></button>
+</article>
+      
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="ux-design" aria-labelledby="ux-design-title">
+  <div class="wrap">
+    <h2 id="ux-design-title" class="headline">UX Design</h2>
+    <div class="cs-block">
+      <h3>Project Goal</h3>
+      <p>Our research demonstrated that the business and user goals were very similar. Therefore it was not difficult to find common ground between them and identify the eventual project goals. The main goals of the new website are: Organise data in tier system of Subject &gt; Visits &gt; Assessments, remove additional information fields which are proven to be a centre for mistakes and update the UI.</p>
+      <p>For video services there were 2 more goals; reduce the cost of video services to the clients, keep the video services workflow as untouched as possible.</p>
+      <div class="goals-venn">
+        <div class="business"><h4>Business goals</h4><ul><li>Redesign the UI of ChilliPharm</li><li>Gain new clients with a new selling point</li><li>Ensure video services will be able to use the new ChilliPharm</li><li>Having a new website with better data integrity is a selling point to new clients</li></ul></div>
+        <div class="shared"><h4>Shared goals</h4><ul><li>Remove information fields and reduce mistakes</li><li>Improve data integrity</li><li>Ensure the new UI is optimised for mobile and tablet</li></ul></div>
+        <div class="user"><h4>User goals</h4><ul><li>Fill out forms without having to click on each individual asset</li><li>When uploading, be able to move around to other areas in the library without the need to stay on the same page</li><li>Not wanting to factory reset the iPads when the storage is full</li></ul></div>
+      </div>
+    </div>
+    <div class="cs-block">
+      <h3>Features Roadmap</h3>
+      <p>After reviewing the first draft of the MVP, we had to increase the features on there. It was echoed to me that it was imperative that video de-identification had to be in the MVP because it was a big revenue stream for the business. As the video team brings in the most amount of money for the company we want to offer video services to clients on the new platform right away. The final MVP included features such as, creation of a site and protocol in the Administration area (not client facing), the Site landing page, the Subject Visit Assessment tier system, uploading assets, creating/reviewing of forms, creating updates and completing tasks.</p>
+      <figure class="cs-figure"><img src="../images/chillipharm/features-roadmap.png" width="762" height="827" alt="Features roadmap table grouping each feature into MVP, Phase 2 and Phase 3, with a description and the research supporting it. The MVP covers login, access to sites, creating subjects, starting visits and assessments, uploading assets, tasks, updates, forms, video chapters, unscheduled visits and flagging an assessment." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: Features roadmap"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>Features roadmap</figcaption></figure>
+    </div>
+    <div class="cs-block">
+      <h3>Information Architecture</h3>
+      <p>The information architecture was fairly straightforward. The landing page of the site houses the additional Subject, Visit and Assessment pages within it. These pages would house all the features in the MVP and all features added in later dates would also be likely added to these pages. From this I was able to easily define primary and secondary navigation. Adding video services did not change the information architecture.</p>
+      <figure class="cs-figure"><img src="../images/chillipharm/information-architecture.png" width="762" height="699" alt="Information architecture. Log in leads to Trial, then Site, Subject, Visit and Assessment. An assessment holds individual assets, recording, tasks, forms and updates, and an individual asset can be downloaded or moved. Help, My Settings and Notifications sit alongside Log in." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: Information architecture"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>Information architecture</figcaption></figure>
+    </div>
+    <div class="cs-block">
+      <h3>User Flows</h3>
+      <p>I immediately identified 3 user flows:</p>
+      <ul class="plain">
+        <li>Site users who are uploading assets</li>
+        <li>Reviewers who use forms and review assets</li>
+        <li>The video services workflow, shared by 4 users: the Site User, the 3rd Party vendor, the ChilliPharm Video Services user and the Sponsor reviewer user</li>
+      </ul>
+      <div class="fig-grid "><figure class="cs-figure"><img src="../images/chillipharm/flow-site-user.png" width="762" height="451" alt="User flow for a site user uploading assets, from choosing the site and subject through to starting a visit and assessment, uploading the video and completing the task." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: User flow: Clinical Evaluator (Site User)"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>User flow: Clinical Evaluator (Site User)</figcaption></figure><figure class="cs-figure"><img src="../images/chillipharm/flow-reviewer.png" width="762" height="313" alt="User flow for a reviewer, from opening the assessment to watching the assets and filling in the form beside them." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: User flow: Reviewer"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>User flow: Reviewer</figcaption></figure></div>
+      <div class="flow-stack" style="margin-top: var(--s3)">
+        <div><figure class="cs-figure"><img src="../images/chillipharm/video-services-flow-1.png" width="762" height="475" alt="Video services workflow, part 1. The site user uploads a video, notifications go to 3rd party clients, the video team and account managers, and each client follows its own review route before the video team downloads and edits the video." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: Video services workflow, part 1"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>Video services workflow, part 1</figcaption></figure>
+        <figure class="cs-figure"><img src="../images/chillipharm/video-services-flow-2.png" width="762" height="284" alt="Video services workflow, part 2. The edited video goes into the QC library, a different video team member checks it, and the approved video is copied into the sponsor&amp;rsquo;s assessment for the sponsor to review." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: Video services workflow, part 2"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>Video services workflow, part 2</figcaption></figure></div>
+        <figure class="cs-figure"><img src="../images/chillipharm/video-services-flow-legend.png" width="113" height="323" alt="Legend. Shapes show the type of user and colours show each client&amp;rsquo;s workflow." loading="lazy" decoding="async"><figcaption>Legend</figcaption></figure>
+      </div>
+    </div>
+    <div class="cs-block">
+      <h3>Wireframes</h3>
+      <div class="fig-grid four"><figure class="cs-figure"><img src="../images/chillipharm/wireframe-site.png" width="760" height="592" alt="Wireframe of the Site page, listing each subject with their current visit, enrolment date and baseline date." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: Wireframe: Site page"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>Wireframe: Site page</figcaption></figure><figure class="cs-figure"><img src="../images/chillipharm/wireframe-subject.png" width="760" height="670" alt="Wireframe of the Subject page, showing upcoming and completed visits." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: Wireframe: Subject page"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>Wireframe: Subject page</figcaption></figure><figure class="cs-figure"><img src="../images/chillipharm/wireframe-visit.png" width="762" height="672" alt="Wireframe of the Visit page, listing the assessments in that visit." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: Wireframe: Visit page"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>Wireframe: Visit page</figcaption></figure><figure class="cs-figure"><img src="../images/chillipharm/wireframe-assessment.png" width="762" height="592" alt="Wireframe of the Assessment page, with the video and asset thumbnails beside the form fields." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: Wireframe: Assessment page"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>Wireframe: Assessment page</figcaption></figure></div>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="key-decisions" aria-labelledby="decisions-title">
+  <div class="wrap">
+    <h2 id="decisions-title" class="headline">Key Design Decisions</h2>
+    <p class="body-lg muted" style="margin-bottom: var(--s5)">Two decisions did most of the work on this project, one for the users and one for the business.</p>
+
+    <article class="decision" aria-labelledby="decision-1">
+      <span class="label">Decision 1</span>
+      <h3 id="decision-1">A tier system instead of free text fields</h3>
+      <p>Research showed that the additional information fields were the centre for mistakes, and that most clients ignored the organisational tools and uploaded everything to &lsquo;All Content&rsquo;. So we organised data in a tier system of Subject &gt; Visits &gt; Assessments and removed the additional information fields altogether. Every asset now has its place, and there is no free text left to get wrong.</p>
+      <p class="result-line good">Result: user errors down 14%</p>
+      <figure class="cs-figure"><img src="../images/chillipharm/prototype-assessment.png" width="514" height="313" alt="An assessment page on a laptop. The left hand panel shows the tiers: the subject at the top, the visits (Day 1, Day 2, Day 3) beneath it, and the assessments inside each visit." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: The Subject, Visit and Assessment tiers in the left hand panel"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>The Subject, Visit and Assessment tiers in the left hand panel</figcaption></figure>
+    </article>
+
+    <article class="decision" id="permissions" aria-labelledby="decision-2">
+      <span class="label">Decision 2</span>
+      <h3 id="decision-2">Permissions instead of a second account</h3>
+      <p>After gathering all the information regarding user needs and flows, I realised that there was little design work needed with the exception of a few new additions to already existing features. The real solution lay not with design, but with user permissions.</p>
+      <p>2 new user permissions were added:</p>
+      <dl class="permissions">
+        <div><dt>Sites: View Study Procedure Assets</dt><dd>Can view the content of assets associated with a Study Procedure</dd></div>
+        <div><dt>Sites: View Raw Study Procedure Assets</dt><dd>Can see the unprocessed assets uploaded to a Study Procedure (hidden for Sites with &lsquo;Requires Video Services&rsquo;)</dd></div>
+      </dl>
+      <p>We created new permissions that would restrict which assets they could see; the site user is allowed to see the &lsquo;raw&rsquo; files (before de-identification has taken place), but the sponsor reviewers were not allowed to see the raw files but were allowed to view the de-identified files. This also meant the system had to recognise which assets were the &lsquo;blurred&rsquo; files and which were the &lsquo;raw&rsquo; files. We did this by making the ChilliPharm Video Service team all &lsquo;Super Duper Users&rsquo; in our platform.</p>
+      <aside class="commentary" aria-label="Director's commentary">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M4 22V4q0-.8.6-1.4T6 2h12q.8 0 1.4.6T20 4v12q0 .8-.6 1.4T18 18H8l-4 4Zm4-8h8v-2H8v2Zm0-3h8V9H8v2Zm0-3h8V6H8v2Z"/></svg>
+        <div><span class="label">Director&rsquo;s commentary</span><p>I&rsquo;m not joking, they were genuinely called Super Duper Users in the system.</p></div>
+      </aside>
+      <p>This meant that the system was able to recognise that the assets they copy from the QC library into the assessment are the de-identified ones and are distinct from other assets, which in turn when the user does not have the permission Sites: View Raw Study Procedure Assets enabled, restricts their view so they only see the de-identified assets the ChilliPharm Video Service team edited. So the user knew which assets were the edited/blurred assets, they had a specific symbol.</p>
+      <p>Because raw and de-identified videos could now live in the same assessment, clients only needed one trial area instead of 2, and the video team&rsquo;s QC library stayed exactly as it was.</p>
+      <p class="result-line good">Result: clients&rsquo; storage requirements and overall costs both cut by 50%</p>
+      <div class="fig-grid "><figure class="cs-figure"><img src="../images/chillipharm/blurred-asset-symbol.png" width="527" height="598" alt="Design showing the symbol that marks an asset as blurred and de-identified by the video team." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: The symbol that marks a blurred, de-identified asset"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>The symbol that marks a blurred, de-identified asset</figcaption></figure></div>
+    </article>
+  </div>
+</section>
+
+<section class="cs-section" id="ui-design" aria-labelledby="ui-design-title">
+  <div class="wrap">
+    <h2 id="ui-design-title" class="headline">UI Design</h2>
+    <div class="cs-block">
+      <h3>UI Library Components</h3>
+      <p>After deciding on the key screens, we started to work on the UI aspects and make decisions about typography and colour palette. I also researched Google Material Design to understand the current industry standard best practices and how to incorporate those guidelines into the component library. We designed singular components; primary and secondary buttons and their states, modals, subject visit and assessment cards, navigation bar and typography rules.</p>
+      <figure class="cs-figure"><img src="../images/chillipharm/component-library.png" width="762" height="211" alt="A section of the ChilliPharm component library, showing the buttons and their states." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: a section of the component library"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>A section of the component library: buttons and their states. The full library also covers modals, the subject, visit and assessment cards, the navigation bar and typography.</figcaption></figure>
+    </div>
+    <div class="cs-block">
+      <h3>High Fidelity Key Screens</h3>
+      <figure class="cs-figure"><img src="../images/chillipharm/high-fidelity-screens.png" width="2034" height="1164" alt="Twelve high fidelity screens from the redesigned platform, including the site, subject, visit and assessment pages, the upload dialogs and the forms." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: High fidelity key screens"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>High fidelity key screens</figcaption></figure>
+    </div>
+    <div class="cs-block" id="prototype">
+      <h3>Try the prototype</h3>
+      <p class="muted">The prototype is made in Figma, so it works best with a mouse or trackpad. Every key screen is also shown as an image on this page.</p>
+      <div class="proto" data-figma-url="https://www.figma.com/proto/RRKqTE9tV9U3RQtZqw4dph/Portfolio?node-id=2006-3173&amp;t=mfYZXYFbrjlp9SQJ-0&amp;scaling=scale-down&amp;content-scaling=fixed&amp;page-id=0%3A1&amp;starting-point-node-id=2006%3A3173" data-title="ChilliPharm Web Platform, interactive Figma prototype">
+        <button class="proto-play" type="button">
+          <span class="play-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path fill="currentColor" d="M8 5v14l11-7L8 5Z"/></svg></span>
+          <span>Load the interactive prototype</span>
+        </button>
+      </div>
+      <div class="proto-small"><a class="btn btn-filled" href="https://www.figma.com/proto/RRKqTE9tV9U3RQtZqw4dph/Portfolio?node-id=2006-3173&amp;t=mfYZXYFbrjlp9SQJ-0&amp;scaling=scale-down&amp;content-scaling=fixed&amp;page-id=0%3A1&amp;starting-point-node-id=2006%3A3173" style="background: var(--brand); color: var(--on-brand)">Open the prototype in Figma</a></div>
+      <p style="margin-top: var(--s2)"><a href="https://www.figma.com/proto/RRKqTE9tV9U3RQtZqw4dph/Portfolio?node-id=2006-3173&amp;t=mfYZXYFbrjlp9SQJ-0&amp;scaling=scale-down&amp;content-scaling=fixed&amp;page-id=0%3A1&amp;starting-point-node-id=2006%3A3173">Open the prototype in Figma in a full window</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="usability-testing" aria-labelledby="testing-title">
+  <div class="wrap">
+    <h2 id="testing-title" class="headline">Usability Testing</h2>
+    <div class="cs-block">
+      <h3>Testing the platform</h3>
+      <p>I mainly worked with components and variants throughout the whole project, because of this it was very straightforward to build the prototype.</p>
+      <p>In order to keep the flow neat I have used the same mild transition throughout. Additionally I have built an upload animation to make the prototype feel more realistic.</p>
+      <figure class="cs-figure"><img src="../images/chillipharm/prototype-site.png" width="514" height="311" alt="Prototype of the Site 001 page on a laptop, listing four subjects with their current visit and dates." loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: Prototype: Site page"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>Prototype: Site page</figcaption></figure>
+    </div>
+    <div class="cs-block">
+      <h3>Testing video services</h3>
+      <p>The solution we created was tested internally with 3 participants all playing a different user. One user was the Site user uploading the video, the second user was the ChilliPharm Video Service user re-uploading the de-identified video and the last was the Sponsor user who was viewing the edited asset.</p>
+      <p>The overall experience was very straightforward for everyone, however one issue was highlighted:</p>
+      <div class="callout"><p>In order to download the video the video team had to search for the asset in the manage area using the individual asset ID. The video team did express that this slowed down their process and it was annoying not being able to download on the assessment page.</p></div>
+      <div class="results">
+  <div class="result worked"><h4>What worked</h4><ul>
+    <li>The permissions worked, which means we managed to solve the business problem of clients needing 2 separate instances.</li>
+    <li>The video team still kept their QC library.</li></ul></div>
+  <div class="result improve"><h4>Needs improving</h4><ul>
+    <li>The video team could not download on the assessment page; they found it annoying needing to download in the manage area.</li>
+    <li>The blinded study reviewer could not use Sites, because they would be able to see the name of the hospital, subject, visit and assessment.</li></ul></div>
+  <div class="result ideas"><h4>Ideas</h4><ul>
+    <li>Can the blinded study reviewer use a library to view the edited assets?</li>
+    <li>We need to create a download function in the assessment page.</li></ul></div>
+</div>
+    </div>
+    <div class="cs-block">
+      <h3>Iterations</h3>
+      <p>Feedback from testing led to two iterations that gave clients and the video team more control over their subjects and assets.</p>
+      <h4>Editing a subject</h4>
+      <p>In order for the clients to edit a subject we added a kebab menu to the subject card with 3 options; Edit, Deactivate and Delete. Whenever a user makes a change to a subject they must enter a valid reason why before confirming.</p>
+      <h4>Downloading assets</h4>
+      <p>In order for the clients and the video service team to download assets we built a download asset function. The user clicks on the kebab menu and chooses &lsquo;Download&rsquo;, they select the assets they want to download, then on the second screen they choose the version they want to download and the title as well.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="results" aria-labelledby="results-title">
+  <div class="wrap">
+    <h2 id="results-title" class="headline" style="margin-bottom: var(--s5)">Results</h2>
+    <div class="results-grid">
+      <div class="result-stat"><span class="big">14%</span><p>Reduction in user errors. Once the new platform launched, our data showed the tier system and the simplified data entry had cut mistakes by 14%.</p></div>
+      <div class="result-stat"><span class="big">50%</span><p>Lower price for clients who need video services, because raw and de-identified videos now live in one trial area instead of 2.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="key-takeaways" aria-labelledby="takeaways-title">
+  <div class="wrap">
+    <h2 id="takeaways-title" class="headline" style="margin-bottom: var(--s6)">Key Takeaways</h2>
+    <div class="takeaways">
+      <article class="takeaway">
+        <h3>Challenge</h3>
+        <p>This project overall was challenging for me but extremely rewarding because it was my first major project. The support I received from my colleagues was fantastic because every aspect of the UX/UI process was explained to me clearly and they were always on hand for feedback and constructive criticism. The knowledge we gained from user interviews and wider research was key to approaching the UI.</p>
+        <p>On top of that, the director of sales challenged us to have the video services feature ready to be released with the new platform, this meant we had to think of the solution in a matter of weeks, which in itself was a big challenge because it was a major feature.</p>
+      </article>
+      <article class="takeaway">
+        <h3>Lessons Learned</h3>
+        <ul>
+          <li>Ensuring that I refer back to my user research at all stages of the design process to ensure my designs are exactly what the user needs.</li>
+          <li>Not to rush into designs, it can be easy to rush into the designs and showcase work, but the value of slowing down, zooming out and ensuring work is ready to be presentable and following the correct UX/UI process is invaluable.</li>
+          <li>Before starting a project it is imperative to have constant communication with the business stakeholders in order for everyone to understand what is expected in the MVP of the product.</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT PROJECT -->
+<section class="next-project" aria-labelledby="next-title">
+  <div class="wrap">
+    <h2 id="next-title" class="title-lg" style="margin-bottom: var(--s3)">Next project</h2>
+    <ul class="work-list" style="grid-template-columns: 1fr">
+      <li class="project brand-quizzy">
+        <div class="project-body">
+          <p class="project-outcome">Live on the App Store, with AI question rounds powered by ChatGPT</p>
+          <h3><a href="quizzy.html">Quizzy McQuizface</a></h3>
+          <p>A real time multiplayer pub quiz across 17 screens, built on a single accent Material 3 design system.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section id="contact" class="contact" aria-labelledby="contact-title">
+  <div class="wrap">
+    <h2 id="contact-title" class="headline">Thanks for watching.</h2>
+    <p class="body-lg">If you would like to talk about a role, a project or even a film, I would love to hear from you.</p>
+    <div class="contact-actions">
+      <a class="btn btn-filled" href="mailto:cameron.jordan.hasan@gmail.com">Email me</a>
+      <a class="btn btn-outlined" href="https://www.linkedin.com/in/cameron-hasan-5b36291b6/">Connect on LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+</main>
+<script src="../js/main.js"></script>
+</body>
+</html>
