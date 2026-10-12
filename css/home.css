@@ -76,3 +76,42 @@ button.portrait:hover .portrait-zoom, button.portrait:focus-visible .portrait-zo
 /* Case study links under each experience entry */
 .timeline .tl-links { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s3); margin-top: var(--s1); font-weight: 650; }
 .timeline .tl-links a { min-height: 44px; display: inline-flex; align-items: center; }
+
+/* ---------- Concept case studies ----------
+   Self-initiated studies sit under the main grid as outlined cards, so they
+   read as lighter than shipped and client work. Each one is a wide row;
+   add another <li class="project concept"> to grow the list. */
+.concepts { margin-top: var(--s8); }
+.concepts-head { margin-bottom: var(--s3); max-width: 60ch; }
+.concepts-head .title-lg { margin-bottom: var(--s1); }
+.concept-list { display: grid; gap: var(--s3); list-style: none; margin: 0; padding: 0; }
+.project.concept {
+  --card-bg: transparent; --card-on: var(--on-surface); --card-accent: var(--primary); --card-stroke: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--outline);
+  display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: center; gap: var(--s4);
+}
+.project.concept h3 { font-size: clamp(1.375rem, 1vw + 1rem, 1.75rem); line-height: 1.2; }
+.project.concept .chip { background: var(--surface-container-high); color: var(--on-surface-variant); }
+.concept-media {
+  background: var(--brand-tesco); border-radius: var(--shape-lg);
+  display: grid; place-items: center; padding: var(--s4) var(--s3); min-height: 100%;
+}
+.mini-receipt {
+  width: min(100%, 280px); background: #FFFFFF; color: #2B2B2B; transform: rotate(-2deg);
+  font-family: "Courier New", Courier, monospace; font-size: 0.8125rem; line-height: 1.5; text-transform: uppercase;
+  padding: var(--s2) var(--s2) var(--s3); box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 95% 97%, 90% 100%, 85% 97%, 80% 100%, 75% 97%, 70% 100%, 65% 97%, 60% 100%, 55% 97%, 50% 100%, 45% 97%, 40% 100%, 35% 97%, 30% 100%, 25% 97%, 20% 100%, 15% 97%, 10% 100%, 5% 97%, 0 100%);
+  transition: transform var(--dur-medium) var(--ease-spatial);
+}
+.project.concept:hover .mini-receipt { transform: rotate(0deg) translateY(-4px); }
+.mini-receipt p { margin: 0; color: #2B2B2B; }
+.mini-receipt .mr-head { text-align: center; font-weight: 700; letter-spacing: 0.08em; }
+.mini-receipt .mr-sub, .mini-receipt .mr-foot { text-align: center; color: #555555; }
+.mini-receipt hr { border: 0; border-top: 2px dashed #8C8C8C; margin: var(--s1) 0; }
+.mini-receipt .mr-row { display: flex; justify-content: space-between; gap: var(--s2); }
+@media (max-width: 860px) {
+  .project.concept { display: flex; }
+  .concept-media { min-height: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .project.concept:hover .mini-receipt { transform: rotate(-2deg); } }
+@media (forced-colors: active) { .project.concept { border: 1px solid CanvasText; } }
