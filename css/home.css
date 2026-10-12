@@ -82,7 +82,7 @@ button.portrait:hover .portrait-zoom, button.portrait:focus-visible .portrait-zo
    read as lighter than shipped and client work. Each one is a wide row;
    add another <li class="project concept"> to grow the list. */
 .concepts { margin-top: var(--s8); }
-.concepts-head { margin-bottom: var(--s3); max-width: 60ch; }
+.concepts-head { margin-bottom: var(--s3); }
 .concepts-head .title-lg { margin-bottom: var(--s1); }
 .concept-list { display: grid; gap: var(--s3); list-style: none; margin: 0; padding: 0; }
 .project.concept {
