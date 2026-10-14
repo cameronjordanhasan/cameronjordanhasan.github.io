@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Zombie Street Survival, a case study by Cameron Hasan</title>
+<meta name="description" content="How Cameron Hasan designed and directed Zombie Street Survival, an offline mobile zombie game built with Claude Code as an AI pair programmer, from first commit to the App Store in about six and a half weeks.">
+<meta property="og:title" content="Zombie Street Survival, a case study by Cameron Hasan">
+<meta property="og:description" content="An offline zombie survival game for phones, designed and directed solo with an AI pair programmer and backed by 372 automated tests.">
+<meta property="og:type" content="article">
+<meta name="theme-color" content="#12302C">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap" rel="stylesheet">
+<script>
+  document.documentElement.classList.add('js');
+  try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
+<link rel="stylesheet" href="../css/tokens.css?v=2026-10-14">
+<link rel="stylesheet" href="../css/components.css?v=2026-10-14">
+<link rel="stylesheet" href="../css/case-study.css?v=2026-10-14">
+</head>
+<body class="cs-zombie">
+
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <clipPath id="cookie" clipPathUnits="objectBoundingBox"><path d="M0.9900 0.5000 L0.9881 0.5128 L0.9826 0.5253 L0.9739 0.5373 L0.9625 0.5486 L0.9491 0.5591 L0.9346 0.5688 L0.9199 0.5778 L0.9059 0.5863 L0.8935 0.5945 L0.8832 0.6027 L0.8756 0.6112 L0.8709 0.6205 L0.8692 0.6308 L0.8704 0.6422 L0.8738 0.6549 L0.8791 0.6688 L0.8855 0.6839 L0.8920 0.6998 L0.8981 0.7161 L0.9027 0.7325 L0.9053 0.7484 L0.9053 0.7632 L0.9024 0.7766 L0.8964 0.7880 L0.8874 0.7973 L0.8756 0.8042 L0.8615 0.8087 L0.8456 0.8111 L0.8286 0.8118 L0.8111 0.8111 L0.7940 0.8098 L0.7777 0.8084 L0.7628 0.8077 L0.7497 0.8083 L0.7385 0.8108 L0.7292 0.8155 L0.7219 0.8228 L0.7161 0.8327 L0.7114 0.8450 L0.7075 0.8594 L0.7038 0.8753 L0.6998 0.8920 L0.6950 0.9088 L0.6891 0.9248 L0.6819 0.9392 L0.6732 0.9512 L0.6630 0.9603 L0.6514 0.9660 L0.6387 0.9682 L0.6251 0.9668 L0.6110 0.9622 L0.5967 0.9548 L0.5825 0.9454 L0.5688 0.9346 L0.5557 0.9234 L0.5434 0.9127 L0.5317 0.9034 L0.5208 0.8962 L0.5103 0.8916 L0.5000 0.8900 L0.4897 0.8916 L0.4792 0.8962 L0.4683 0.9034 L0.4566 0.9127 L0.4443 0.9234 L0.4312 0.9346 L0.4175 0.9454 L0.4033 0.9548 L0.3890 0.9622 L0.3749 0.9668 L0.3613 0.9682 L0.3486 0.9660 L0.3370 0.9603 L0.3268 0.9512 L0.3181 0.9392 L0.3109 0.9248 L0.3050 0.9088 L0.3002 0.8920 L0.2962 0.8753 L0.2925 0.8594 L0.2886 0.8450 L0.2839 0.8327 L0.2781 0.8228 L0.2708 0.8155 L0.2615 0.8108 L0.2503 0.8083 L0.2372 0.8077 L0.2223 0.8084 L0.2060 0.8098 L0.1889 0.8111 L0.1714 0.8118 L0.1544 0.8111 L0.1385 0.8087 L0.1244 0.8042 L0.1126 0.7973 L0.1036 0.7880 L0.0976 0.7766 L0.0947 0.7632 L0.0947 0.7484 L0.0973 0.7325 L0.1019 0.7161 L0.1080 0.6998 L0.1145 0.6839 L0.1209 0.6688 L0.1262 0.6549 L0.1296 0.6422 L0.1308 0.6308 L0.1291 0.6205 L0.1244 0.6112 L0.1168 0.6027 L0.1065 0.5945 L0.0941 0.5863 L0.0801 0.5778 L0.0654 0.5688 L0.0509 0.5591 L0.0375 0.5486 L0.0261 0.5373 L0.0174 0.5253 L0.0119 0.5128 L0.0100 0.5000 L0.0119 0.4872 L0.0174 0.4747 L0.0261 0.4627 L0.0375 0.4514 L0.0509 0.4409 L0.0654 0.4312 L0.0801 0.4222 L0.0941 0.4137 L0.1065 0.4055 L0.1168 0.3973 L0.1244 0.3888 L0.1291 0.3795 L0.1308 0.3692 L0.1296 0.3578 L0.1262 0.3451 L0.1209 0.3312 L0.1145 0.3161 L0.1080 0.3002 L0.1019 0.2839 L0.0973 0.2675 L0.0947 0.2516 L0.0947 0.2368 L0.0976 0.2234 L0.1036 0.2120 L0.1126 0.2027 L0.1244 0.1958 L0.1385 0.1913 L0.1544 0.1889 L0.1714 0.1882 L0.1889 0.1889 L0.2060 0.1902 L0.2223 0.1916 L0.2372 0.1923 L0.2503 0.1917 L0.2615 0.1892 L0.2708 0.1845 L0.2781 0.1772 L0.2839 0.1673 L0.2886 0.1550 L0.2925 0.1406 L0.2962 0.1247 L0.3002 0.1080 L0.3050 0.0912 L0.3109 0.0752 L0.3181 0.0608 L0.3268 0.0488 L0.3370 0.0397 L0.3486 0.0340 L0.3613 0.0318 L0.3749 0.0332 L0.3890 0.0378 L0.4033 0.0452 L0.4175 0.0546 L0.4312 0.0654 L0.4443 0.0766 L0.4566 0.0873 L0.4683 0.0966 L0.4792 0.1038 L0.4897 0.1084 L0.5000 0.1100 L0.5103 0.1084 L0.5208 0.1038 L0.5317 0.0966 L0.5434 0.0873 L0.5557 0.0766 L0.5688 0.0654 L0.5825 0.0546 L0.5967 0.0452 L0.6110 0.0378 L0.6251 0.0332 L0.6387 0.0318 L0.6514 0.0340 L0.6630 0.0397 L0.6732 0.0488 L0.6819 0.0608 L0.6891 0.0752 L0.6950 0.0912 L0.6998 0.1080 L0.7038 0.1247 L0.7075 0.1406 L0.7114 0.1550 L0.7161 0.1673 L0.7219 0.1772 L0.7292 0.1845 L0.7385 0.1892 L0.7497 0.1917 L0.7628 0.1923 L0.7777 0.1916 L0.7940 0.1902 L0.8111 0.1889 L0.8286 0.1882 L0.8456 0.1889 L0.8615 0.1913 L0.8756 0.1958 L0.8874 0.2027 L0.8964 0.2120 L0.9024 0.2234 L0.9053 0.2368 L0.9053 0.2516 L0.9027 0.2675 L0.8981 0.2839 L0.8920 0.3002 L0.8855 0.3161 L0.8791 0.3312 L0.8738 0.3451 L0.8704 0.3578 L0.8692 0.3692 L0.8709 0.3795 L0.8756 0.3888 L0.8832 0.3973 L0.8935 0.4055 L0.9059 0.4137 L0.9199 0.4222 L0.9346 0.4312 L0.9491 0.4409 L0.9625 0.4514 L0.9739 0.4627 L0.9826 0.4747 L0.9881 0.4872 Z"/></clipPath>
+</svg>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="../index.html" aria-label="Cameron Hasan, home">
+      <span class="brand-mark" aria-hidden="true">C</span>
+      <span class="brand-name">Cameron Hasan</span>
+    </a>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <ul class="nav-list">
+        <li><a href="../index.html#work">Work</a></li>
+        <li><a href="../index.html#story">Experience</a></li>
+        <li><a href="../index.html#kind-words">Kind words</a></li>
+        <li><a href="../index.html#films">Films</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <button class="icon-btn theme-toggle" type="button" aria-label="Switch to dark theme">
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12.3 22q-2.1 0-3.9-.8t-3.2-2.1-2.1-3.2T2.3 12q0-3.6 2.3-6.3T10.4 2.2q-.4 2.1.2 4.1t2.1 3.5 3.5 2.1 4.1.2q-.6 3.5-3.3 5.8T12.3 22Z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></g></svg>
+    </button>
+    <button class="icon-btn menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+      <svg class="icon-menu" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 18v-2h18v2H3Zm0-5v-2h18v2H3Zm0-5V6h18v2H3Z"/></svg>
+      <svg class="icon-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.4 19 5 17.6 10.6 12 5 6.4 6.4 5 12 10.6 17.6 5 19 6.4 13.4 12 19 17.6 17.6 19 12 13.4 6.4 19Z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+<div class="cs-hero">
+  <div class="wrap">
+    <a class="back-link" href="../index.html#work"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="m10 18-6-6 6-6 1.4 1.45L7.85 11H20v2H7.85l3.55 3.55L10 18Z"/></svg>All work</a>
+    <div class="hero-split">
+      <div class="hero-media">
+        <div class="zs-keyart"><img src="../images/zombie/key-art.jpg" width="1400" height="781" alt="Zombie Street Survival key art: a teenager in a denim jacket grips a baseball bat under an orange streetlight as a horde of green-eyed zombies walks towards him down a foggy suburban street at night" decoding="async" fetchpriority="high"></div>
+      </div>
+      <div class="hero-text">
+        <p class="zs-kicker"><img src="../images/zombie/icon.png" width="256" height="256" alt="" decoding="async">Survive the endless night</p>
+        <h1 class="cs-title">Zombie Street Survival</h1>
+        <p class="cs-subtitle">An offline zombie survival game for phones. I designed and directed it, built it with Claude Code as my AI pair programmer, and took it from first commit to App Store submission in about six and a half weeks.</p>
+        <div class="cs-actions"><a class="btn btn-outlined" href="https://smallbatchsoftware-144.github.io/zombie-street-survival-site/">Visit the game&rsquo;s website <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M5 21q-.8 0-1.4-.6T3 19V5q0-.8.6-1.4T5 3h7v2H5v14h14v-7h2v7q0 .8-.6 1.4T19 21H5Zm4.7-5.3-1.4-1.4L17.6 5H14V3h7v7h-2V6.4l-9.3 9.3Z"/></svg></a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="cs-section" aria-labelledby="overview-title">
+  <div class="wrap">
+    <h2 id="overview-title" class="visually-hidden">Project overview</h2>
+    <dl class="cs-details">
+      <div><dt>Project type</dt><dd>Independent product, mobile game</dd></div>
+      <div><dt>Role</dt><dd>Product owner, game designer, creative director, playtester and release manager</dd></div>
+      <div><dt>Platforms</dt><dd>iOS, with Android playtest builds</dd></div>
+      <div><dt>Tools</dt><dd>Godot 4, Claude Code, Kling AI, Google Gemini, Python</dd></div>
+      <div><dt>Duration</dt><dd>28 Aug to 12 Oct 2026</dd></div>
+    </dl>
+    <h3 class="title-lg" style="margin-bottom: var(--s2)">Key summary</h3>
+    <p class="cs-summary">Zombie Street Survival is a 2D side-scrolling survival game. You fight through an endless run of street rounds on foot or by car, loot houses, recruit a survivor and spend your money in a shop between rounds, slowly unlocking new characters and weapons. I wrote the brief, designed the economy, directed the art and played every build on real phones, while Claude Code wrote the code from my brief and feedback. The project is really about one skill: directing AI work to a professional standard, by asking for root causes instead of quick patches and insisting every fix is backed by a test.</p>
+  </div>
+</section>
+
+<nav class="section-nav" aria-label="Case study sections">
+  <div class="wrap">
+    <ul>
+      <li><a href="#the-idea">The Idea</a></li>
+      <li><a href="#directing-the-build">Directing the Build</a></li>
+      <li><a href="#designing-the-game">Designing the Game</a></li>
+      <li><a href="#testing">Testing</a></li>
+      <li><a href="#shipping">Shipping</a></li>
+      <li><a href="#key-takeaways">Key Takeaways</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="cs-section" id="the-idea" aria-labelledby="the-idea-title">
+  <div class="wrap">
+    <h2 id="the-idea-title" class="headline">The Idea</h2>
+
+    <div class="cs-block">
+      <h3>The Brief</h3>
+      <p>The goal was a complete mobile game, made on my own, that a player could buy once and keep. It started with a written design brief, an economy and pacing spreadsheet, and HTML mockups of the main screens.</p>
+      <figure class="cs-figure zs-shot"><img src="../images/zombie/title.jpg" width="1400" height="644" alt="The Zombie Street Survival title screen: the name in amber over a foggy suburban street at night, with an upturned car under a streetlight and the words Tap to start" loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: The title screen: a suburban outbreak, painted in the same night palette as the key art"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>The title screen: a suburban outbreak, painted in the same night palette as the key art</figcaption></figure>
+      <p>I set myself four constraints from the start, and every later decision was checked against them.</p>
+      <div class="card-grid">
+        <div class="insight"><h4>Solo</h4><p>One person making every product decision, with an AI pair programmer doing the building.</p></div>
+        <div class="insight"><h4>Offline</h4><p>No accounts, no network access and nothing to sign in to. It works on a plane.</p></div>
+        <div class="insight"><h4>Made for phones</h4><p>Landscape, touch controls, notched screens and short sessions, tested on real iPhone and Android devices.</p></div>
+        <div class="insight"><h4>Honest to buy</h4><p>A one-off 99p. No ads, no in-app purchases and, according to Apple&rsquo;s privacy label, no data collected.</p></div>
+      </div>
+    </div>
+
+    <div class="cs-block">
+      <h3>What&rsquo;s in the Game</h3>
+      <p>Each round is a stretch of street. Zombies scale up every round, and the run only ends when you do.</p>
+      <div class="card-grid">
+        <div class="insight tinted"><h4>Street rounds</h4><p>Melee weapons that wear down and can be repaired, a block, and guns from pistols to a flamethrower, all on a four button action diamond.</p></div>
+        <div class="insight tinted"><h4>Four kinds of zombie</h4><p>Common, quick ones that jab twice, slow powerful ones with a heavy wind-up, and a werewolf that howls when it arrives.</p></div>
+        <div class="insight tinted"><h4>Houses, a survivor and a car</h4><p>Multi-floor houses to loot, a survivor who follows you and fights with their own ammo, and a car every third round to run zombies over.</p></div>
+        <div class="insight tinted"><h4>A reason to come back</h4><p>A between-round shop, 10 characters and 13 weapons unlocked with account-wide XP, 83 achievements and a lifetime stats page.</p></div>
+      </div>
+      <div class="fig-grid zs-gallery"><figure class="cs-figure zs-shot"><img src="../images/zombie/street.jpg" width="1400" height="644" alt="Round 2 on the street: Duke with a sledgehammer stands between groups of zombies, with movement arrows on the left and Fire, Melee, block and weapon buttons on the right" loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: Out on the street, with the movement arrows and the action buttons"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>Out on the street, with the movement arrows and the action buttons</figcaption></figure><figure class="cs-figure zs-shot"><img src="../images/zombie/house.jpg" width="1400" height="644" alt="Inside a house in round 1: Duke in a kitchen with three zombies walking towards him past loot crates" loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: Inside a house, with loot crates to search"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>Inside a house, with loot crates to search</figcaption></figure><figure class="cs-figure zs-shot"><img src="../images/zombie/achievements.jpg" width="1400" height="644" alt="Round 3: Duke drives a battered car through zombies as two achievement toasts appear, Common Slayer for 400 XP and Hit and Run for 100 XP" loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: Driving the car, with two achievements unlocking at once"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>Driving the car, with two achievements unlocking at once</figcaption></figure></div>
+    </div>
+
+    <div class="cs-block">
+      <h3>Who Did What</h3>
+      <p>I want to be precise about this, because it is the most interesting part of the project. I did not write the code. I designed and directed the game, and I directed an AI to build it to a standard I was happy to put my name on.</p>
+      <div class="two-col zs-roles">
+        <div class="insight zs-me">
+          <h4>Me</h4>
+          <ul>
+            <li>Wrote the game design brief, the economy and pacing spreadsheet, and the screen mockups</li>
+            <li>Chose the art direction and produced the art: still artwork, icons and key art in Google Gemini, and the character and zombie animation in <a href="https://kling.ai/app">Kling AI</a></li>
+            <li>Supplied the sound effects and music</li>
+            <li>Playtested on real iPhone and Android devices and fed back in batches</li>
+            <li>Made the product calls: difficulty, the unlock curve, rewards, pricing and what to cut</li>
+            <li>Ran the Apple side, from TestFlight and App Store Connect to the age rating and privacy questionnaires and the final submission</li>
+          </ul>
+        </div>
+        <div class="insight">
+          <h4>Claude Code</h4>
+          <ul>
+            <li>Wrote the game in GDScript from my brief and feedback</li>
+            <li>Wrote the automated test suite and the tooling</li>
+            <li>Investigated and root-caused the bugs I found in playtesting</li>
+            <li>Prepared the Android and iOS builds</li>
+            <li>Drafted the App Store listing copy, the support and privacy website and the project documentation</li>
+            <li>Proposed options and trade-offs, and flagged risks for me to decide on</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="directing-the-build" aria-labelledby="directing-title">
+  <div class="wrap">
+    <h2 id="directing-title" class="headline">Directing the Build</h2>
+
+    <div class="cs-block">
+      <h3>The Loop</h3>
+      <p>The whole game was built by repeating one loop more than thirty times. Each round ended in a written log entry, so decisions and dead ends survived even when the AI&rsquo;s memory of the conversation did not.</p>
+      <ol class="steps">
+        <li><strong>Play it on a real phone</strong>I played the latest build on an iPhone or Android device, never just a simulator.</li>
+        <li><strong>Send feedback in a batch</strong>Specific bugs, things that felt wrong and design changes, grouped together rather than drip fed.</li>
+        <li><strong>Find the root cause</strong>I asked for the real cause and evidence for it, and pushed back on fixes that only hid the symptom.</li>
+        <li><strong>Fix it and lock it in</strong>Every fix came with a regression test, then the full test suite had to pass before a new build.</li>
+        <li><strong>Write it down</strong>A running log recorded what we found, what we tried and what we learned.</li>
+      </ol>
+    </div>
+
+    <div class="cs-block">
+      <h3>Built on Data, Not Guesswork</h3>
+      <p>Every gameplay number, from zombie health to weapon damage and unlock costs, lives in six data files rather than being buried in code. My design spreadsheet is the source of truth, and the test suite reproduces its tabs, so a balance change cannot quietly break something else.</p>
+      <div class="results-grid">
+        <div class="result-stat"><span class="big">372</span><p>automated tests with 3,381 checks, all passing at submission</p></div>
+        <div class="result-stat"><span class="big">78</span><p>scripts, about 11,500 lines of game code across 24 scenes</p></div>
+        <div class="result-stat"><span class="big">6&frac12;</span><p>weeks from the first commit to App Store submission, over 59 commits</p></div>
+      </div>
+    </div>
+
+    <div class="cs-block">
+      <div class="decision">
+        <span class="label">Deep dive</span>
+        <h3>The Sound Was Late, but the Code Was Fine</h3>
+        <p>Playtesters said button and hit sounds felt laggy. The first fix moved the click to the very moment of touch, which helped a little. I wasn&rsquo;t satisfied and asked the obvious question: can&rsquo;t we just fix the lag?</p>
+        <p>Measuring the sound files themselves showed the problem was never in the code. The button click began with about 650 milliseconds of near silence, and other sounds had the same dead air at the start: the player getting hurt about 550 ms, a melee hit about 285 ms and the werewolf howl about 920 ms.</p>
+        <p>So the code change was reverted. Instead, a script trimmed the silence from the start of all 24 one-shot sounds, and a new test fails if any sound ever starts late again.</p>
+        <p class="result-line good">Measure the asset before you change the logic</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="designing-the-game" aria-labelledby="designing-title">
+  <div class="wrap">
+    <h2 id="designing-title" class="headline">Designing the Game</h2>
+
+    <div class="cs-block">
+      <div class="decision">
+        <span class="label">Deep dive</span>
+        <h3>Everything Unlocked in 30 Minutes</h3>
+        <p>When I modelled the economy against my spreadsheet, the numbers in the build at the time let a player unlock every character and weapon in roughly one 30 minute run. That is a retention problem: once there is nothing left to earn, there is less reason to come back.</p>
+        <p>I raised the unlock costs by about three to six times on a curve that starts fast and gets steep at the end, so new players still get early rewards. The final character went from 13,000 XP to 80,000 XP, aiming for roughly five to six hours to unlock everything. I also added run counters on the device so the target can be checked against real play, without collecting any data.</p>
+        <figure class="cs-figure zs-shot"><img src="../images/zombie/menu.jpg" width="1400" height="644" alt="The main menu: 3,481 XP earned with a progress bar towards the next unlock, Dr. Amara at 4,000 XP, the selected character Duke, and buttons for Start a new game, Armoury, Achievements 11 of 83, Stats and Settings" loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: The main menu always shows how close the next unlock is"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>The main menu always shows how close the next unlock is</figcaption></figure>
+        <p class="result-line good">From about 30 minutes to a five to six hour target</p>
+      </div>
+    </div>
+
+    <div class="cs-block">
+      <h3>Design Calls</h3>
+      <div class="card-grid">
+        <div class="insight"><h4>Cutting the XP bar</h4><p>An XP progress bar went into the round screen, looked too busy in playtesting and was removed the same day. It stays on the shop and menu, where a player has time to read it.</p></div>
+        <div class="insight"><h4>You can&rsquo;t outrun the horde</h4><p>Zombies left far behind are moved back to the front of the screen and walk in again, keeping their health and type, so a fast player can&rsquo;t simply leave the threat behind.</p></div>
+        <div class="insight"><h4>Rewards that fit the effort</h4><p>Achievements grew from 40 to 83 after playtest feedback. The longest-haul rewards are deliberately small, about 4 to 5% of the XP earned on the way.</p></div>
+        <div class="insight"><h4>Priced for the game it is</h4><p>An offline, single-player game shouldn&rsquo;t need ads or a store inside it, so it is a one-off 99p and that is it.</p></div>
+      </div>
+      <figure class="cs-figure zs-shot"><img src="../images/zombie/shop.jpg" width="1400" height="644" alt="The Shack shop between rounds: a loadout of up to three weapons, pistols priced from 150 to 700 dollars, and an XP card showing progress to the next unlock" loading="lazy" decoding="async"><button class="icon-btn zoom-btn" type="button" aria-label="Enlarge: The shop between rounds, where the XP bar has room to breathe"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 21v-7h2v3.6L17.6 5H14V3h7v7h-2V6.4L6.4 19H10v2H3Z"/></svg></button><figcaption>The shop between rounds, where the XP bar has room to breathe</figcaption></figure>
+    </div>
+
+    <div class="cs-block">
+      <h3>The AI Art Pipeline</h3>
+      <p>Hand-drawing 14 animated characters and enemies wasn&rsquo;t realistic for one person, so I made the art with two AI tools: Google Gemini for the still artwork and <a href="https://kling.ai/app">Kling AI</a> for the animation. Then we built a pipeline to turn Kling&rsquo;s video clips into clean game animation, about 600 frames in all.</p>
+      <ol class="steps">
+        <li><strong>One still, three clips</strong>Each character starts as a single still image I made in Google Gemini, which Kling AI then animates into five second walk, attack and death clips. Using the same image as the first and last frame gives a seamless walk loop.</li>
+        <li><strong>From video to frames</strong>A Python script keys out the flat grey background, steadies the crop, finds the part of the clip with the motion and saves a fixed number of frames.</li>
+        <li><strong>Automatic quality checks</strong>Tools compare each frame&rsquo;s outline with the next to catch missing frames, and look for characters that have turned partly see-through.</li>
+        <li><strong>Everything else</strong>Variants of the same tools handle still objects like the car and crates, painted background layers and a real flamethrower clip turned into a looping flame. Google Gemini also made the UI icons, the app icon and the key art.</li>
+      </ol>
+      <div class="callout"><p>One lesson worth keeping: image models fake a transparent background by drawing a checkerboard, so it works better to ask for a flat colour and key it out yourself, then check the outer pixels for a stray border.</p></div>
+    </div>
+
+    <div class="cs-block">
+      <h3>Accessibility and the Interface</h3>
+      <p>The interface runs on a small design system of its own, with tokens and reusable components on an 8 point grid. Touch targets were audited against Apple&rsquo;s 44 point minimum, text contrast was checked against WCAG, and the layout respects the safe areas on notched phones.</p>
+      <p>The biggest accessibility feature is a colourblind mode that puts a distinct shape over each type of zombie, so you can tell a quick one from a powerful one without relying on colour. Getting those shapes to sit on each zombie&rsquo;s head took two fixes: measuring the symbol itself, and measuring where the head sits in every single frame of animation, since the art isn&rsquo;t centred in its frames. You can also swap the Block and Fire buttons to suit your hands, turn off damage numbers and adjust the audio.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="testing" aria-labelledby="testing-title">
+  <div class="wrap">
+    <h2 id="testing-title" class="headline">Testing</h2>
+
+    <div class="cs-block">
+      <h3>Bugs Only a Real Phone Could Find</h3>
+      <p>The automated tests kept passing while real devices kept finding problems. Each one below was traced from what I saw on the phone to its real cause, fixed and then locked in with a test.</p>
+      <div class="before-after">
+        <div class="ba-card"><h4>&ldquo;I can&rsquo;t get in the car&rdquo;</h4><dl><div><dt>What I saw</dt><dd>Tapping the car got you in and straight back out again.</dd></div><div class="after"><dt>The real cause</dt><dd>Every real tap sent two events, a touch and a fake mouse click. Tests only ever send one.</dd></div></dl></div>
+        <div class="ba-card"><h4>Fading characters</h4><dl><div><dt>What I saw</dt><dd>Characters looked see-through while they walked.</dd></div><div class="after"><dt>The real cause</dt><dd>Two frames were blended at partial strength, so the background showed through. Now the current frame is drawn solid and the next fades in on top.</dd></div></dl></div>
+        <div class="ba-card"><h4>Silent on Android</h4><dl><div><dt>What I saw</dt><dd>No sound at all, but only on Android.</dd></div><div class="after"><dt>The real cause</dt><dd>The game looked for sounds by scanning a folder, which is empty in a finished build. It now uses a fixed list.</dd></div></dl></div>
+        <div class="ba-card"><h4>Bouncing on the stairs</h4><dl><div><dt>What I saw</dt><dd>The player bounced between floors forever. Three fixes passed the tests and failed on the phone.</dd></div><div class="after"><dt>The real cause</dt><dd>Physics kept running during the fade between floors. It is now paused, and the test uses the real button and timing.</dd></div></dl></div>
+        <div class="ba-card"><h4>Mirrored controls</h4><dl><div><dt>What I saw</dt><dd>Fire and Block were on opposite sides on my iPhone and my Android phone.</dd></div><div class="after"><dt>The real cause</dt><dd>An old saved setting outlived a change to the default layout. Saves now carry a version, so old ones are updated once.</dd></div></dl></div>
+        <div class="ba-card"><h4>The wrong app icon</h4><dl><div><dt>What I saw</dt><dd>Android&rsquo;s themed icons showed the game engine&rsquo;s logo instead of mine.</dd></div><div class="after"><dt>The real cause</dt><dd>Inspecting the built app showed the engine&rsquo;s logo in the themed layer. It was replaced with a silhouette from the game&rsquo;s art.</dd></div></dl></div>
+      </div>
+      <div class="callout"><p>The common thread: a test sends one clean event, but a phone in someone&rsquo;s hand doesn&rsquo;t. That is why nothing counted as fixed until I had seen it work on a device.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="shipping" aria-labelledby="shipping-title">
+  <div class="wrap">
+    <h2 id="shipping-title" class="headline">Shipping</h2>
+
+    <div class="cs-block">
+      <h3>Getting It Onto the App Store</h3>
+      <p>Shipping a game is its own project. I ran the whole Apple side myself: the developer account, TestFlight builds tested on a real iPhone, App Store Connect, the screenshots and the final submission on 12 October 2026.</p>
+      <div class="card-grid">
+        <div class="insight"><h4>The listing</h4><p>Name, subtitle, promotional text, keywords, a full description and notes for Apple&rsquo;s reviewers, with every field checked against Apple&rsquo;s character limits.</p></div>
+        <div class="insight"><h4>The declarations</h4><p>An age rating of 13+ for cartoon violence and horror themes, and a privacy label of &ldquo;Data Not Collected&rdquo;, because the game has no accounts, analytics, ads or tracking.</p></div>
+        <div class="insight"><h4>The website</h4><p>A small support and privacy site in the game&rsquo;s own colours, with a home page, an FAQ and a privacy policy, checked on desktop and phone and hosted free on GitHub Pages.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cs-section" id="key-takeaways" aria-labelledby="takeaways-title">
+  <div class="wrap">
+    <h2 id="takeaways-title" class="headline" style="margin-bottom: var(--s6)">Key Takeaways</h2>
+    <div class="cs-block">
+      <h3>Challenge</h3>
+      <p>The hardest part wasn&rsquo;t getting the AI to write code. It was knowing when an answer was only treating a symptom. Several fixes looked right and passed every test, then failed the moment I picked up a phone. The skill I built was asking for evidence and holding out for the real cause.</p>
+    </div>
+    <div class="cs-block">
+      <h3>Lessons Learned</h3>
+      <div class="lessons">
+        <div class="lesson"><h4>Measure the asset first</h4><p>The laggy sounds were never a code problem. Checking the file took minutes and saved a fix that would have hidden it.</p></div>
+        <div class="lesson"><h4>A phone is not a test</h4><p>Real hardware sends double taps and runs physics through fades. Nothing was fixed until it worked in my hand.</p></div>
+        <div class="lesson"><h4>Watch the count, not just the failures</h4><p>One typo stopped a whole test file running without a single failure showing. Now the total number of tests gets checked too.</p></div>
+        <div class="lesson"><h4>Cut what doesn&rsquo;t earn its place</h4><p>The in-round XP bar was a good idea that made the screen worse, so it went the same day.</p></div>
+      </div>
+    </div>
+    <div class="cs-block">
+      <h3>Where It Stands</h3>
+      <p>Zombie Street Survival has been submitted to the App Store and is awaiting Apple&rsquo;s review. There are no player numbers yet, so this case study focuses on how it was made. Next I want to hear from real players, check the five to six hour unlock target against how people actually play, and tune from there.</p>
+      <div class="cs-actions"><a class="btn btn-filled" href="https://smallbatchsoftware-144.github.io/zombie-street-survival-site/" style="background: var(--brand); color: var(--on-brand)">Visit the game&rsquo;s website <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M5 21q-.8 0-1.4-.6T3 19V5q0-.8.6-1.4T5 3h7v2H5v14h14v-7h2v7q0 .8-.6 1.4T19 21H5Zm4.7-5.3-1.4-1.4L17.6 5H14V3h7v7h-2V6.4l-9.3 9.3Z"/></svg></a></div>
+    </div>
+  </div>
+</section>
+
+<section class="next-project" aria-labelledby="next-title">
+  <div class="wrap">
+    <h2 id="next-title" class="title-lg" style="margin-bottom: var(--s3)">Next project</h2>
+    <ul class="work-list" style="grid-template-columns: 1fr">
+      <li class="project brand-chillipharm">
+        <div class="project-body">
+          <p class="project-outcome">Around 20 minutes saved per task in usability testing</p>
+          <h3><a href="chillipharm-app.html">The ChilliPharm App</a></h3>
+          <p>A mobile app that lets clinical trial staff record, upload and review trial videos on the phone they already use.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section id="contact" class="contact" aria-labelledby="contact-title">
+  <div class="wrap">
+    <h2 id="contact-title" class="headline">Thanks for watching.</h2>
+    <p class="body-lg">If you would like to talk about a role, a project or even a film, I would love to hear from you.</p>
+    <div class="contact-actions">
+      <a class="btn btn-filled" href="mailto:cameron.jordan.hasan@gmail.com">Email me</a>
+      <a class="btn btn-outlined" href="https://www.linkedin.com/in/cameron-hasan-5b36291b6/">Connect on LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+</main>
+<script src="../js/main.js"></script>
+</body>
+</html>

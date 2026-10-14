@@ -203,6 +203,7 @@ section > .wrap > :last-child > :last-child { margin-bottom: 0; }
 .project.brand-beyond-bank { --card-bg: var(--brand-beyond-bank); --card-on: #FFFFFF; --card-accent: #FFFFFF; --card-stroke: var(--brand-beyond-bank); }
 .project.brand-ba          { --card-bg: var(--brand-ba);          --card-on: #FFFFFF; --card-accent: #FFFFFF; --card-stroke: var(--brand-ba); }
 .project.brand-tattdup     { --card-bg: var(--brand-tattdup);     --card-on: #FFFFFF; --card-accent: var(--brand-tattdup-accent); --card-stroke: var(--brand-tattdup-accent); }
+.project.brand-zombie      { --card-bg: var(--brand-zombie);      --card-on: #FFFFFF; --card-accent: var(--brand-zombie-accent); --card-stroke: var(--brand-zombie); }
 .project.brand-tattdup .chip { background: var(--brand-tattdup-accent); color: var(--brand-tattdup); }
 .project.brand-tattdup .project-links a { color: var(--brand-tattdup-accent); }
 
@@ -380,3 +381,7 @@ section > .wrap > :last-child > :last-child { margin-bottom: 0; }
 /* A wide card for the last project, so a sixth card never sits alone in the grid */
 .project.wide { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: var(--s4); }
 @media (max-width: 860px) { .project.wide { display: flex; } }
+
+/* ChilliPharm App screenshots are a phone frame on white: round the image
+   to the frame's own corners so no white shows on the green card */
+.project.brand-chillipharm .project-media img.phone { border-radius: 17% / 8.3%; }

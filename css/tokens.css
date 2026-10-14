@@ -38,6 +38,8 @@
   --brand-tattdup: #16151A;
   --brand-tattdup-accent: #FFD23F;
   --brand-ba: #0F2A4A;
+  --brand-zombie: #12302C;    /* Zombie Street Survival night green, white text 14:1 */
+  --brand-zombie-accent: #F2B278; /* amber, 7.7:1 on the night green */
   --brand-tesco: #00539F;     /* concept study, white text 7.7:1 */
 
   /* ---- Expressive accent families (container + on-container) ---- */

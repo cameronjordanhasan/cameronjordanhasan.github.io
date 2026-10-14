@@ -115,3 +115,10 @@ button.portrait:hover .portrait-zoom, button.portrait:focus-visible .portrait-zo
 }
 @media (prefers-reduced-motion: reduce) { .project.concept:hover .mini-receipt { transform: rotate(-2deg); } }
 @media (forced-colors: active) { .project.concept { border: 1px solid CanvasText; } }
+
+/* ---------- Work groups ----------
+   Professional work and independent products sit under their own
+   headings inside Selected work, before the concept case studies. */
+.work-group + .work-group { margin-top: var(--s8); }
+.work-group-head { margin-bottom: var(--s3); }
+.work-group-head .title-lg { margin-bottom: var(--s1); }
